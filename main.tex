@@ -3,24 +3,18 @@
 \usepackage[english]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{color}
-\usepackage{wrapfig}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{textcomp}
 \usepackage{array}
 \usepackage{booktabs}
-\usepackage{subfigure}
 \usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
 \usepackage{longtable}
 \usepackage{calc}
 \usepackage{setspace}
-\usepackage{multirow}
 \usepackage{hhline}
 \usepackage{ifthen}
 \usepackage{lscape}
-\usepackage{relsize}
-\usepackage{bbold}
-\usepackage{mathtext}
 \usepackage{pdfpages}
 \usepackage{geometry}
  \geometry{
@@ -97,36 +91,40 @@ specifing algebraic expressions directly via the input file.
 
 
 \subsection{Structural outline}
-\noindent The program is split into three main components; an algebraic manipulator, an fci and tensor contraction library, and an task manager (make figure).\\
+\noindent The program is split into three main components; an algebraic manipulator, an FCI
+and tensor contraction library, and an task manager (make figure).\\
 
-\noindent The algebraic manipulator should the input expression, and rearranges
-it into a series of expressions which are more suited to computational
-evaluation.  To accomplish this it makes extensive use of the commutation
+\noindent The algebraic manipulator should interpret the expressions defined
+in the input, and restructure these into a series of expressions which are
+more suited to computational evaluation. To accomplish this the
+algebraic manipulator makes extensive use of the commutation
 relations of the creation and annihilation operators, as well as the physical
 symmetries of the operators, in order to minimize the number of terms, and
 avoid the need for calculation of terms which are likely to be computationally
 expensive to evaluate (e.g., those with large numbers of indexes). This series
 of expressions is used to form an algebraic task list; a sequence of
 mathematical operations which need to be evaluated.  It is important to note
-that the algebraic manipulator is entirely symbolic manipulation, and does not
-handle any of the large data structures, e.g., civectors, matrices of molecular
-orbital indices used. The expressions in the algebraic task list do not in any
-way specify what kind of data structures need to be used to store the
-quantities necessary for their evaluation.\\
+that the algebraic manipulator is entirely based around symbolic manipulation,
+and does not handle any of the large data structures, e.g., civectors,
+molecular orbital integral tensors, etc.. The expressions in the algebraic
+task list do not in any way specify what kind of data structures need to
+be used to store the quantities necessary for their evaluation.\\
 
 \noindent The FCI and tensor libraries contains generic routines for
 calculating density matrices and their derivatives, and performing tensor
 contractions (and other various tensor manipulations). The tensor and FCI
 library are completely disctinct from the algebraic manipulator, and operate
 totally independently. The FCI library is designed such that it can calculate
-density matrices (and derivatives) or arbitrary order. In a similar vein, the
+density matrices (and derivatives) of arbitrary order. In a similar vein, the
 tensor library can operate on tensor of arbitrary rank, with each dimension
-being an arbitrary and different size. At present both the FCI uses the dvec
-and determinant classes defined in bagel, but this should be phased out.
+being a different size. At present both the FCI uses the "Dvec"
+and "Determinant" classes defined in Bagel, but their used could in principal be
+phased out (the former case with relative ease, the latter would be more complicated).
 Similarly, the tensor contraction makes use of the SMITH::Tensor\_ class. \\
 
-\noindent The final component of the program is the task manager which is
-intended to faciliate communication between the routines. This is necessary, as
+\noindent The final major component of the program is the task manager or driving routine, 
+which is faciliates communication between the algebraic manipulator and the 
+FCI and tensor libraries. This is necessary, as
 the neither the arithmetic component has now knowledge of the classes used in
 the algebraic manipulator, and vice versa. Whilst this has complicated the
 design slightly, it should enable greater portability, as well as making the
@@ -134,7 +132,7 @@ program substantially easier to extend and upgrade.\\
 
 \noindent In a sense there is a fourth component, a driving routine, which
 performs some communication between the three routines, and which deals with
-interpretation of the input. However, whilst this component is practically
+input reading, and some initialization. However, whilst this component is practically
 important, and not particularly small, it is rather simple, and not of
 interest, so I will not discuss it significantly.
 
@@ -167,9 +165,9 @@ ranges of the index summation.\\
 
 \noindent Each \emph{expression} is further broken down into a number of \emph{term}s.
 \emph{Terms} differ from \emph{expressions} in that any state index summation in
-in a \emph{term} applies to the entire term
+in a \emph{term} applies to the entire term.
 Hence (\ref{eqn:Hylleras}) cannot be represented by a single term object, and instead
-requires two: is a valid term, whilst
+requires two:
 \begin{equation}
 \sum_{N} 
 \langle M | \hat{E}^{\dagger}_{\Omega} (\hat{H}-\epsilon_{L}) \hat{T}^{LN} | N \rangle  
@@ -181,7 +179,7 @@ requires two: is a valid term, whilst
 \end{equation}
 \noindent Without this seperation (\ref{eqn:Hylleras2}) would be summed over $N$ times,
 despite the fact $N$ does not occur. 
-Whilst this constraints seems needless and annoying there are good practical reasons for it, mainly stemming
+Whilst this constraints seems needless and annoying there are justifications for them stemming
 from the strategies, to be elaborated upon later in this document, used to merge different \emph{term}s together. \\ 
 
 \noindent Each \emph{term} is further broken down into a list of \emph{braket}s. The \emph{term} 
