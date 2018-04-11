@@ -1,0 +1,127 @@
+\documentclass[12pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{textcomp}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
+\usepackage{longtable}
+\usepackage{calc}
+\usepackage{setspace}
+\usepackage{hhline}
+\usepackage{ifthen}
+\usepackage{lscape}
+\usepackage{pdfpages}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ bottom=20mm,
+ right=20mm,
+ }
+\usepackage{cite}
+\linespread{1.3}
+
+\begin{document}
+Have perturbed Hamiltonian:
+\begin{equation}
+\hat{H}\Psi = ( H_{0} +V )( \psi_{0}+ \phi ) = E \Psi = (\epsilon_{0} + \Delta \epsilon) \Psi,
+\end{equation}
+and require that 
+\begin{equation}
+H_{0}\psi_{0} = \epsilon_{0}\psi_{0}.
+\end{equation}
+\noindent Have the normalization conditions 
+\begin{equation}
+\langle \Psi | \psi_{0} \rangle = 1 \text{ \ \ \ \ } 
+\langle \psi_{0} | \psi_{0} \rangle = 1 \text{ \ \ \ \ } 
+\langle \phi | \psi_{0} \rangle = 1 
+\end{equation}
+\noindent In this case our perturbation excites is essentially splitting the Hailtonian into 
+two parts. The Hamiltonian is a bilinear operator. For $\hat{H}_{0}$ we
+say both arguments must be within the CASCI space, whereas for $\hat{V}$, one argument must be in 
+the external space. Hence,
+\begin{equation}
+\langle \psi_{0} | \hat{V} | \psi_{0} \rangle = \langle \hat{V} \rangle = 0
+\end{equation}
+Now define a resolvent operator, $R(z)$;
+\begin{equation}
+R(z) = (z\hat{I}-\hat{H})^{-1}
+\end{equation} 
+here, $\hat{I}$ is the identity. Generally speaking, $z$ can be any complex number, but it is useful
+to restrict ourselves to cases where $\Re e(z) = E$. This means we can then write $R(z)= R(E+i\eta) $. 
+It is useful to note that
+\begin{equation}
+R(E+i\eta)(E+i\eta-H)= 1
+\end{equation}
+\begin{equation}
+\lim_{\eta \rightarrow 0_{+}} R(E+i\eta)(E-H)= 1
+\end{equation}
+\noindent This resolvent operator is can help us to rearrange the Schrodinger equation to get an expression for
+$\phi$
+\begin{equation*}
+\hat{H} (|\psi_{0}\rangle + |\phi\rangle)  = E(|\psi\rangle+ |\phi\rangle)
+\end{equation*}
+\begin{equation*}
+ (E-\hat{H}) | \phi\rangle
+=
+(\hat{H}-E)|\psi_{0} \rangle
+ \end{equation*}
+\begin{equation*}
+|\phi \rangle =  (E-\hat{H})^{-1} (\hat{H}-E)|\psi_{0} \rangle
+\end{equation*}
+\begin{equation*}
+ |\phi \rangle = R(E + i\eta) (\hat{H}-E)|\psi_{0} \rangle 
+\end{equation*}
+\begin{equation}
+ |\phi \rangle = R(E + i\eta) (\hat{V}-\delta E)|\psi_{0} \rangle
+\end{equation}
+We can use this definition of $\phi$ to write the full wavefunction $\Psi$ in
+terms of the unperturbed wavefunction
+\begin{equation}
+\Psi =  (1+ R(E + i\eta) )(\hat{V}-\delta E))|\psi_{0} \rangle
+\end{equation}
+Using the inverse properties of the resolvent mentioned earlier
+\begin{equation}
+\Psi = \hat{Q}|\psi_{0}\rangle = \lim_{\eta \rightarrow 0_{+}}i\eta R(E+i\eta)|\psi_{0}\rangle
+\end{equation}
+This can then be used to write
+\begin{equation}
+(E-\hat{H}) \hat{Q}\psi_{0}  = 0 
+\label{eqn:proj} 
+\end{equation}
+which is a nice eigenvalue equation. So we just need to find a way of approximating $\hat{Q}$.\\
+
+\noindent  The intermediate normalization conditions now come in handy; 
+\begin{equation}
+E = \langle \psi_{0} | \hat{H}_{0} + \hat{V}  |  \psi_{0} + \phi \rangle  = E_{0} + \langle \psi_{0} | \hat{V} | \Psi \rangle 
+\end{equation}
+or by subsituting from (\ref{eqn:proj}) we can write in terms of $\psi_{0}$ 
+\begin{equation}
+E = \langle \psi_{0} | \hat{H}_{0} + \hat{V}\hat{Q}|  \psi_{0} \rangle 
+\end{equation}
+So the perturbation energy is 
+\begin{equation*}
+\Delta E = \langle \psi_{0} | H | \phi \rangle + \langle \psi_{0} | \hat{V}\hat{Q}|  \psi_{0} \rangle . 
+\end{equation*}
+\begin{equation}
+= \langle \psi_{0} | H | \phi \rangle +\lim_{\eta \rightarrow 0_{+}} \langle \psi_{0} | \hat{V} (i\eta R(E+i\eta))  |\psi_{0} \rangle . 
+\end{equation}
+The resolvent is often represented as a transform on the wavefunctions 
+\begin{equation}
+R(E) = \frac{1}{\hat{H}-E} = \sum_{N} \frac{|N\rangle \langle N| }{ E_{N}-E }
+\end{equation}
+but this requires that 
+\begin{equation}
+\hat{H} = \sum_{N=1}^{\infty} E_{N} | N \rangle \langle N | ,
+\end{equation}
+i.e., that the states $\{ N \}$ are eigenvalues of $\hat{H}$. This is not the case for our Hamiltonian. Consequently, 
+we approximate the Hamiltonian with $\hat{f}^{sa}$,  the state-averaged Fock operator, which is a single particle operator.
+
+\end{document}
