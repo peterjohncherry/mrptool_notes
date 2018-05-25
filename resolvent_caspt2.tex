@@ -96,32 +96,78 @@ This can then be used to write
 (E-\hat{H}) \hat{Q}\psi_{0}  = 0 
 \label{eqn:proj} 
 \end{equation}
-which is a nice eigenvalue equation. So we just need to find a way of approximating $\hat{Q}$.\\
-
-\noindent  The intermediate normalization conditions now come in handy; 
+We now approximate $\hat{Q}$ as 
 \begin{equation}
-E = \langle \psi_{0} | \hat{H}_{0} + \hat{V}  |  \psi_{0} + \phi \rangle  = E_{0} + \langle \psi_{0} | \hat{V} | \Psi \rangle 
+\hat{Q} = 1 + \hat{\hat{T}} = 1 + \sum_{ijkl}a_{i}^{\dagger}a^{\dagger}_{j}a_{k}a_{l}T_{ijkl}
 \end{equation}
-or by subsituting from (\ref{eqn:proj}) we can write in terms of $\psi_{0}$ 
+where $T_{ijkl}$ is a coefficient associated with a given combination $\{i,j,k,l\}$ of orbital excitations. Under this
+approximation 
+
+\begin{equation}
+\langle\phi|(E-\hat{H}_{0}+\hat{V}) \hat{Q}|\psi_{0}\rangle  = 0 
+\label{eqn:proj} 
+\end{equation}
+\begin{equation}
+E  = 
+\langle\phi|(\hat{H}_{0}+\hat{V}) \hat{Q}|\psi_{0}\rangle + 
+\langle\phi|(\hat{H}_{0}+\hat{V}) \hat{Q}|\psi_{0}\rangle + 
+\langle\phi|(\hat{H}_{0}+\hat{V}) \hat{Q}|\psi_{0}\rangle  = 0 
+\label{eqn:proj} 
+
+
+
+
+
+
+ To acheive this first use the the intermediate normalization conditions
+to write 
+\begin{equation}
+E = \langle \psi_{0} | \hat{H}_{0} + \hat{V}  |  \psi_{0} + \phi \rangle  = E_{0} + \langle \psi_{0} | \hat{V} | \Psi \rangle,
+\end{equation}
+subsituting from (\ref{eqn:proj}) we can write this terms of $\psi_{0}$ 
 \begin{equation}
 E = \langle \psi_{0} | \hat{H}_{0} + \hat{V}\hat{Q}|  \psi_{0} \rangle 
 \end{equation}
 So the perturbation energy is 
-\begin{equation*}
+\begin{equation}
 \Delta E = \langle \psi_{0} | H | \phi \rangle + \langle \psi_{0} | \hat{V}\hat{Q}|  \psi_{0} \rangle . 
-\end{equation*}
-\begin{equation}
-= \langle \psi_{0} | H | \phi \rangle +\lim_{\eta \rightarrow 0_{+}} \langle \psi_{0} | \hat{V} (i\eta R(E+i\eta))  |\psi_{0} \rangle . 
+\label{eqn:pt_energy_Q}
 \end{equation}
-The resolvent is often represented as a transform on the wavefunctions 
+
 \begin{equation}
-R(E) = \frac{1}{\hat{H}-E} = \sum_{N} \frac{|N\rangle \langle N| }{ E_{N}-E }
+|\Psi \rangle \approx |\psi_{0} \rangle + \sum_{ijkl} \hat{T}_{ijkl} |\psi_{0} \rangle,
 \end{equation}
-but this requires that 
 \begin{equation}
-\hat{H} = \sum_{N=1}^{\infty} E_{N} | N \rangle \langle N | ,
+\text{\ \ \ i.e. \ \ \ } | \phi \rangle \approx \sum_{ijkl} \hat{T}_{ijkl} |\psi_{0} \rangle 
 \end{equation}
-i.e., that the states $\{ N \}$ are eigenvalues of $\hat{H}$. This is not the case for our Hamiltonian. Consequently, 
-we approximate the Hamiltonian with $\hat{f}^{sa}$,  the state-averaged Fock operator, which is a single particle operator.
+Substituing this into (\ref{eqn:pt_energy_Q}) yields 
+\begin{equation}
+\Delta E = \langle \psi_{0} | H \hat{T}| \psi_{0} \rangle + \langle \psi_{0} | \hat{V}\hat{T}| \psi_{0} \rangle . 
+\label{eqn:pt_energy_T}
+\end{equation}
+This can be used to obtain the and expression for the perturbation energy.
+%\begin{equation}
+%= \langle \psi_{0} | H | \phi \rangle +\lim_{\eta \rightarrow 0_{+}} \langle \psi_{0} | \hat{V} (i\eta R(E+i\eta))  |\psi_{0} \rangle . 
+%\label{eqn:init_res}
+%\end{equation}
+%The resolvent is often represented as a transform on the wavefunctions 
+%\begin{equation}
+%R(E) = \frac{1}{\hat{H}-E} = \sum_{N} \frac{|\Psi_{N}\rangle \langle \Psi_{N}| }{\langle \Psi_{N}| \hat{H}-E  | \Psi_{N} \rangle},
+%\end{equation}
+%where $\{\Psi \}$ are the eigenvectors of $\hat{H}$. Substituting this into (\ref{eqn:init_res}), and omitting the $\eta$ for clarity, yields
+%\begin{equation*}
+%\Delta E = \langle \psi_{0} | H | \phi \rangle + \sum_{N} \frac{\langle \psi_{0} | \hat{V}  |\Psi_{N}\rangle \langle \Psi_{N}|\psi_{0} \rangle }{\langle \Psi_{N}| \hat{H}-E  | \Psi_{N} \rangle}. 
+%\end{equation*}
+%\begin{equation}
+%= \langle \psi_{0} | H | \phi \rangle + \sum_{N} \frac{\langle \psi_{0} | \hat{V}  |\phi_{N}\rangle  }{\langle \phi_{N}| \hat{H}-E  | \phi_{N} \rangle}. 
+%\end{equation}
+
+
+%but this requires that 
+%\begin{equation}
+%\hat{H} = \sum_{N=1}^{\infty} E_{N} | N \rangle \langle N | ,
+%\end{equation}
+%i.e., that the states $\{ N \}$ are eigenvalues of $\hat{H}$. This is not the case for our Hamiltonian. Consequently, 
+%we approximate the Hamiltonian with $\hat{f}^{sa}$,  the state-averaged Fock operator, which is a single particle operator.
 
 \end{document}
