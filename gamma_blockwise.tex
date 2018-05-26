@@ -1,0 +1,188 @@
+\documentclass[12pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{textcomp}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
+\usepackage{longtable}
+\usepackage{calc}
+\usepackage{setspace}
+\usepackage{hhline}
+\usepackage{ifthen}
+\usepackage{lscape}
+\usepackage{pdfpages}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ bottom=20mm,
+ right=20mm,
+ }
+\usepackage{cite}
+\linespread{1.3}
+
+\begin{document}
+\section{Gamma generator}
+Consider a term
+\begin{equation}
+\sum_{ijkl}\sum_{mnop} \sum_{IJ} \langle I | i^{\dagger}j^{\dagger}klm^{\dagger}n^{\dagger}op | J \rangle c^{M}_{I} c_{J}^{N} Y^{ML}_{ijkl}Z^{NP}_{mnop},
+\label{eqn:basic_term}
+\end{equation}
+where $I$ and $J$ each denote a Slater determinant, and $L,M,N,P$ are state
+indexes.  $\mathbf{Y}^{ML}$ and $\mathbf{Z}^{NP}$ are representations of
+operators and $\hat{Y}$ and $\hat{Z}$ in the molecular orbital basis. For the time being
+the state dependence of the operator representations will be ignored, but has important consequences
+for exploitation of symmetry, and will be discussed at length later. \\ 
+
+\noindent The proceedure most commonly employed by code generators is to use Wick's theorem
+to rearrange expressions, such as (\ref{eqn:basic_term}), into a series of normal ordered terms, e.g.,
+\begin{equation*}
+=\sum_{stuvwxyz} \sum_{IJ} \langle I | s^{\dagger}t^{\dagger}u^{\dagger}v^{\dagger}wzyx | J \rangle c_{I} c^{*}_{J} A_{stuvwxyz},
+\end{equation*}
+
+\begin{equation*}
++\sum_{stuwxy} \sum_{IJ} \langle I | s^{\dagger}t^{\dagger}u^{\dagger}wzy | J \rangle c_{I} c^{*}_{J} A_{stuwxy},
+\end{equation*}
+
+\begin{equation*}
++\sum_{stwx}\sum_{mnop} \sum_{IJ} \langle I | s^{\dagger}t^{\dagger}wz | J \rangle c_{I} c^{*}_{J} A_{stwx},
+\end{equation*}
+
+\begin{equation*}
++\sum_{sw}\sum_{mnop} \sum_{IJ} \langle I | s^{\dagger}w | J \rangle c_{I} c^{*}_{J} A_{sw}
+\end{equation*}
+
+\begin{equation*}
++\sum_{sw}\sum_{mnop}  A .
+\end{equation*}
+
+\noindent Where the tensors $A_{ijkl...}$ are formed by performing the 
+contractions between and reorderings of the indexes of tensors on $Y$ and $Z$ as 
+determined from the commutation relations of the creation and annihilation operations, e.g.,
+ 
+\begin{equation*}
+A_{stwx} = \sum_{r}^{R}\hat{\wp}_{r}\sum^{c1}_{\{u,y\}}\delta{uy}\sum^{c2}_{\{v,z\}} \delta{vz}Y_{ijkl}Z_{mnop},
+\end{equation*}
+
+where the $c1$ and $c2$ are sets of pairs of indexes to be contracted, e.g.,
+\begin{equation}
+c2 = \{ \{i, k\} \} , \{j, k\} \} ,\{l, m\} \}.....\} 
+\end{equation}
+and $\hat{\wp}_{r}$ which transforms the ordered set of indexes
+$\{u,v,s,t,w,x,y,z\}$ into some permutation, $r\in R$, of the ordered set of
+indexes $\{i,j,k,l,m,n,o,p\}$, whilst also acting to multiply the result of the
+summation by an appropriate factor.\\
+
+\noindent A major advantage of this is that it enables constraints to be
+on the values over which the molecular orbital indexes; all indexes on 
+annihilation operators must correspond to orbitals occupied in $|J\rangle$, and 
+creation operators must correspond to orbitals occupied in $|I\rangle$.\\
+
+\noindent This is due to properties of how the determinants are constructed in 
+active space based methods. A generic determinant is   
+\begin{equation}
+\Psi_{K} = \sum^{p\in S_{X}}_{p} \epsilon_{x} \bigotimes_{i=0}^{n}  \psi_{x_{i}}
+\end{equation}
+where $X$ is a set of molecular orbital indexes $\{x_{0},...,x_{n}\}$,
+$\epsilon$ is the nth rank Levi-Cevita
+tensor, $p$ is a member of the symmetric group $S_{X}$,
+consisting of all possible permutations on the set of indexes,
+$X = \{x_{0},...,x_{n}\}$, of molecular orbitals $\psi_{x_{i}}$ from which the
+determinant is constructed.\\
+
+
+\noindent In CI based methods it is common to use the fact that 
+each distinct ordered set, $X$, of indexes corresponds to a different 
+determinant (given all sets being compared have their indexes ordered according
+to some standard set of rules). In active space based methods number of
+determinants used to define the wavefunction is constrained to only
+those determinants which corresponding to sets $X \in {F^{CAS}}$, where
+
+\begin{equation*}
+F^{CAS} = \{ X | (X = X^{c} \cup X^{a}) \wedge (X^{a} \subset P) \wedge ( \text{card}(X) = n_{act} )  \}
+\end{equation*}
+where $P$ is the list of all active molecular orbital indexes, 
+$X^{a}$ is a subset of set of $n_{act}$ orbitals occupied in the determinant defined by $X$, and
+where $X^{c}$ is the list of closed orbital indexes, all of which are occupied in all determinants.\\
+
+\noindent Unfortunately, $F^{CAS}$ can get very large, leading to computational difficulties. 
+One way of trying to manage this is to decompose the set of active orbital indexes, $P$, up into subsets;
+\begin{equation}
+P = \cup_{j} P_{j}, 
+\end{equation}
+and performing a similar decomposition on the sets of molecular orbital indexes $X$;
+\begin{equation}
+X = (\cup_{j} X_{j}) \cup X_{c} \text{ \ \ \ \ \ where \ \ \ \ \ } X_{j} \subset P_{j}. 
+\end{equation}
+This leads to a related decomposition of $F^{CAS}$ into smaller subspaces;
+\begin{equation*}
+F^{CAS} = \cup_{n_{1},..,n_{N}} F^{CAS}_{p_{1},...,p_{N}},
+\end{equation*}
+where the indexes ${p_{1},...,p_{N}}$, define the number of elements any given $X \in F^{CAS}_{p_{1},...,p_{N}}$
+may have in common with each of the different subsets of $P$.\\
+
+\noindent  For example, suppose $P$ is split into $\mu$ and $\nu$ indexes;
+\begin{equation}
+P = P_{\mu} \cup  P_{\nu}.
+\end{equation}
+For the case where
+\begin{equation*}
+\text{card}(P_{\mu}) = 2 
+\text{, \ \ \ }
+\text{card}(P_{\nu}) = 4
+\text{, \ \ \ and \ \ \ }
+n_{act} = 3
+\end{equation*}
+The space, $F^{CAS}$, can then be split up according to how many $\gamma$ and $\nu$
+electrons are occupied in a given element;
+\begin{equation*}
+F^{CAS} = F^{CAS}_{3,0} \cup F^{CAS}_{2,1} \cup F^{CAS}_{1,2} 
+\end{equation*}
+\begin{equation*}
+F^{CAS}_{3,0} = \{ X | \wedge (X^{a}_{\mu} \subset P_{mu}) \wedge ( \text{card}(X)_{\mu} = n_{act} \}
+\end{equation*}
+\begin{equation*}
+F^{CAS}_{2,1} = \{ X | \wedge (X^{a}_{\mu} \subset P_{mu}) \wedge ( \text{card}(X)_{\mu} = n_{act}-1 \}
+                                              \wedge (X^{a}_{\nu} \subset P_{nu}) \wedge ( \text{card}(X)_{\nu} = 1 \}
+\end{equation*}
+\begin{equation*}
+F^{CAS}_{1,2} = \{ X | \wedge (X^{a}_{\mu} \subset P_{mu}) \wedge ( \text{card}(X)_{\mu} = n_{act}-2 \}
+                                              \wedge (X^{a}_{\nu} \subset P_{nu}) \wedge ( \text{card}(X)_{\nu} = 2 \}
+\end{equation*}
+\begin{equation*}
+X = X^{c} \cup X^{a}_{mu} \cup X^{a}_{\nu}.
+\end{equation*}
+\noindent I shall hereafter refer to these subspaces of $F^{CAS}$ as
+ci-sectors, or sometimes spin-sectors. Decomposing the active space in
+this manner has a number of benefits, as the different ci-sectors may not interact,
+the most prominent example of this is the non-interaction
+of ci-sectors with different numbers of occupied $\alpha$ and $\beta$ orbitals 
+in the non-relativistic framework.  However, even if they do,
+the decomposition of the active space makes it is possible to handle
+this interaction a piece wise manner, i.e., deal with interactions
+between two ci-sectors at a time.\\
+
+\noindent Unfortunately, this decomposition brings with it a number of
+complexities which are not present for undecomposed active spaces. However, 
+as we shall hopefully see, the reduction in the size, number, and complexity is
+substanstial, and is imperative to efficient handling of the relativistic wavefunctions.\\
+
+\noindent Initially, the state dependence of the operators seems perculiar; the
+molecular orbitals themselves do not differ between states, hence the state
+dependence of the representations suggests that it is not possible to interpret
+these operators as describing interactions between 1, 2, or n-electrons.  In
+fact, such state dependent operators do not correspond to physical interactions
+per se, but are instead a tool used to aid in the description of representation
+of a perturbed state interms via interaction of a number of unperturbed states.
+An important consequence of this is that the symmetry of the operator
+representations is determined by the form of the equations from which they are
+obtained, rather than from consideration of the form of operators themselves.
+
+\end{document}
