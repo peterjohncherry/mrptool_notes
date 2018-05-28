@@ -83,12 +83,11 @@ summation by an appropriate factor.\\
 \noindent A major advantage of this is that it enables constraints to be
 on the values over which the molecular orbital indexes; all indexes on 
 annihilation operators must correspond to orbitals occupied in $|J\rangle$, and 
-creation operators must correspond to orbitals occupied in $|I\rangle$.\\
-
-\noindent This is due to properties of how the determinants are constructed in 
-active space based methods. A generic determinant is   
+creation operators must correspond to orbitals occupied in $|I\rangle$. 
+This is a consequence of how determinants are constructed in 
+active space based methods. A generic determinant can be written
 \begin{equation}
-\Psi_{K} = \sum^{p\in S_{X}}_{p} \epsilon_{x} \bigotimes_{i=0}^{n}  \psi_{x_{i}}
+\Psi_{K} = \sum^{p\in S_{X}}_{p} \epsilon_{x} \bigotimes_{i=0}^{n}  \psi_{x_{i}},
 \end{equation}
 where $X$ is a set of molecular orbital indexes $\{x_{0},...,x_{n}\}$,
 $\epsilon$ is the nth rank Levi-Cevita
@@ -96,7 +95,6 @@ tensor, $p$ is a member of the symmetric group $S_{X}$,
 consisting of all possible permutations on the set of indexes,
 $X = \{x_{0},...,x_{n}\}$, of molecular orbitals $\psi_{x_{i}}$ from which the
 determinant is constructed.\\
-
 
 \noindent In CI based methods it is common to use the fact that 
 each distinct ordered set, $X$, of indexes corresponds to a different 
@@ -108,18 +106,18 @@ those determinants which corresponding to sets $X \in {F^{CAS}}$, where
 \begin{equation*}
 F^{CAS} = \{ X | (X = X^{c} \cup X^{a}) \wedge (X^{a} \subset P) \wedge ( \text{card}(X) = n_{act} )  \}
 \end{equation*}
-where $P$ is the list of all active molecular orbital indexes, 
+where $P$ is the list of all "active" molecular orbital indexes, 
 $X^{a}$ is a subset of set of $n_{act}$ orbitals occupied in the determinant defined by $X$, and
 where $X^{c}$ is the list of closed orbital indexes, all of which are occupied in all determinants.\\
 
 \noindent Unfortunately, $F^{CAS}$ can get very large, leading to computational difficulties. 
 One way of trying to manage this is to decompose the set of active orbital indexes, $P$, up into subsets;
 \begin{equation}
-P = \cup_{j} P_{j}, 
+P = \bigcup\limits_{j=0} P_{j}, 
 \end{equation}
 and performing a similar decomposition on the sets of molecular orbital indexes $X$;
 \begin{equation}
-X = (\cup_{j} X_{j}) \cup X_{c} \text{ \ \ \ \ \ where \ \ \ \ \ } X_{j} \subset P_{j}. 
+X = X_{c} \cup  \bigcup\limits_{j=0} X_{j} \text{ \ \ \ \ \ where \ \ \ \ \ } X_{j} \subset P_{j}. 
 \end{equation}
 This leads to a related decomposition of $F^{CAS}$ into smaller subspaces;
 \begin{equation*}
@@ -150,29 +148,148 @@ F^{CAS}_{3,0} = \{ X | \wedge (X^{a}_{\mu} \subset P_{mu}) \wedge ( \text{card}(
 \end{equation*}
 \begin{equation*}
 F^{CAS}_{2,1} = \{ X | \wedge (X^{a}_{\mu} \subset P_{mu}) \wedge ( \text{card}(X)_{\mu} = n_{act}-1 \}
-                                              \wedge (X^{a}_{\nu} \subset P_{nu}) \wedge ( \text{card}(X)_{\nu} = 1 \}
+                       \wedge (X^{a}_{\nu} \subset P_{nu}) \wedge ( \text{card}(X)_{\nu} = 1 \}
 \end{equation*}
 \begin{equation*}
-F^{CAS}_{1,2} = \{ X | \wedge (X^{a}_{\mu} \subset P_{mu}) \wedge ( \text{card}(X)_{\mu} = n_{act}-2 \}
-                                              \wedge (X^{a}_{\nu} \subset P_{nu}) \wedge ( \text{card}(X)_{\nu} = 2 \}
+F^{CAS}_{1,2} = \{ X | \wedge (X^{a}_{\mu} \subset P_{\mu}) \wedge ( \text{card}(X)_{\mu} = n_{act}-2 \}
+                       \wedge (X^{a}_{\nu} \subset P_{nu}) \wedge ( \text{card}(X)_{\nu} = 2 \}
 \end{equation*}
 \begin{equation*}
-X = X^{c} \cup X^{a}_{mu} \cup X^{a}_{\nu}.
+X = X^{c} \cup X^{a}_{\mu} \cup X^{a}_{\nu}.
 \end{equation*}
 \noindent I shall hereafter refer to these subspaces of $F^{CAS}$ as
-ci-sectors, or sometimes spin-sectors. Decomposing the active space in
+ci-sectors (and in specific cases, spin-sectors). Decomposing the active space in
 this manner has a number of benefits, as the different ci-sectors may not interact,
 the most prominent example of this is the non-interaction
 of ci-sectors with different numbers of occupied $\alpha$ and $\beta$ orbitals 
 in the non-relativistic framework.  However, even if they do,
 the decomposition of the active space makes it is possible to handle
 this interaction a piece wise manner, i.e., deal with interactions
-between two ci-sectors at a time.\\
+between two ci-sectors at a time. \emph{Note : Please correct me if I am wrong,
+but I interpret relativistic CI as a kind of A.S.D., albeit with very different rules 
+governing the interactions between the different sectors. I realize the implementations
+and approaches to optimization are very different.}\\
+
+\noindent One major advantage is that decomposition of the active-space
+into different components faciliates the block wise decomposition of the reduced density matrices (RDMs),
+as a block of an RDM can being defined by the CI-sectors to 
+which the Bra and Ket belong. Using the above decomposition of the 
+active space as an example;
+\begin{equation*}
+\sum_{J}^{ \in \mathcal{F}_{all} }
+\sum_{I}^{ \in \mathcal{F}_{all} } \langle I | i^{\dagger}j^{\dagger}m^{\dagger}n^{\dagger}klop | J \rangle c^{M}_{I} c_{J}^{N}
+\end{equation*}
+\begin{equation*}
+\sum^{ \in \mathcal{F}_{all} }_{ \mathcal{F}_{sub} }
+\sum^{ \in \mathcal{F}_{all} }_{ \mathcal{F}_{sub} }
+\sum^{ \in \mathcal{F}_{sub}}_{I}
+\sum^{ \in \mathcal{F}_{sub}}_{J} \langle I | i^{\dagger}j^{\dagger}m^{\dagger}n^{\dagger}klop | J \rangle c^{M}_{I} c_{J}^{N},
+\end{equation*}
+\noindent where $\mathcal{F}_{sub}$ is one of the sub-spaces into which the total Fock space $\mathcal{F}_{all}$ has been decomposed.
 
 \noindent Unfortunately, this decomposition brings with it a number of
 complexities which are not present for undecomposed active spaces. However, 
 as we shall hopefully see, the reduction in the size, number, and complexity is
-substanstial, and is imperative to efficient handling of the relativistic wavefunctions.\\
+substanstial, and is particularly valuable when treating multi-reference,
+relativistic wavefunctions.\\ 
+
+\noindent Allowance for the fact that Bra and Ket may belong to different CI-sectors,
+the blockwise decomposition of the molecular orbital tensors, and the exploitation 
+of symmetry which exists within and between different blocks \emph{and}  different CI-sectors,
+are the distinguishing features of the program.
+
+\subsection{ Blockwise handling of terms } 
+\noindent That different the Bra and Ket may have different CI-sectors has
+important ramifications for the program structure, however, before discussing
+these in depth it is necessary to discuss the basics of the task list
+construction.\\
+
+\noindent As discussed in section(), we typically wish to evaluate terms of the
+following form;
+\begin{equation}
+\sum_{ijkl}\sum_{mnop} \sum_{IJ} \langle I | i^{\dagger}j^{\dagger}klm^{\dagger}n^{\dagger}op | J \rangle c^{M}_{I} c_{J}^{N} Y^{ML}_{ijkl}Z^{NP}_{mnop}.
+\label{eqn:basic_term_again}
+\end{equation}
+\noindent In (\ref{eqn:basic_term_again}) the sum over the orbital indexes
+$\{i,j,k,l\}$ and  $\{m,n,o,p\}$ runs over all indexes specified by tensors
+$\mathbf{Y}$ and $\mathbf{Z}$ respectively. However, we can rewrite the above
+in terms of summations over the ci-sectors and blocks into which these tensors may be
+decomposed;
+\begin{equation}
+\sum_{B^{Y}}\sum_{B^{Z}}
+\sum^{B^{Y}}_{ijkl}\sum^{B^{Z}}_{mnop} \sum_{IJ} \langle I | i^{\dagger}j^{\dagger}klm^{\dagger}n^{\dagger}op | J \rangle c^{M}_{I} c_{J}^{N} Y^{ML}_{ijkl}Z^{NP}_{mnop}.
+\label{eqn:basic_term_block_wise}
+\end{equation}
+\noindent Here $B^{Y}$ and $B^{Z}$ are blocks of $\mathbf{Y}$ and $\mathbf{Z}$
+which define the ranges over which the summations of the molecular orbital
+indexes are to occur.\\
+
+\noindent Many of the contributions from these various tensor blocks will
+vanish, but exactly which will vanish is dependent on the CI-sector to which
+$|I \rangle$ and $|J \rangle$ belong. For example, if 
+\begin{equation*}
+|I\rangle \in \mathcal{F}_{\mu = 2,\nu = 1} \text{ \ \ \ \ and  \ \ \ \ } |J\rangle \in \mathcal{F}_{\mu = 3,\nu = 0},
+\end{equation*}
+then the cumulative action of the creation and annihilation operators within
+the BraKet must be to destroy one electron in range $r^{\mu}$, and create one
+in $r^{\nu}$. All terms corresponding to blocks which do not meet this
+criterion can immediately be discarded. This idea can be taken further: If the
+expression is rearranged into normal order,
+\begin{equation}
+\sum_{B^{Y}}\sum_{B^{Z}}
+\sum^{B^{Y}}_{ijkl}\sum^{B^{Z}}_{mnop} \sum_{IJ} \langle I | i^{\dagger}j^{\dagger}m^{\dagger}n^{\dagger}klop | J \rangle c^{M}_{I} c_{J}^{N} Y^{ML}_{ijkl}Z^{NP}_{mnop}.
+\label{eqn:basic_term_nordered}
+\end{equation}
+\noindent then not only do we retain the above constraint, it is also known
+that terms corresponding to a combination of blocks, $B^{Y}$ and $B^{Z}$, where
+\emph{any} of the indexes $k$, $l$, $o$, $p$ are in range $\nu$, will vanish.
+An analagous constraint involing constraints on the ranges of the creation 
+opeators is obtained by putting the expression into anti-normal ordering;
+\begin{equation}
+\sum_{B^{Y}}\sum_{B^{Z}}
+\sum^{B^{Y}}_{ijkl}\sum^{B^{Z}}_{mnop} \sum_{IJ} \langle I |klop i^{\dagger}j^{\dagger}m^{\dagger}n^{\dagger} | J \rangle c^{M}_{I} c_{J}^{N} Y^{ML}_{ijkl}Z^{NP}_{mnop}.
+\label{eqn:basic_term_anordered}
+\end{equation}
+\noindent By applying this proceedure we ensure that only indexes within the
+active space are left within the BraKet, which is computationally significant
+as the dimension of the active orbitals range, $r^{a}$, is typically much
+smaller than the other blocks or the molecular orbital tensors (such as the
+core, $r^{c}$, or virtual $r_{c}$ blocks).\\
+
+\noindent Whilst this rearrangement will generate new terms in accordance with
+the commutation relations of the creation and annihilation operators, all of
+these new terms will be of lower rank than the original.  This fact, combined
+with the range constraints and elimination of terms means that the increase
+number of computational tasks to be performed is generally well worth it.\\  
+
+\noindent Perhaps most importantly of all is that it means that
+all calculations can be done piece-wise, treating only one combination of CI-sectors
+at a time. This is particularly useful when calculating expressions requiring reduced density matrix derivatives;
+\begin{equation}
+\Gamma^{I}_{ijklmn}\sum_{J}\langle I | i^{\dagger}j^{\dagger}m^{\dagger}n^{\dagger}opkl | J \rangle c_{J},
+\end{equation}
+which due to the lack of a summation over one of the CI-indexes, $I$, can prove extremely large. This
+would prove highly problematic for implementations of energy derivative expressions in the
+relativistic framework. However, the block decomposition of molecular orbital tensors,
+the decomposition of the active space, and the seperation of blocks into
+a real and imaginary components, ensures that the peak memory requirements of the 
+calculations need not exceed those for similar expressions in a non-relativstic framework.\\
+
+\noindent A disadvantage is that the algebraic operations of
+rearranging the tensors must be performed for every possible block, of which
+there can in principal be millions\footnote{ If each range is divided in to 
+six, and we have ten indexes, then $6^{10} =60466176 $. }. Fortunately, there
+are a number of ways to mitigate this, but it is not so trivial an issue that it can
+be completely ignored.\\
+
+\noindent The reordering sequence specified above; normal ordering followed by anti-normal 
+ordering, encapsulates the most important principals used by the algebraic manipulator. However,
+more efficient task lists can be generated by following these with other reorderings, whose structure
+is determined by the properties of the block, and ultimately, the term being calculated. In order to understand
+why this approach is taken, and how these reorderings are chosen and generated, it is necessary to discuss the implementation
+of symmetry.
+
+\section{Handling of Block Symmetry}
 
 \noindent Initially, the state dependence of the operators seems perculiar; the
 molecular orbitals themselves do not differ between states, hence the state
