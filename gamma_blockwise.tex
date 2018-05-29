@@ -41,7 +41,7 @@ operators and $\hat{Y}$ and $\hat{Z}$ in the molecular orbital basis. For the ti
 the state dependence of the operator representations will be ignored, but has important consequences
 for exploitation of symmetry, and will be discussed at length later. \\ 
 
-\noindent The proceedure most commonly employed by code generators is to use Wick's theorem
+\noindent The procedure most commonly employed by code generators is to use Wick's theorem
 to rearrange expressions, such as (\ref{eqn:basic_term}), into a series of normal ordered terms, e.g.,
 \begin{equation*}
 =\sum_{stuvwxyz} \sum_{IJ} \langle I | s^{\dagger}t^{\dagger}u^{\dagger}v^{\dagger}wzyx | J \rangle c_{I} c^{*}_{J} A_{stuvwxyz},
@@ -64,7 +64,7 @@ to rearrange expressions, such as (\ref{eqn:basic_term}), into a series of norma
 \end{equation*}
 
 \noindent Where the tensors $A_{ijkl...}$ are formed by performing the 
-contractions between and reorderings of the indexes of tensors on $Y$ and $Z$ as 
+contractions between and re-orderings of the indexes of tensors on $Y$ and $Z$ as 
 determined from the commutation relations of the creation and annihilation operations, e.g.,
  
 \begin{equation*}
@@ -185,7 +185,8 @@ active space as an example;
 \sum^{ \in \mathcal{F}_{sub}}_{I}
 \sum^{ \in \mathcal{F}_{sub}}_{J} \langle I | i^{\dagger}j^{\dagger}m^{\dagger}n^{\dagger}klop | J \rangle c^{M}_{I} c_{J}^{N},
 \end{equation*}
-\noindent where $\mathcal{F}_{sub}$ is one of the sub-spaces into which the total Fock space $\mathcal{F}_{all}$ has been decomposed.
+\noindent where $\mathcal{F}_{sub}$ is one of the sub-spaces
+into which the total Fock space $\mathcal{F}_{all}$ has been decomposed.\\
 
 \noindent Unfortunately, this decomposition brings with it a number of
 complexities which are not present for undecomposed active spaces. However, 
@@ -213,7 +214,7 @@ following form;
 \noindent In (\ref{eqn:basic_term_again}) the sum over the orbital indexes
 $\{i,j,k,l\}$ and  $\{m,n,o,p\}$ runs over all indexes specified by tensors
 $\mathbf{Y}$ and $\mathbf{Z}$ respectively. However, we can rewrite the above
-in terms of summations over the ci-sectors and blocks into which these tensors may be
+in terms of summations over the CI-sectors and blocks into which these tensors may be
 decomposed;
 \begin{equation}
 \sum_{B^{Y}}\sum_{B^{Z}}
@@ -243,14 +244,14 @@ expression is rearranged into normal order,
 \noindent then not only do we retain the above constraint, it is also known
 that terms corresponding to a combination of blocks, $B^{Y}$ and $B^{Z}$, where
 \emph{any} of the indexes $k$, $l$, $o$, $p$ are in range $\nu$, will vanish.
-An analagous constraint involing constraints on the ranges of the creation 
-opeators is obtained by putting the expression into anti-normal ordering;
+An analogous constraint involving constraints on the ranges of the creation 
+operators is obtained by putting the expression into anti-normal ordering;
 \begin{equation}
 \sum_{B^{Y}}\sum_{B^{Z}}
 \sum^{B^{Y}}_{ijkl}\sum^{B^{Z}}_{mnop} \sum_{IJ} \langle I |klop i^{\dagger}j^{\dagger}m^{\dagger}n^{\dagger} | J \rangle c^{M}_{I} c_{J}^{N} Y^{ML}_{ijkl}Z^{NP}_{mnop}.
 \label{eqn:basic_term_anordered}
 \end{equation}
-\noindent By applying this proceedure we ensure that only indexes within the
+\noindent By applying this procedure we ensure that only indexes within the
 active space are left within the BraKet, which is computationally significant
 as the dimension of the active orbitals range, $r^{a}$, is typically much
 smaller than the other blocks or the molecular orbital tensors (such as the
@@ -289,7 +290,154 @@ is determined by the properties of the block, and ultimately, the term being cal
 why this approach is taken, and how these reorderings are chosen and generated, it is necessary to discuss the implementation
 of symmetry.
 
-\section{Handling of Block Symmetry}
+\section{Handling of block and spin-sector symmetry}
+
+\noindent One of the defining features of the program is that
+symmetry is incorporated at the stage of algebraic manipulation, 
+and precedes the task list construction, i.e., it is only after 
+all expressions have been rewritten to involve some minimal set of 
+distinct terms that the task list is generated. Thus if two terms are 
+equivalent, one will of these terms will never appear at any stage of the final task list.
+This is primarily to facilitate the merging of terms, and minimize memory use. 
+The goal, loosely speaking, is that given the following equivalences;
+\begin{equation*}
+\hat{T}^{KM}= \hat{T}^{KP} \text{\ , \ \ \  }
+\hat{T}^{-1} = T^{\dagger} \text{\ , and \ \ \ }
+\mathbf{T}_{b1}^{KM}= \mathbf{T}_{b2}^{KP} 
+\end{equation*}
+\begin{equation*} 
+\mathbf{H}_{b3} = \mathbf{H}_{b4} 
+\end{equation*}
+\begin{equation*} 
+\mathbf{c}_{K}^{P} =  -\boldsymbol{\sigma_{y,2\times 2}}\mathbf{c}_{J}^{M*}, 
+|K\rangle =  |\overline{J}\rangle, 
+\text{ \ \ \ where  \ \ \ } 
+\boldsymbol{\sigma_{y,2\times 2}} = 
+\begin{bmatrix}
+\boldsymbol{\sigma_{y}} && \mathbf{0} \\ 
+\mathbf{0} && \boldsymbol{\sigma_{y}} \\
+\end{bmatrix}
+\end{equation*}
+\noindent any contribution written using the terms on the left
+hand side (LHS) of the above can be rewritten as one involving the terms on the
+right hand side (RHS) of the above. For example, 
+\begin{equation*}
+\sum_{ijkl}^{b1}\sum_{mnop}^{b2} \langle K |
+\hat{i}^{\dagger}\hat{j}^{\dagger}\hat{k}\hat{l}\hat{m}^{\dagger}\hat{n}^{\dagger}\hat{o}\hat{p} | K \rangle 
+\mathbf{c}_{K}^{P}\mathbf{c}_{I}^{M}T_{ijkl}^{KM,-1,b1}H^{b3}_{mnop}
+\end{equation*}
+is re-expressed as this term
+\begin{equation*}
+\sum_{ijkl}^{b1}\sum^{b3}_{mnop}
+\langle I |
+\hat{m}^{\dagger}\hat{n}^{\dagger}\hat{o}\hat{p} 
+\hat{\overline{i}}^{\dagger}\hat{\overline{j}}^{\dagger}\hat{\overline{k}}\hat{\overline{l}}
+| \overline{J} \rangle 
+\mathbf{c}_{J}^{M*} \mathbf{c}_{I}^{M}
+H^{b4}_{mnop}T_{lkji}^{KM,b2}
+\end{equation*}
+plus some sequence of transformations, and potentially a number of lower order terms which will arise due to the switching of
+the order of $\hat{H}$ and $\hat{T}$. Here the notations $\overline{i}$ is the index corresponding to the Kramer's pair of
+orbital $i$. \\
+
+\noindent The key thing to note in the above is that the transformations of the blocks range limits on the
+summations are not transformed, whilst those on the molecular orbital tensors are. Furthermore, the indexes inside the BraKet 
+are not transformed with the representations of the molecular orbital tensors, but are transformed due 
+to the time reversal symmetry operation resulting from the substitution $|K\rangle = |\overline{I}\rangle$, and
+the hermitian conjugation operation applied to $\hat{T}$.\\
+
+\noindent This is because transformations of the 
+operator, such as inversion and time-reversal, are fundamentally different to transformations
+of to the representation of an operator in the molecular orbital basis, e.g., mapping $T_{ijkl}^{b1} \rightarrow T_{klij}^{b2} $. Transformations to the operator itself will impact the ranges on which the creation and annihilation
+operators used to define that operator act, e.g., in the above case time-reversal alters the ranges
+on which the creation and annihilation operators act, and hence alters the ranges within the BraKet. 
+Conversely, symmetries arising from properties of the molecular orbital indexes
+on the molecular orbital tensors do not influence the ranges on which the creation and annihilation operators 
+act, as these are symmetries arising from the molecular orbital basis chosen to represent the operator.\\
+
+\noindent Clearly, there is a very close link between the two, but they are distinct. By way of
+example consider an operator, $\hat{W}$, which is split into two blocks 
+\begin{equation*}
+b1 = \{ \alpha,\alpha,\alpha,\alpha \} 
+\text { \ \ \ \ and \ \ \ }  
+b2 = \{ \beta,\beta,\beta,\beta \} 
+\end{equation*}
+ranges on indexes. Suppose that ranges $r_{\alpha}$ and $r_{\beta}$ have equal extent, and that 
+the representation of $\hat{W}$ within each of these blocks is equivalent, i.e.,
+\begin{equation}
+W^{b1}_{ijkl}= W^{b2}_{ijkl}.
+\end{equation}
+Now consider a 2-electron wavefunction, formed from a linear combination of determinants, in each of which 
+two alpha orbitals are occupied
+\begin{equation}
+|M\rangle = \sum_{I} c_{I}^{M} | I (n_{\alpha} = 2 , n_{\beta} = 0 \rangle.
+\end{equation}
+We can now write
+\begin{equation*}
+\langle M | \hat{W} |M\rangle = \langle M | \hat{W}^{b1} |M\rangle  + \langle M | \hat{W}^{b2} |M\rangle 
+\end{equation*}
+\begin{equation*}
+= 
+\sum_{ijkl}^{b1} \sum_{IJ}\langle I |\hat{i}^{\dagger}\hat{j}^{\dagger}\hat{k}\hat{l} | J \rangle c_{I}c_{J} W^{b1}_{ijkl}+
+\sum_{ijkl}^{b2} \sum_{IJ}\langle I |\hat{i}^{\dagger}\hat{j}^{\dagger}\hat{k}\hat{l} | J \rangle c_{I}c_{J} W^{b2}_{ijkl},
+\end{equation*}
+which then using $W^{b1}_{ijkl}= W^{b2}_{ijkl}$ leads to 
+\begin{equation*}
+= 
+\sum_{ijkl}^{b1} \sum_{IJ}\langle I |\hat{i}^{\dagger}\hat{j}^{\dagger}\hat{k}\hat{l} | J \rangle c_{I}c_{J} W^{b1}_{ijkl}+
+\sum_{ijkl}^{b2} \sum_{IJ}\langle I |\hat{i}^{\dagger}\hat{j}^{\dagger}\hat{k}\hat{l} | J \rangle c_{I}c_{J} W^{b1}_{ijkl}.
+\end{equation*}
+However, it is clear from the definition of $|M\rangle$ that the second term must always be zero, as there are 
+no $\beta$ electrons to destroy, hence,
+\begin{equation*}
+\neq 2 \sum_{ijkl}^{b1} \sum_{IJ}\langle I |\hat{i}^{\dagger}\hat{j}^{\dagger}\hat{k}\hat{l} | J \rangle c_{I}c_{J} W^{b1}_{ijkl}.
+\end{equation*}
+This means that whilst we can transform all occurrences of $\mathbf{W}^{b2}$ into occurrences of $\mathbf{W}^{b1}$, we are typically unable to apply
+the same transformation to the ranges to the molecular orbital indexes which appear withing the braket. Transformations of
+these indexes only arise when performing transformations on the physical action of the operator, such as time-reversal, or inversion. \\
+
+\noindent It is for this reason that symmetries are not dealt with by using a single $i<j<k<l$ type rule, but instead are
+subdivided into three distinct types, which can be combined to guide construction of the task list. These
+three basic symmetry types are : operator symmetry, representation (or block) symmetry, and CI-sector symmetry.\\ 
+
+\noindent Operator symmetry refers to transformations on the action of the operator, and equivalences between operators
+which act on different combinations of states (dictated by time reversal, or potentially spatial symmetry). For example,
+\begin{equation}
+\hat{T}^{LM} = \hat{T}^{\overline{L}\overline{M}}_{ijkl} 
+\end{equation}
+\noindent where $\overline{L}$ is the index referring to the Kramers pair of the state with index $L$.
+Another kind of operator symmetry is
+\begin{equation}
+T^{LM, b}_{ijkl} = T^{\overline{L}\overline{M}, \overline{b}}_{ijkl} 
+\end{equation}
+Representation or block symmetries are relations such as 
+\begin{equation}
+\mathbf{T}^{LM, b1}_{ijkl} = \rho \mathbf{T}^{LM, b2}_{klij} 
+\end{equation}
+where $b2$ is some index block which may be obtained by performing a
+permutation operation of the indexes of $b1$, and $\rho$ is some multiplicative factor.
+Another kind of common block symmetry is
+\begin{equation}
+\mathbf{T}^{LM, b}_{ijkl} = \rho \mathbf{T}^{\overline{L}\overline{M}, \overline{b}}_{ijkl}* 
+\end{equation}
+$\overline{b}$ is the range
+block defined from the index ranges of the which are Kramers pairs of the
+molecular orbital index ranges which define block $b$. Similarly, $\overline{L}$
+and  $\overline{M}$ are the indexes of the states which are Kramers pairs of
+$L$ and $M$ respectively.\\
+
+\noindent Finally, and example of CI-sector symmetry would be
+\begin{equation*} 
+\mathbf{c}_{K}^{P} =  -\boldsymbol{\sigma_{y,2\times 2}}\mathbf{c}_{J}^{M*}, 
+|K\rangle =  |\overline{J}\rangle, 
+\text{ \ \ \ where  \ \ \ } 
+\boldsymbol{\sigma_{y,2\times 2}} = 
+\begin{bmatrix}
+\boldsymbol{\sigma_{y}} && \mathbf{0} \\ 
+\mathbf{0} && \boldsymbol{\sigma_{y}} \\
+\end{bmatrix}
+\end{equation*}
+\noindent This is just standard time reversal symmetry.
 
 \noindent Initially, the state dependence of the operators seems perculiar; the
 molecular orbitals themselves do not differ between states, hence the state
@@ -297,9 +445,8 @@ dependence of the representations suggests that it is not possible to interpret
 these operators as describing interactions between 1, 2, or n-electrons.  In
 fact, such state dependent operators do not correspond to physical interactions
 per se, but are instead a tool used to aid in the description of representation
-of a perturbed state interms via interaction of a number of unperturbed states.
+of a perturbed state in terms via interaction of a number of unperturbed states.
 An important consequence of this is that the symmetry of the operator
 representations is determined by the form of the equations from which they are
 obtained, rather than from consideration of the form of operators themselves.
-
 \end{document}
