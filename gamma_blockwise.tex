@@ -68,7 +68,7 @@ contractions between and re-orderings of the indexes of tensors on $Y$ and $Z$ a
 determined from the commutation relations of the creation and annihilation operations, e.g.,
  
 \begin{equation*}
-A_{stwx} = \sum_{r}^{R}\hat{\wp}_{r}\sum^{c1}_{\{u,y\}}\delta{uy}\sum^{c2}_{\{v,z\}} \delta{vz}Y_{ijkl}Z_{mnop},
+A_{stwx} = \sum_{r}^{R}\hat{\wp}_{r}\sum^{c1}_{\{u,y\}}\delta_{uy}\sum^{c2}_{\{v,z\}} \delta_{vz}Y_{ijkl}Z_{mnop},
 \end{equation*}
 
 where the $c1$ and $c2$ are sets of pairs of indexes to be contracted, e.g.,
@@ -81,17 +81,17 @@ indexes $\{i,j,k,l,m,n,o,p\}$, whilst also acting to multiply the result of the
 summation by an appropriate factor.\\
 
 \noindent A major advantage of this is that it enables constraints to be
-on the values over which the molecular orbital indexes; all indexes on 
+on the values over which the molecular orbital indexes range; all indexes on 
 annihilation operators must correspond to orbitals occupied in $|J\rangle$, and 
 creation operators must correspond to orbitals occupied in $|I\rangle$. 
 This is a consequence of how determinants are constructed in 
 active space based methods. A generic determinant can be written
 \begin{equation}
-\Psi_{K} = \sum^{p\in S_{X}}_{p} \epsilon_{x} \bigotimes_{i=0}^{n}  \psi_{x_{i}},
+\Psi_{K} = \sum^{\zeta \in S_{X}}_{\zeta} \epsilon_{x} \bigotimes_{i=0}^{n}  \psi_{x_{i}},
 \end{equation}
 where $X$ is a set of molecular orbital indexes $\{x_{0},...,x_{n}\}$,
 $\epsilon$ is the nth rank Levi-Cevita
-tensor, $p$ is a member of the symmetric group $S_{X}$,
+tensor, $\zeta$ is a member of the symmetric group $S_{X}$,
 consisting of all possible permutations on the set of indexes,
 $X = \{x_{0},...,x_{n}\}$, of molecular orbitals $\psi_{x_{i}}$ from which the
 determinant is constructed.\\
@@ -99,16 +99,17 @@ determinant is constructed.\\
 \noindent In CI based methods it is common to use the fact that 
 each distinct ordered set, $X$, of indexes corresponds to a different 
 determinant (given all sets being compared have their indexes ordered according
-to some standard set of rules). In active space based methods number of
+to some standard set of rules). In active space based methods the set of
 determinants used to define the wavefunction is constrained to only
-those determinants which corresponding to sets $X \in {F^{CAS}}$, where
+those determinants which corresponding $X \in {F^{CAS}}$, where
 
 \begin{equation*}
 F^{CAS} = \{ X | (X = X^{c} \cup X^{a}) \wedge (X^{a} \subset P) \wedge ( \text{card}(X) = n_{act} )  \}
 \end{equation*}
 where $P$ is the list of all "active" molecular orbital indexes, 
 $X^{a}$ is a subset of set of $n_{act}$ orbitals occupied in the determinant defined by $X$, and
-where $X^{c}$ is the list of closed orbital indexes, all of which are occupied in all determinants.\\
+where $X^{c}$ is the list of closed orbital indexes, all of which are occupied in all determinants defined
+from members of $F^{CAS}$.\\
 
 \noindent Unfortunately, $F^{CAS}$ can get very large, leading to computational difficulties. 
 One way of trying to manage this is to decompose the set of active orbital indexes, $P$, up into subsets;
@@ -194,7 +195,7 @@ as we shall hopefully see, the reduction in the size, number, and complexity is
 substanstial, and is particularly valuable when treating multi-reference,
 relativistic wavefunctions.\\ 
 
-\noindent Allowance for the fact that Bra and Ket may belong to different CI-sectors,
+\noindent Allowance for the fact that the Bra and Ket may belong to different CI-sectors,
 the blockwise decomposition of the molecular orbital tensors, and the exploitation 
 of symmetry which exists within and between different blocks \emph{and}  different CI-sectors,
 are the distinguishing features of the program.
@@ -241,7 +242,7 @@ expression is rearranged into normal order,
 \sum^{B^{Y}}_{ijkl}\sum^{B^{Z}}_{mnop} \sum_{IJ} \langle I | i^{\dagger}j^{\dagger}m^{\dagger}n^{\dagger}klop | J \rangle c^{M}_{I} c_{J}^{N} Y^{ML}_{ijkl}Z^{NP}_{mnop}.
 \label{eqn:basic_term_nordered}
 \end{equation}
-\noindent then not only do we retain the above constraint, it is also known
+\noindent then not only do we retain the above constraint, but it is also known
 that terms corresponding to a combination of blocks, $B^{Y}$ and $B^{Z}$, where
 \emph{any} of the indexes $k$, $l$, $o$, $p$ are in range $\nu$, will vanish.
 An analogous constraint involving constraints on the ranges of the creation 
@@ -253,9 +254,8 @@ operators is obtained by putting the expression into anti-normal ordering;
 \end{equation}
 \noindent By applying this procedure we ensure that only indexes within the
 active space are left within the BraKet, which is computationally significant
-as the dimension of the active orbitals range, $r^{a}$, is typically much
-smaller than the other blocks or the molecular orbital tensors (such as the
-core, $r^{c}$, or virtual $r_{c}$ blocks).\\
+as the dimension of the active orbital subrange, $r^{a}$, is typically much
+smaller than the other subranges, such as those corresponding to core, $r^{c}$, or virtual, $r_{v}$, orbitals.\\
 
 \noindent Whilst this rearrangement will generate new terms in accordance with
 the commutation relations of the creation and annihilation operators, all of
@@ -285,10 +285,11 @@ be completely ignored.\\
 
 \noindent The reordering sequence specified above; normal ordering followed by anti-normal 
 ordering, encapsulates the most important principals used by the algebraic manipulator. However,
-more efficient task lists can be generated by following these with other reorderings, whose structure
-is determined by the properties of the block, and ultimately, the term being calculated. In order to understand
-why this approach is taken, and how these reorderings are chosen and generated, it is necessary to discuss the implementation
-of symmetry.
+more efficient task lists can be generated by following these two initial reorderings with others, the
+structure of which are determined by the properties of the block, the term being calculated\footnote{
+For example, terms involving CI-derivatives use different reorderings to terms involving molecular orbital
+tensor derivatives.}. In order to understand why this approach is taken, and how these reorderings
+are chosen and generated, it is necessary to discuss the implementation of symmetry.
 
 \section{Handling of block and spin-sector symmetry}
 
@@ -298,8 +299,10 @@ and precedes the task list construction, i.e., it is only after
 all expressions have been rewritten to involve some minimal set of 
 distinct terms that the task list is generated. Thus if two terms are 
 equivalent, one will of these terms will never appear at any stage of the final task list.
-This is primarily to facilitate the merging of terms, and minimize memory use. 
-The goal, loosely speaking, is that given the following equivalences;
+This is primarily to facilitate the identification of terms which can be merged or reused (to save memory),
+and terms which can be completely seperated (to facilitate parallization).\\
+
+\noindent Broadly speaking, the goal is that given the following equivalences;
 \begin{equation*}
 \hat{T}^{KM}= \hat{T}^{KP} \text{\ , \ \ \  }
 \hat{T}^{-1} = T^{\dagger} \text{\ , and \ \ \ }
