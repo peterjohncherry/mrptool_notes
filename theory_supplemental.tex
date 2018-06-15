@@ -1,0 +1,377 @@
+\documentclass[12pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{textcomp}
+\usepackage{array}
+\usepackage{relsize}
+\usepackage{bbold}
+\usepackage{mathtext}
+\usepackage{pdfpages}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=15mm,
+ top=15mm,
+ bottom=15mm,
+ right=15mm,
+ }
+
+\usepackage{cite}
+\linespread{1.3}
+
+\begin{document}
+\section{ Supplementary material }
+Begin by defining a space $\mathrm{s}$, split into a reference, $\mathrm{p}$, and external, $\mathbf{q}$, space;
+\begin{equation}
+\mathrm{s} = \mathrm{p} + \mathrm{s} = \{ |p\rangle \} \cup \{|q\rangle \}
+\end{equation}
+Now define projection operators
+\begin{equation}
+\hat{P} =\sum_{p} |p\rangle \langle p | 
+\text{ \ \ \ \ \ \ \ \ \ }
+\hat{Q} =\sum_{q} |q\rangle \langle q | 
+\end{equation}
+\begin{equation}
+\hat{P}+\hat{Q} = \hat{I}
+\text{\ \ \ \ \ \ \ \ \ }
+\hat{P}-\hat{I} = \hat{Q}
+\end{equation}
+Then have zeroth order Hamiltonian, $\hat{H}_{0}$, and perturbation, $\hat{V}$. The spaces $\mathrm{p}$ and $\mathrm{q}$ are such that
+\begin{equation}
+\langle p | \hat{H}_{0} | q \rangle  = 
+\langle q | \hat{H}_{0} | p \rangle  = 
+\langle p | \hat{V} | p \rangle  =  0 \text{ \ \ \ } \forall \text{ \ }p\text{,\ }q  . 
+\label{eqn:space_props}
+\end{equation}
+Write two equations for the zeroth order, $\hat{H}_{0}$, and full, $\hat{H} = \hat{H}_{0} + \hat{V}$, Hamiltonians:
+\begin{equation}
+\hat{H}_{0} | p \rangle  = \epsilon_{p} |p \rangle
+\end{equation}
+\begin{equation}
+\hat{H}|\Psi_{p} \rangle =( \hat{H}_{0}+\hat{V} )| \Psi_{p} \rangle  = (\epsilon_{p}+E_{p})|\Psi_{p} \rangle
+\end{equation}
+Here, $|\Psi_{p}\rangle$, is being treated as though it were a perturbation of state $|p\rangle$. Initially, 
+assume that there is only one state in the space $\mathrm{p}$. It is now more convenient to write this as
+\begin{equation}
+(\epsilon_{p}-\hat{H}_{0} )| \Psi_{p} \rangle  = (\hat{V}-E_{p})|\Psi_{p} \rangle
+\end{equation}
+The wavefunction $|\Psi_{p} \rangle$ may be expanded in $\mathrm{p}$ and $\mathrm{q}$;
+\begin{equation}
+| \Psi_{p} \rangle  = \sum_{p} C_{p}|p\rangle + \sum_{q} T_{q}|q\rangle.
+\end{equation}
+Hence,
+\begin{equation}
+\hat{P} | \Psi_{p} \rangle  = \sum_{p} C_{p}|p\rangle
+\text{ \ \ \ \  and \ \ \ \ }
+\hat{Q} | \Psi_{p} \rangle  = \sum_{q} T_{q}|q\rangle .
+\end{equation}
+This, combined with the identities associated with the projectors $\hat{P}$ and $\hat{Q}$, and the
+attributes of the space, $\mathrm{s}$, stated in (\ref{eqn:space_props}) leads to the following statement
+\begin{equation}
+\hat{P}(\epsilon_{p} - \hat{H}_{0})(\hat{P}+\hat{Q})| \Psi_{p} \rangle  =  \hat{P}(\hat{V}-E_{p})(\hat{P}+\hat{Q})|\Psi_{p} \rangle .
+\label{eqn:P_on_both sides}
+\end{equation}
+Taking each side seperately:
+\begin{equation}
+\hat{P}(\epsilon_{p} - \hat{H}_{0})(\hat{P}+\hat{Q})| \Psi_{p} \rangle  = 0  ,
+\label{eqn:P_on_EH}
+\end{equation}
+\begin{equation}
+\hat{P}(\hat{V}-E_{p})(\hat{P}+\hat{Q})|\Psi_{p} \rangle = \hat{P}\hat{V}\hat{Q}|\Psi_{p} \rangle + \hat{Q}E_{p}\hat{Q}|\Psi_{p}\rangle .
+\label{eqn:P_on_VE}
+\end{equation}
+Substutiting (\ref{eqn:P_on_EH}) and (\ref{eqn:P_on_VE}) back into (\ref{eqn:P_on_both sides}) and rearranging we obtain
+\begin{equation}
+\hat{P}\hat{V}\hat{Q}|\Psi_{p} \rangle =  \hat{P}E_{p}\hat{P}|\Psi_{p}\rangle .
+\label{eqn:pt_energy}
+\end{equation}
+Assuming the members of $\mathrm{p}$ are orthonormal and taking advantage of the consequent idempotency of $\hat{P}$ leads to
+\begin{equation}
+\hat{P}E_{p}\hat{P}|\Psi_{p}\rangle = E_{p}\hat{P}|\Psi_{p} \rangle ,
+\end{equation}
+hence
+\begin{equation}
+\sum_{p'} \langle p' | E_{p}\hat{P}|\Psi_{p} \rangle  =  \sum_{p'} \langle p' | \hat{V}\hat{Q}|\Psi_{p} \rangle.
+\label{eqn:multistate_pt_energy}
+\end{equation}
+Whilst the primary intention of the MRPTool module is to tackle multistate, highly degenerate cases, it helpful\footnote{for me, at least} 
+to first consider the singlestate case, i.e., where the dimenation of $\mathrm{p}$ is 1. 
+If intermediate normalization, $\langle p | \Psi_{p} \rangle = 1$, is assumed then 
+\begin{equation}
+\hat{P}E_{p}\hat{P}|\Psi_{p}\rangle = E_{p},
+\end{equation}
+which leads to 
+\begin{equation}
+E_{p} = \langle p | \hat{V}\hat{Q}|\Psi_{p} \rangle.
+\label{eqn:singlestate_pt_energy}
+\end{equation}
+If in (\ref{eqn:P_on_both sides}) $\hat{Q}$ instead of $\hat{P}$ was applied from the left the following expressions would result:
+\begin{equation}
+\hat{Q}(\hat{V}-E_{p})(\hat{P}+\hat{Q})|\Psi_{p} \rangle = \hat{Q}\hat{V}|\Psi_{p} \rangle - \hat{Q}E_{p}\hat{Q}|\Psi_{p}\rangle ,
+\label{eqn:Q_on_VE}
+\end{equation}
+\begin{equation}
+\hat{Q}(\epsilon - \hat{H}_{0})(\hat{P}+\hat{Q})| \Psi_{p} \rangle  = \hat{Q}\epsilon_{p}\hat{Q}|\Psi\rangle- \hat{Q}\hat{H}_{0}\hat{Q}|\Psi_{p}\rangle.
+\end{equation}
+However, noting that the RHS of (\ref{eqn:P_on_EH}) is $0$ it is possible to write
+\begin{equation*}
+\hat{Q}(\epsilon_{p} - \hat{H}_{0})(\hat{P}+\hat{Q})| \Psi_{p} \rangle =
+(\hat{P} + \hat{Q})(\epsilon_{p} - \hat{H}_{0})(\hat{P}+\hat{Q})| \Psi_{p} \rangle =
+(\epsilon_{p} - \hat{H}_{0})| \Psi_{p} \rangle ,
+\end{equation*}
+hence
+\begin{equation}
+(\epsilon - \hat{H}_{0})| \Psi_{p} \rangle  = \hat{Q}\epsilon_{p}\hat{Q}|\Psi\rangle- \hat{Q}\hat{H}_{0}\hat{Q}|\Psi_{p}\rangle.
+\label{eqn:Q_on_EH} 
+\end{equation}
+Equating the RHS's of (\ref{eqn:Q_on_EH}) and (\ref{eqn:Q_on_VE})
+ \begin{equation*}
+(\epsilon_{p} - \hat{H}_{0})|\Psi_{p}\rangle
+= \hat{Q}\hat{V}|\Psi_{p} \rangle - \hat{Q}E_{p}\hat{Q}|\Psi_{p}\rangle .
+\end{equation*}
+If there is only one state in $\mathrm{p}$, then it is possible to substitute in from  (\ref{eqn:singlestate_pt_energy}) to obtain
+\begin{equation*}
+( \epsilon_{p}- \hat{H}_{0} )|\Psi_{p}\rangle = 
+\hat{Q}\hat{V}|\Psi_{p} \rangle - \hat{Q}[\langle p | \hat{V}\hat{Q}|\Psi_{p} \rangle] \hat{Q}|\Psi_{p}\rangle, 
+\end{equation*}
+noting that  $[\langle p | \hat{V}\hat{Q}|\Psi_{p} \rangle] = [\langle p | \hat{V} |\Psi_{p} \rangle]$, which
+is just a number, and that $Q$ is idempotent, this can be rewritten
+\begin{equation}
+( \epsilon_{p}- \hat{H}_{0} )|\Psi_{p}\rangle = 
+\hat{Q}\hat{V}|\Psi_{p} \rangle -  \hat{Q}|\Psi_{p}\rangle[\langle p | \hat{V} |\Psi_{p} \rangle]. 
+\label{eqn:Q_on_both_sides_singlestate}
+\end{equation}
+It is useful to define a "wave operator" $\hat{\Omega}^{p}$ which can be used to obtain the perturbed state, $|\Psi_{p}\rangle$,
+from a state $\{ |p\rangle \}$ within the reference space $\mathrm{p}$;
+\begin{equation}
+|\Psi_{p} \rangle = \hat{\Omega}_{p}|p\rangle .
+\end{equation}
+This may be used to rewrite (\ref{eqn:Q_on_both_sides_singlestate}) as 
+\begin{equation}
+( \epsilon_{p}- \hat{H}_{0} )\hat{\Omega}^{p}|p\rangle = 
+\hat{Q}\hat{V}\hat{\Omega}^{p}|p \rangle -  \hat{Q}\hat{\Omega}^{p}|p\rangle[\langle p | \hat{V}\hat{\Omega}^{p} |p \rangle]. 
+\label{eqn:Bloch_singlestate}
+\end{equation}
+CASPT2 and related theories discussed in the following can 
+be thought of as techniques for finding approximate methods for finding $\Omega_{p}$. 
+
+\section{ CASPT2 }
+\noindent The wave operator can be written as a series expansion;
+\begin{equation}
+\hat{\Omega}^{p} = \hat{\Omega}^{p,0}+\hat{\Omega}^{p,1}+\hat{\Omega}^{p,2}+....
+\end{equation} 
+where 
+\begin{equation}
+\hat{\Omega}^{p,0}|p\rangle = |p^{0}\rangle = |p\rangle \text{, \ \  }
+\hat{\Omega}^{p,1}|p\rangle = |p^{1}\rangle \text{, \ \ }
+\hat{\Omega}^{p,2}|p\rangle = |p^{2}\rangle \text{, \  etc.. }
+\label{eqn:wave_op_series}
+\end{equation} 
+Where  $\langle p^{i} | p^{j} \rangle=  \delta_{ij}$,  hence $(\hat{Q}\hat{\Omega}^{p,0}) = 0$.
+Expanding out the energy in a similar manner,
+substituting the above expansion into (\ref{eqn:Block_singlestate}) and equating first order terms leads to the first order
+wave equation,
+\begin{equation}
+(\epsilon_{p} - \hat{H}_{0} )\Omega^{p,1}|p\rangle = \hat{Q}\hat{H}|p\rangle ,
+\label{eqn:Bloch_singlestate_firstorder}
+\end{equation}
+which makes use of the fact that $ \hat{Q}\hat{V}|p\rangle= \hat{Q}\hat{H}|p\rangle$. A similar logic may be
+used to obtain an expression for the second order energy;
+\begin{equation}
+E_{p}^{(2)} = E_{p}^{(1)} + \rangle p | \hat{H} \hat{\Omega}^{p,1}| p \rangle .
+\end{equation}
+Provided the above orthogonality constraints are met there is considerable freedom in choosing the form of the terms in the
+series $(\ref{eqn:wave_op_series})$.  A natural choice is to have $\hat{\Omega}^{p,1}$, be the contribution
+to $|\Psi_{p}\rangle$ from single and doubly excitated states, $\hat{\Omega}^{p,2}$,  the contribution from triply
+and quadruply excitated states, and so on:
+\begin{equation*}
+\hat{\Omega}^{p,0} = 1 \text{, \ \  }
+\end{equation*}
+\begin{equation*}
+\hat{\Omega}^{p,1} = \hat{E}^{sd}_{p,r}T^{p}_{r}{, \ \ }
+\end{equation*}
+\begin{equation*}
+\hat{\Omega}^{p,2} = \hat{E}^{tq}_{p,x}T^{p}_{x} \text{, \  etc.. }.
+\end{equation*}
+The above makes use of the fact that the space, $q$, may be split up into mutually orthogonal 
+subspaces corresponding to singly and doubly excitated states, triply and quadruply excited states, etc..,
+\begin{equation}
+\mathrm{q} = \mathrm{q}^{sd} + \mathrm{q}^{tq} + ...
+\end{equation}
+The operators $\hat{E}_{p,x}$ are the excitation operators into these subspaces, which
+excite from $|p\rangle$ to a state in $|x\rangle$ in one of the $\mathrm{q}$ subspaces, e.g.,
+\begin{equation}
+\hat{E}^{sd}_{p,r}|p\rangle = |r \rangle \ in q^{sd} 
+\end{equation}
+%\begin{equation}
+%\sum_{r}^{r\in q^{sd}} | r \rangle \langle p | +
+%\sum_{x}^{x\in q^{tq}} | x \rangle \langle p | +...
+%\end{equation}
+The $T^{p}_{r}$ are amplitude coefficients indicating how much $|r\rangle \in q^{(st)}$
+contributes to $|\Psi_{p}\rangle$. From now on the subscript $p$ on $\hat{E}_{p,r}$ shall 
+be omitted. \\
+
+\noindent Rewriting (\ref{eqn:Bloch_singlestate_firstorder}) using these definitions gives
+\begin{equation}
+\sum_{r'}(\epsilon_{p} - \hat{H}_{0} )T_{r'}^{st} \Omega^{p,1}|p\rangle = \sum_{r}\hat{Q}^{st}_{r}\hat{H}|p\rangle .
+\label{eqn:Bloch_singlestate_firstorder_st}
+\end{equation}
+\begin{equation*}
+\sum_{r}^{r\in q^{st}} (\epsilon_{p} - \hat{H}_{0} )T_{r}^{p} \hat{E}_{r} | p \rangle 
+= 
+\sum_{r}^{r\in q^{st}} |r \rangle \langle r | \hat{H}|p\rangle .
+\end{equation*}
+Rearranging and left multiplying by $\langle r | \in q^{st}$ gives  
+\begin{equation*}
+\langle r' | \sum_{r}^{r\in q^{st}} (\epsilon_{p} - \hat{H}_{0} )T_{r}^{p} | r \rangle 
+-
+\langle r' | \sum_{r}^{r\in q^{st}} | r \rangle \langle r | \hat{H} |p\rangle = 0
+\end{equation*}
+\begin{equation}
+\langle r' | \sum_{r}^{r\in q^{st}} (\epsilon_{p} - \hat{H}_{0} )T_{r}^{p} | r \rangle 
+-
+\langle r' | \hat{H} |p\rangle = 0
+\label{eqn:Amplitude_eqn}
+\end{equation}
+%Generally speaking, the projection operators, e.g., $Q^{sd}_{p}$,
+%are replaced with excitation operators, e.g.,
+%\begin{equation}
+%\hat{Q}^{sd} = \sum_{ij}\sum_{kl}\hat{a}^{\dagger}_{i}\hat{a}^{\dagger}_{j}\hat{a}_{k}\hat{a}_{l}.
+%\end{equation}
+%The ranges of the summations over indexes, $k,l$, and ,$i,j$, are defined such that this corresponds the appropriate projection.
+%This leads to
+%\begin{equation}
+% \sum_{r}^{r\in q^{st}}
+%\langle p | \hat{E}^{\dagger}_{r'}(\epsilon_{p} - \hat{H}_{0} )T_{r}^{p}\hat{E}_{r}| p \rangle 
+%-
+%\langle p | \hat{E}^{\dagger}_{r'}\hat{H} |p\rangle = 0
+%\label{eqn:Hylleraas_st}
+%\end{equation}
+The derivative with respect $T$ should vanish, so at convergence,
+\begin{equation}
+\sum_{r}^{r\in q^{st}} \langle r' |(\epsilon_{p} - \hat{H}_{0} )T_{r}^{p} | r \rangle = G = 0 
+\label{eqn:caspt2_residual}
+\end{equation}
+Using the definition of the functional derivative;
+\begin{equation*}
+\frac{F[T_{r}^{p} + \delta T ] - F[T_{r}^{p}]}{ \delta T_{r}^{p} } = 0,
+\end{equation*}
+\begin{equation}
+\frac{\delta G[T^{p}_{r}]} { \delta T^{p}_{r}}  = 
+\langle r |(\epsilon_{p} - \hat{H}_{0} )| r \rangle.
+\end{equation}
+This can now be used to obtain the T update equation
+\begin{equation}
+\Delta T_{r} = \Bigg{(}\frac{\delta G[T^{p}_{r}]} { \delta T^{p}_{r}}\Bigg{)}^{-1}G[T^{p}_{r}]  = 
+\frac{\sum_{r}^{r\in q^{st}} \langle r' |(\epsilon_{p} - \hat{H}_{0} )T_{r}^{p} | r \rangle} 
+{\langle r' |(\epsilon_{p} - \hat{H}_{0} )| r' \rangle}
+\label{eqn:T_update}
+\end{equation}
+
+\section{ Multistate CASTP2 and Extended Multistate CASPT2 }
+\noindent As mentioned above, the case where $\mathrm{p}$ contains more than one state is less straightforward, and there
+a number of approaches to dealing with it (MS-CASPT2, XMS-CASPT2, GVVPT2 etc., ).  To explain the issues associated with the
+degenerate multistate case, and to illustrate the different in motivation and structure of these approaches,
+the above expressions are now rewritten using an explicit basis for spaces $\mathrm{p}$ and $\mathrm{q}$:
+\begin{equation*}
+\hat{P} =\sum_{p} | p \rangle \langle p |  \text{\ \ \ \ \ }
+\hat{Q} =\sum_{q} | q \rangle \langle q | ,
+\end{equation*}
+\begin{equation*}
+\hat{P}|\Psi_{p}\rangle =\sum_{p}\sum_{l} | p \rangle \langle p | l \rangle X_{l}^{p}
+\text{ \ \ \ \ \ \ }
+\hat{Q}|\Psi_{p}\rangle =\sum_{q}\sum_{r} | q \rangle \langle q | r \rangle T_{r}^{p},
+\end{equation*}
+where $X_{l}^{p}$ and $T_{r}^{p}$ are coefficients. The $X_{l}^{p}$ may be interpreted
+as the coefficients describing how the perturbation acts to mix together the
+states within the reference space, $\mathrm{p}$. If the states within the reference 
+space are well seperated energetically, then it is reasonable to assume that this
+mixing is small, and $X_{l}^{p} \rightarrow \delta_{lp} $, however, this is not the case,
+by definition, in the vicinity of conical intersections.\\
+
+\noindent In the following initial discussion of approaches to this problem it shall be assumed that 
+the sets of $\{|l\rangle\}$ and $\{|r\rangle\}$ being summed over are identitical to the respective sets
+$\{|p\rangle\}$ and $\{|q\rangle\}$. This assumption is not valid in the case of internally contracted 
+methods, which will be discussed in due course.\\
+
+\noindent Rewriting (\ref{eqn:P_on_EH}) with this basis gives
+\begin{equation*}
+\sum_{mnl}|m\rangle \langle m | (\epsilon_{p} - \hat{H}_{0})|n\rangle \langle n | l \rangle X_{l}^{p}
++ \sum_{mqr}|m\rangle \langle m | (\epsilon_{p} - \hat{H}_{0})|q\rangle \langle q | r \rangle T_{r}^{p}
+\end{equation*}
+\begin{equation*}
+\sum_{mnl}|m\rangle \langle m | (\epsilon_{p} - \hat{H}_{0})   | l \rangle X_{l}^{p}
++ \sum_{mqr}|m\rangle \langle m | (\epsilon_{p} - \hat{H}_{0}) | r \rangle T_{r}^{p}
+\label{eqn:P_on_EH_explicit_bas}
+\end{equation*}
+Multiplying from the left by state $\langle\Psi_{p}| = \sum_{k}\langle k | X_{k}^{p}$ yields
+\begin{equation}
+\sum_{kmnl}X^{p\dagger}\langle k | m\rangle \langle m | (\epsilon_{p} - \hat{H}_{0})   | l \rangle X_{l}^{p}
++ \sum_{kmqr}X^{p\dagger}\langle k | (\epsilon_{p} - \hat{H}_{0}) | r \rangle T_{r}^{p}
+\end{equation}
+\begin{equation}
+=  \sum_{kl}X^{p\dagger}\langle k | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p}
+\label{eqn:P_on_EH_ms_nondiag}
+\end{equation}
+Substituing this back into (\ref{eqn:multistate_pt_energy}) results in 
+\begin{equation}
+\sum_{kl}X^{p\dagger}\langle k | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p}
+\label{eqn:multistate_PT_energy_nondiag}
+\end{equation}
+The useful expression (\ref{eqn:singlestate_pt_energy}) for the perturbation energy, $E_{p}$, 
+may be obtained because (\label{eqn:P_on_EH_ms_nondiag}) vanishes. In state specific MS-CASPT2
+the expression is made to vanish through use of the assumption that $\hat{H}_{0}$ has eigenvectors
+$\{|p\}$ with eigenvalues $\epsilon_{p}$. Considering that the
+$\{|p\rangle\}$ can easily be chosen such that this is the case this assumption is entirely resonable.
+However, that $\hat{H}_{0}$ is diagonal in $\{|p\rangle\}$ is no guarantee that derivatives
+of $\hat{H}_{0}$ are diagonal in $\{|p\rangle\}$, hence terms such as 
+\begin{equation}
+\frac{\delta}{\delta \mathbf{R} }\sum_{kl}X^{p\dagger}\langle k | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p},
+\label{eqn:multistate_PT_energy_nondiag_deriv}
+\end{equation}
+where $\mathbf{R}$ is some perturbing parameter, may not vanish. Whilst the basic expressions
+for the peturbation energy may not appear to require consideration of such terms, they are highly relevant
+in developing computational methods for calculating the perturbation energies, and in obtaining expressions
+for derivative properties.\\
+
+\noindent In XMS-CASPT2 the zeroth order Hamiltonian is
+\begin{equation}
+\hat{H}_{0,XMS} = \hat{P}\hat{f}\hat{P} +  \hat{Q}\hat{f}\hat{Q},
+\end{equation}
+where $\hat{f}$ is the state averaged Fock operator defined by
+\begin{equation}
+\hat{f} = \sum_{rs}f_{rs} = \sum_{rs}
+\hat{a}^{\dagger}_{r}\hat{a}_{s}
+\Bigg{[} h_{rs} 
++ \sum_{ij}d_{ij}
+\frac{1}{2}( 2J^{ij}_{rs}-K^{ij}_{rs})  \Bigg{]}
+\end{equation}
+where, $J^{ij}_{rs} = (ij|rs)$ and $K^{ij}_{rs} = (ir|js)$ are the two electron integrals, and $d_{ij}$ are elements of the reduced, one-electron,
+state-averaged density matrix. The states $\{|p\rangle\}$ are unitary transformed into a set $\{|\tilde{p}\rangle\}$, 
+which are eigenvectors of $\hat{H}_{0,XMS}$ with eigenvalues $\tilde{\epsilon}_{p}$;
+\begin{equation}
+|\tilde{p} = \sum_{l}|l\rangle U_{lp}
+\end{equation}
+The importance of state averaging will become apparent in later stages of the derivation, 
+where it ensures that the elements $f_{ij}$ are invariant under rotations
+between states. The $XMS$ subscript on $\hat{H}_{0,XMS}$ will be omitted hereafter.\\ 
+
+\noindent  A final comment before proceeding is that a unitary transformation of
+$\mathrm{p}$ should have no impact on the final results, i.e., whether $|\Psi_{p} \rangle$
+is considered to be a perturbation of state $|p\rangle$ or $|\tilde{p}\rangle$ should
+not make any difference. \\
+
+
+
+(\ref{eqn:Q_on_both_sides_singlestate}),
+If there is more than one state in  
+\begin{equation*}
+  \sum_{kl}X^{p\dagger}\langle m | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p}
++ \sum_{kr}X^{p\dagger}\langle m | (\epsilon_{p} - \hat{H}_{0}) | r \rangle T_{r}^{p}
+\end{equation*}
+
+\end{document}
