@@ -6,9 +6,6 @@
 \usepackage{amssymb}
 \usepackage{textcomp}
 \usepackage{array}
-\usepackage{relsize}
-\usepackage{bbold}
-\usepackage{mathtext}
 \usepackage{pdfpages}
 \usepackage{geometry}
  \geometry{
@@ -182,7 +179,7 @@ wave equation,
 which makes use of the fact that $ \hat{Q}\hat{V}|p\rangle= \hat{Q}\hat{H}|p\rangle$. A similar logic may be
 used to obtain an expression for the second order energy;
 \begin{equation}
-E_{p}^{(2)} = E_{p}^{(1)} + \rangle p | \hat{H} \hat{\Omega}^{p,1}| p \rangle .
+E_{p}^{(2)} = E_{p}^{(1)} + \langle p | \hat{H} \hat{\Omega}^{p,1}| p \rangle .
 \end{equation}
 Provided the above orthogonality constraints are met there is considerable freedom in choosing the form of the terms in the
 series $(\ref{eqn:wave_op_series})$.  A natural choice is to have $\hat{\Omega}^{p,1}$, be the contribution
@@ -192,28 +189,35 @@ and quadruply excitated states, and so on:
 \hat{\Omega}^{p,0} = 1 \text{, \ \  }
 \end{equation*}
 \begin{equation*}
-\hat{\Omega}^{p,1} = \hat{E}^{sd}_{p,r}T^{p}_{r}{, \ \ }
+\hat{\Omega}^{p,1} = | r \rangle \langle p | T^{p}_{r} \text{ \ \ \ } r \in \mathrm{q}^{sd} 
 \end{equation*}
 \begin{equation*}
-\hat{\Omega}^{p,2} = \hat{E}^{tq}_{p,x}T^{p}_{x} \text{, \  etc.. }.
+\hat{\Omega}^{p,2} = | x \rangle \langle p | T^{p}_{x} \text{ \ \ \ } x \in \mathrm{q}^{tq}  \text{, \  etc.. }.
 \end{equation*}
 The above makes use of the fact that the space, $q$, may be split up into mutually orthogonal 
 subspaces corresponding to singly and doubly excitated states, triply and quadruply excited states, etc..,
 \begin{equation}
 \mathrm{q} = \mathrm{q}^{sd} + \mathrm{q}^{tq} + ...
 \end{equation}
-The operators $\hat{E}_{p,x}$ are the excitation operators into these subspaces, which
-excite from $|p\rangle$ to a state in $|x\rangle$ in one of the $\mathrm{q}$ subspaces, e.g.,
-\begin{equation}
-\hat{E}^{sd}_{p,r}|p\rangle = |r \rangle \ in q^{sd} 
-\end{equation}
-%\begin{equation}
-%\sum_{r}^{r\in q^{sd}} | r \rangle \langle p | +
-%\sum_{x}^{x\in q^{tq}} | x \rangle \langle p | +...
-%\end{equation}
 The $T^{p}_{r}$ are amplitude coefficients indicating how much $|r\rangle \in q^{(st)}$
-contributes to $|\Psi_{p}\rangle$. From now on the subscript $p$ on $\hat{E}_{p,r}$ shall 
-be omitted. \\
+contributes to $|\Psi_{p}\rangle$.\\
+
+\noindent In the internally contracted framework projection into these excited spaces is achieved via excitation operators, e.g., $\hat{E}_{\omega}$,
+which excite the appropriate number of electrons from the closed or active orbitals specified by $\omega$.. 
+\begin{equation}
+\hat{E}^{sd}_{p,r}|p\rangle = |r_{p}  \text{ \ \ \ \ } |r\rangle \in q^{sd} 
+\end{equation}
+Note that the state onto which the operator $\hat{E}^{sd}_{\omega}$ projects is dependent upon the
+the state $|p\rangle $  on which it acts. So in principal, it is possible to replace the index denoting 
+orbital excitations with a subscripted index, $\omega_{p}$, where $\omega_{p}$ is the state onto which
+the action of $\hat{E}_{\omega}$ on $|p\rangle$ projects, i.e.,
+\begin{equation}
+\hat{E}_{\omega} |p\rangle = 
+\hat{E}_{r_{p}} |p\rangle = | r_{p} \rangle \langle p | p \rangle .
+\end{equation}
+Though needlessly prolix when there subspace $\mathrm{p}$ contains only one state, this notation will
+come in use later on when dealing with the multistate case. However, until that point, the subscript on $p$
+shall be omitted.\\
 
 \noindent Rewriting (\ref{eqn:Bloch_singlestate_firstorder}) using these definitions gives
 \begin{equation}
@@ -258,7 +262,7 @@ The derivative with respect $T$ should vanish, so at convergence,
 \end{equation}
 Using the definition of the functional derivative;
 \begin{equation*}
-\frac{F[T_{r}^{p} + \delta T ] - F[T_{r}^{p}]}{ \delta T_{r}^{p} } = 0,
+\frac{G[T_{r}^{p} + \delta T ] - G[T_{r}^{p}]}{ \delta T_{r}^{p} } = 0,
 \end{equation*}
 \begin{equation}
 \frac{\delta G[T^{p}_{r}]} { \delta T^{p}_{r}}  = 
@@ -268,11 +272,12 @@ This can now be used to obtain the T update equation
 \begin{equation}
 \Delta T_{r} = \Bigg{(}\frac{\delta G[T^{p}_{r}]} { \delta T^{p}_{r}}\Bigg{)}^{-1}G[T^{p}_{r}]  = 
 \frac{\sum_{r}^{r\in q^{st}} \langle r' |(\epsilon_{p} - \hat{H}_{0} )T_{r}^{p} | r \rangle} 
-{\langle r' |(\epsilon_{p} - \hat{H}_{0} )| r' \rangle}
+{\langle r' |(\epsilon_{p} - \hat{H}_{0} )| r' \rangle}.
 \label{eqn:T_update}
 \end{equation}
+This expression is iterated over until the threshold is reached. 
 
-\section{ Multistate CASTP2 and Extended Multistate CASPT2 }
+\section{ Multistate cases }
 \noindent As mentioned above, the case where $\mathrm{p}$ contains more than one state is less straightforward, and there
 a number of approaches to dealing with it (MS-CASPT2, XMS-CASPT2, GVVPT2 etc., ).  To explain the issues associated with the
 degenerate multistate case, and to illustrate the different in motivation and structure of these approaches,
@@ -310,20 +315,112 @@ methods, which will be discussed in due course.\\
 \end{equation*}
 Multiplying from the left by state $\langle\Psi_{p}| = \sum_{k}\langle k | X_{k}^{p}$ yields
 \begin{equation}
-\sum_{kmnl}X^{p\dagger}\langle k | m\rangle \langle m | (\epsilon_{p} - \hat{H}_{0})   | l \rangle X_{l}^{p}
-+ \sum_{kmqr}X^{p\dagger}\langle k | (\epsilon_{p} - \hat{H}_{0}) | r \rangle T_{r}^{p}
+\sum_{kmnl}X^{p\dagger}_{k}\langle k | m\rangle \langle m | (\epsilon_{p} - \hat{H}_{0})   | l \rangle X_{l}^{p}
++ \sum_{kmqr}X^{p\dagger}_{k}\langle k | (\epsilon_{p} - \hat{H}_{0}) | r \rangle T_{r}^{p}
 \end{equation}
 \begin{equation}
-=  \sum_{kl}X^{p\dagger}\langle k | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p}
+=  \sum_{kl}X^{p\dagger}_{k}\langle k | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p}
 \label{eqn:P_on_EH_ms_nondiag}
 \end{equation}
 Substituing this back into (\ref{eqn:multistate_pt_energy}) results in 
 \begin{equation}
-\sum_{kl}X^{p\dagger}\langle k | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p}
+\sum_{kl}X^{p\dagger}_{k}\langle k | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p}
 \label{eqn:multistate_PT_energy_nondiag}
 \end{equation}
 The useful expression (\ref{eqn:singlestate_pt_energy}) for the perturbation energy, $E_{p}$, 
-may be obtained because (\label{eqn:P_on_EH_ms_nondiag}) vanishes. In state specific MS-CASPT2
+may be obtained because (\label{eqn:P_on_EH_ms_nondiag}) vanishes. Unfortunately, this 
+does not happen here. To see how to deal with this it is worth taking a brief detour to 
+discuss the generalized Bloch equation.
+
+\subsection{ Generalized Bloch Equation } 
+Consider the matrix equation,
+\begin{equation}
+\mathbf{H}\boldsymbol{\Theta} =
+\begin{bmatrix}
+ \mathbf{H_{PP}} & \mathbf{H_{PQ}} \\ 
+ \mathbf{H_{QP}} & \mathbf{H_{QQ}} \\ 
+\end{bmatrix} 
+\begin{bmatrix}
+ \boldsymbol{\Theta_{P}} \\ 
+ \boldsymbol{\Theta_{Q}} \\ 
+\end{bmatrix} 
+= E 
+\begin{bmatrix}
+ \boldsymbol{\Theta_{P}} \\ 
+ \boldsymbol{\Theta_{Q}} \\ 
+\end{bmatrix} 
+\end{equation}
+Now introduce a transformation operator, $\mathbf{T}$, which can be used to obtain the full 
+vector $\boldsymbol{\Theta}$ from the component, $\boldsymbol{\Theta}_{P}$ within the $\mathrm{p}$ subspace.
+\begin{equation}
+\mathbf{T}(F)\boldsymbol{\Theta_{P}}= 
+\begin{bmatrix}
+\mathbf{I}_{PP} & 0 \\ 
+\mathbf{F}_{QP} & \mathbf{I}_{QQ} \\ 
+\end{bmatrix}
+\begin{bmatrix}
+\Theta_{P} \\ 
+0 \\ 
+\end{bmatrix}=  
+\begin{bmatrix}
+\boldsymbol{\Theta}_{P} \\ 
+F_{QP}\boldsymbol{\Theta_{P}} \\ 
+\end{bmatrix} 
+= \boldsymbol{\Theta}
+\end{equation}
+The matrix $\mathbf{T}(F)$ has useful property
+\begin{equation}
+\mathbf{T}(F_{1})+ \mathbf{T}(F_{2})=\mathbf{T}(F_{1}+F_{2}),
+\end{equation}
+which has the corollary  $\mathbf{T}(F)^{-1}=\mathbf{T}(-F)$ . Noting this it is possible to write
+\begin{equation}
+\mathbf{T}(F)^{-1} \mathbf{H} \mathbf{T}(-F)
+\Theta = 
+\end{equation}
+\begin{equation}
+\begin{bmatrix}
+\mathbf{I}_{PP} & \mathbf{0} \\ 
+-\mathbf{F}_{QP} & \mathbf{I}_{QQ} \\ 
+\end{bmatrix}
+\begin{bmatrix}
+ \mathbf{H_{PP}} & \mathbf{H_{PQ}} \\ 
+ \mathbf{H_{QP}} & \mathbf{H_{QQ}} \\ 
+\end{bmatrix} 
+\begin{bmatrix}
+\mathbf{I}_{PP} & \mathbf{0} \\ 
+\mathbf{F}_{QP} & \mathbf{I}_{QQ} \\ 
+\end{bmatrix}
+\begin{bmatrix}
+ \boldsymbol{\Theta_{P}} \\ 
+ \mathbf{0}\\ 
+\end{bmatrix} 
+= E 
+\begin{bmatrix}
+ \boldsymbol{\Theta_{P}} \\ 
+ \mathbf{0}\\ 
+\end{bmatrix} 
+\end{equation}
+The blocks of the transformed matrix $\mathbf{\tilde{H}} = \mathbf{T}(\mathbf{F})^{-1} \mathbf{H} \mathbf{T}(-\mathbf{F})$ are
+\begin{equation}
+\mathbf{\tilde{H}}_{PP} = \mathbf{H}_{PP} + \mathbf{H}_{PQ}\mathbf{F}
+\label{eqn:HPP}
+\end{equation} 
+\begin{equation}
+\mathbf{\tilde{H}}_{PQ} = \mathbf{H}_{PQ}
+\end{equation} 
+\begin{equation}
+\mathbf{\tilde{H}}_{QP} = \mathbf{H}_{QP} + \mathbf{H}_{QQ}\mathbf{F} - \mathbf{\mathbf{H}}_{PP}\mathbf{F} + \mathbf{F}\mathbf{H}_{PQ}\mathbf{F}
+\label{eqn:HQP}
+\end{equation} 
+\begin{equation}
+\mathbf{\tilde{H}}_{QQ} = \mathbf{H}_{QQ} -\mathbf{F}\mathbf{H}_{PQ}
+\end{equation} 
+Note that (\ref{eqn:HPP}) is the effective Bloch Hamiltonian.
+By defining $\mathbf{F}$ such that (\ref{eqn:HQP}) is zero will results in the $PP$ block from becoming completely 
+decoupled from the rest of the blocks of the transformed matrix, enabling us to solve for eigenvectors within this block
+seperately from the rest.  
+\subsection{ Multistate CASTP2 and Extended Multistate CASPT2 }
+ In state specific MS-CASPT2
 the expression is made to vanish through use of the assumption that $\hat{H}_{0}$ has eigenvectors
 $\{|p\}$ with eigenvalues $\epsilon_{p}$. Considering that the
 $\{|p\rangle\}$ can easily be chosen such that this is the case this assumption is entirely resonable.
@@ -336,7 +433,8 @@ of $\hat{H}_{0}$ are diagonal in $\{|p\rangle\}$, hence terms such as
 where $\mathbf{R}$ is some perturbing parameter, may not vanish. Whilst the basic expressions
 for the peturbation energy may not appear to require consideration of such terms, they are highly relevant
 in developing computational methods for calculating the perturbation energies, and in obtaining expressions
-for derivative properties.\\
+for derivative properties. To consider the various approaches to this issue it is worth taking a 
+brief detour to consider \\
 
 \noindent In XMS-CASPT2 the zeroth order Hamiltonian is
 \begin{equation}
