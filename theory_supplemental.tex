@@ -153,8 +153,7 @@ This may be used to rewrite (\ref{eqn:Q_on_both_sides_singlestate}) as
 \hat{Q}\hat{V}\hat{\Omega}^{p}|p \rangle -  \hat{Q}\hat{\Omega}^{p}|p\rangle[\langle p | \hat{V}\hat{\Omega}^{p} |p \rangle]. 
 \label{eqn:Bloch_singlestate}
 \end{equation}
-CASPT2 and related theories discussed in the following can 
-be thought of as techniques for finding approximate methods for finding $\Omega_{p}$. 
+CASPT2 and related theories discussed in the following can be thought of as techniques for finding approximate methods for finding $\Omega_{p}$. 
 
 \section{ CASPT2 }
 \noindent The wave operator can be written as a series expansion;
@@ -186,13 +185,13 @@ series $(\ref{eqn:wave_op_series})$.  A natural choice is to have $\hat{\Omega}^
 to $|\Psi_{p}\rangle$ from single and doubly excitated states, $\hat{\Omega}^{p,2}$,  the contribution from triply
 and quadruply excitated states, and so on:
 \begin{equation*}
-\hat{\Omega}^{p,0} = 1 \text{, \ \  }
+\hat{\Omega}^{p,0} = \sum_{m} |m \rangle \langle m |   \text{, \ \ \  } m \in \mathrm{p}
 \end{equation*}
 \begin{equation*}
-\hat{\Omega}^{p,1} = | r \rangle \langle p | T^{p}_{r} \text{ \ \ \ } r \in \mathrm{q}^{sd} 
+\hat{\Omega}^{p,1} = \sum_{r}| r \rangle \langle p | T^{p}_{r} \text{ \ \ \ } r \in \mathrm{q}^{sd} 
 \end{equation*}
 \begin{equation*}
-\hat{\Omega}^{p,2} = | x \rangle \langle p | T^{p}_{x} \text{ \ \ \ } x \in \mathrm{q}^{tq}  \text{, \  etc.. }.
+\hat{\Omega}^{p,2} = \sum_{x}| x \rangle \langle p | T^{p}_{x} \text{ \ \ \ } x \in \mathrm{q}^{tq}  \text{, \  etc.. }.
 \end{equation*}
 The above makes use of the fact that the space, $q$, may be split up into mutually orthogonal 
 subspaces corresponding to singly and doubly excitated states, triply and quadruply excited states, etc..,
@@ -203,19 +202,19 @@ The $T^{p}_{r}$ are amplitude coefficients indicating how much $|r\rangle \in q^
 contributes to $|\Psi_{p}\rangle$.\\
 
 \noindent In the internally contracted framework projection into these excited spaces is achieved via excitation operators, e.g., $\hat{E}_{\omega}$,
-which excite the appropriate number of electrons from the closed or active orbitals specified by $\omega$.. 
+which excite the appropriate number of electrons from the closed or active orbitals specified by $\omega$; 
 \begin{equation}
-\hat{E}^{sd}_{p,r}|p\rangle = |r_{p}  \text{ \ \ \ \ } |r\rangle \in q^{sd} 
+\hat{E}^{sd}_{\omega}|p\rangle = |r_{p}\rangle  \text{ \ \ \ \ } |r\rangle \in q^{sd} .
 \end{equation}
-Note that the state onto which the operator $\hat{E}^{sd}_{\omega}$ projects is dependent upon the
-the state $|p\rangle $  on which it acts. So in principal, it is possible to replace the index denoting 
+Note that the state onto which the operator $\hat{E}^{sd}_{\omega}$ projects is dependent on the
+the state $|p\rangle $  upon which it acts. So in principal, it is possible to replace the index denoting 
 orbital excitations with a subscripted index, $\omega_{p}$, where $\omega_{p}$ is the state onto which
 the action of $\hat{E}_{\omega}$ on $|p\rangle$ projects, i.e.,
 \begin{equation}
-\hat{E}_{\omega} |p\rangle = 
+\hat{E}_{\omega} |p\rangle \rightarrow 
 \hat{E}_{r_{p}} |p\rangle = | r_{p} \rangle \langle p | p \rangle .
 \end{equation}
-Though needlessly prolix when there subspace $\mathrm{p}$ contains only one state, this notation will
+Though needlessly prolix when the subspace $\mathrm{p}$ contains only one state, this notation will
 come in use later on when dealing with the multistate case. However, until that point, the subscript on $p$
 shall be omitted.\\
 
@@ -314,114 +313,301 @@ methods, which will be discussed in due course.\\
 \label{eqn:P_on_EH_explicit_bas}
 \end{equation*}
 Multiplying from the left by state $\langle\Psi_{p}| = \sum_{k}\langle k | X_{k}^{p}$ yields
-\begin{equation}
+\begin{equation*}
 \sum_{kmnl}X^{p\dagger}_{k}\langle k | m\rangle \langle m | (\epsilon_{p} - \hat{H}_{0})   | l \rangle X_{l}^{p}
 + \sum_{kmqr}X^{p\dagger}_{k}\langle k | (\epsilon_{p} - \hat{H}_{0}) | r \rangle T_{r}^{p}
-\end{equation}
+\end{equation*}
 \begin{equation}
 =  \sum_{kl}X^{p\dagger}_{k}\langle k | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p}
 \label{eqn:P_on_EH_ms_nondiag}
 \end{equation}
-Substituing this back into (\ref{eqn:multistate_pt_energy}) results in 
-\begin{equation}
-\sum_{kl}X^{p\dagger}_{k}\langle k | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p}
-\label{eqn:multistate_PT_energy_nondiag}
-\end{equation}
+%Substituing this back into (\ref{eqn:multistate_pt_energy}) results in 
+%\begin{equation}
+%\sum_{kl}X^{p\dagger}_{k}\langle k | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p}
+%\label{eqn:multistate_PT_energy_nondiag}
+%\end{equation}
 The useful expression (\ref{eqn:singlestate_pt_energy}) for the perturbation energy, $E_{p}$, 
-may be obtained because (\label{eqn:P_on_EH_ms_nondiag}) vanishes. Unfortunately, this 
-does not happen here. To see how to deal with this it is worth taking a brief detour to 
-discuss the generalized Bloch equation.
+may be obtained because the RHS of (\ref{eqn:P_on_EH}); the single state analogue of (\ref{eqn:P_on_EH_ms_nondiag}), vanishes.
+Unfortunately, this does not happen here, a fact which will later prove significant.
+There is more than one way of handling this issue, but to summarize them properly it is
+worth first discussing the generalized Bloch equation.
 
 \subsection{ Generalized Bloch Equation } 
 Consider the matrix equation,
 \begin{equation}
-\mathbf{H}\boldsymbol{\Theta} =
+\mathbf{H}\boldsymbol{\Psi} =
 \begin{bmatrix}
  \mathbf{H_{PP}} & \mathbf{H_{PQ}} \\ 
  \mathbf{H_{QP}} & \mathbf{H_{QQ}} \\ 
 \end{bmatrix} 
 \begin{bmatrix}
- \boldsymbol{\Theta_{P}} \\ 
- \boldsymbol{\Theta_{Q}} \\ 
+ \boldsymbol{\Psi}_{P} \\ 
+ \boldsymbol{\Psi}_{Q} \\ 
 \end{bmatrix} 
 = E 
 \begin{bmatrix}
- \boldsymbol{\Theta_{P}} \\ 
- \boldsymbol{\Theta_{Q}} \\ 
+ \boldsymbol{\Psi}_{P} \\ 
+ \boldsymbol{\Psi}_{Q} \\ 
 \end{bmatrix} 
 \end{equation}
-Now introduce a transformation operator, $\mathbf{T}$, which can be used to obtain the full 
-vector $\boldsymbol{\Theta}$ from the component, $\boldsymbol{\Theta}_{P}$ within the $\mathrm{p}$ subspace.
+Now introduce a transformation operator, $\mathbf{S}$, which can be used to obtain the full 
+vector, $\boldsymbol{\Psi}$, from just the component, $\boldsymbol{\Psi}_{P}$ within the $\mathrm{p}$ subspace, i.e.,
 \begin{equation}
-\mathbf{T}(F)\boldsymbol{\Theta_{P}}= 
+\mathbf{S}(\mathbf{T})\boldsymbol{\Psi}_{0}= 
 \begin{bmatrix}
 \mathbf{I}_{PP} & 0 \\ 
-\mathbf{F}_{QP} & \mathbf{I}_{QQ} \\ 
+\mathbf{T} & \mathbf{I}_{QQ} \\ 
 \end{bmatrix}
 \begin{bmatrix}
-\Theta_{P} \\ 
+\boldsymbol{\Psi}_{P} \\ 
 0 \\ 
 \end{bmatrix}=  
 \begin{bmatrix}
-\boldsymbol{\Theta}_{P} \\ 
-F_{QP}\boldsymbol{\Theta_{P}} \\ 
+\boldsymbol{\Psi}_{P} \\ 
+\mathbf{T}\boldsymbol{\Psi}_{P} \\ 
 \end{bmatrix} 
-= \boldsymbol{\Theta}
+= \boldsymbol{\Psi}
 \end{equation}
-The matrix $\mathbf{T}(F)$ has useful property
+The matrix $\mathbf{S}(\mathbf{T})$ has useful property
 \begin{equation}
-\mathbf{T}(F_{1})+ \mathbf{T}(F_{2})=\mathbf{T}(F_{1}+F_{2}),
+\mathbf{S}(\mathbf{T}_{1})+ \mathbf{S}(\mathbf{T}_{2})=\mathbf{S}(\mathbf{T}_{1}+\mathbf{T}_{2}),
 \end{equation}
-which has the corollary  $\mathbf{T}(F)^{-1}=\mathbf{T}(-F)$ . Noting this it is possible to write
+which has the corollary  $\mathbf{S}(\mathbf{T})^{-1}=\mathbf{S}(-\mathbf{T})$ . Noting this it is possible to write
 \begin{equation}
-\mathbf{T}(F)^{-1} \mathbf{H} \mathbf{T}(-F)
-\Theta = 
+\mathbf{S}(\mathbf{T})^{-1} \mathbf{H} \mathbf{S}(-\mathbf{T})\boldsymbol{\Psi}_{0} = 
 \end{equation}
 \begin{equation}
 \begin{bmatrix}
 \mathbf{I}_{PP} & \mathbf{0} \\ 
--\mathbf{F}_{QP} & \mathbf{I}_{QQ} \\ 
+-\mathbf{T} & \mathbf{I}_{QQ} \\ 
 \end{bmatrix}
 \begin{bmatrix}
- \mathbf{H_{PP}} & \mathbf{H_{PQ}} \\ 
- \mathbf{H_{QP}} & \mathbf{H_{QQ}} \\ 
+ \mathbf{H}_{PP} & \mathbf{H}_{PQ} \\ 
+ \mathbf{H}_{QP} & \mathbf{H}_{QQ} \\ 
 \end{bmatrix} 
 \begin{bmatrix}
 \mathbf{I}_{PP} & \mathbf{0} \\ 
-\mathbf{F}_{QP} & \mathbf{I}_{QQ} \\ 
+\mathbf{T} & \mathbf{I}_{QQ} \\ 
 \end{bmatrix}
 \begin{bmatrix}
- \boldsymbol{\Theta_{P}} \\ 
+ \boldsymbol{\Psi}_{P} \\ 
  \mathbf{0}\\ 
 \end{bmatrix} 
 = E 
 \begin{bmatrix}
- \boldsymbol{\Theta_{P}} \\ 
+ \boldsymbol{\Psi}_{P} \\ 
  \mathbf{0}\\ 
 \end{bmatrix} 
+\label{eqn:TransEvalEqn}
 \end{equation}
-The blocks of the transformed matrix $\mathbf{\tilde{H}} = \mathbf{T}(\mathbf{F})^{-1} \mathbf{H} \mathbf{T}(-\mathbf{F})$ are
+The blocks of the transformed matrix $\mathbf{\tilde{H}} = \mathbf{S}(\mathbf{T})^{-1} \mathbf{H} \mathbf{S}(-\mathbf{T})$ are
 \begin{equation}
-\mathbf{\tilde{H}}_{PP} = \mathbf{H}_{PP} + \mathbf{H}_{PQ}\mathbf{F}
+\mathbf{\tilde{H}}_{PP} = \mathbf{H}_{PP} + \mathbf{H}_{PQ}\mathbf{T}
 \label{eqn:HPP}
 \end{equation} 
 \begin{equation}
 \mathbf{\tilde{H}}_{PQ} = \mathbf{H}_{PQ}
 \end{equation} 
 \begin{equation}
-\mathbf{\tilde{H}}_{QP} = \mathbf{H}_{QP} + \mathbf{H}_{QQ}\mathbf{F} - \mathbf{\mathbf{H}}_{PP}\mathbf{F} + \mathbf{F}\mathbf{H}_{PQ}\mathbf{F}
+\mathbf{\tilde{H}}_{QP} = \mathbf{H}_{QP} + \mathbf{H}_{QQ}\mathbf{T} - \mathbf{\mathbf{H}}_{PP}\mathbf{T} + \mathbf{T}\mathbf{H}_{PQ}\mathbf{T}
 \label{eqn:HQP}
 \end{equation} 
 \begin{equation}
-\mathbf{\tilde{H}}_{QQ} = \mathbf{H}_{QQ} -\mathbf{F}\mathbf{H}_{PQ}
+\mathbf{\tilde{H}}_{QQ} = \mathbf{H}_{QQ} -\mathbf{T}\mathbf{H}_{PQ}
 \end{equation} 
-Note that (\ref{eqn:HPP}) is the effective Bloch Hamiltonian.
-By defining $\mathbf{F}$ such that (\ref{eqn:HQP}) is zero will results in the $PP$ block from becoming completely 
-decoupled from the rest of the blocks of the transformed matrix, enabling us to solve for eigenvectors within this block
-seperately from the rest.  
+
+\noindent The expression (\ref{eqn:HPP}) defines the effective Bloch Hamiltonian, and can be directly connected to the Bloch equation
+specified in (\ref{eqn:Bloch_singlestate}). Requiring that $\mathbf{T}$ is such that (\ref{eqn:HQP}) is zero will decouple the
+$H_{PP}$ block rest of the blocks of the transformed matrix, enabling the obtain eigenvalues associated with the $PP$ block to be obtained
+seperately from those associated with the rest of the matrix;
+\begin{equation}
+\mathbf{\tilde{H}}
+\begin{bmatrix}
+ \boldsymbol{\psi_{P}} \\ 
+ \mathbf{0} \\ 
+\end{bmatrix}
+=
+\begin{bmatrix}
+ \mathbf{\tilde{H}_{PP}} & \mathbf{\tilde{H}_{PQ}} \\ 
+ 0                       & \mathbf{\tilde{H}_{QQ}} \\ 
+\end{bmatrix} 
+\begin{bmatrix}
+ \boldsymbol{\Psi_{P}} \\ 
+ \mathbf{0} \\ 
+\end{bmatrix} 
+= E 
+\begin{bmatrix}
+\boldsymbol{\Psi_{P}} \\ 
+\mathbf{0} 
+\end{bmatrix}.
+\label{eqn:TransEvalEqnSimple}
+\end{equation}
+This can now be connected to the Bloch equation stated earlier by making use of the notation;
+\begin{equation}
+\mathbf{P} =  
+\begin{bmatrix}
+\mathbf{I} & \mathbf{0} \\ 
+\mathbf{0} & \mathbf{0} 
+\end{bmatrix},
+\text{ \ \ \ }
+\mathbf{Q} =  
+\begin{bmatrix}
+\mathbf{0} & \mathbf{0} \\ 
+\mathbf{0} & \mathbf{I} 
+\end{bmatrix},
+\text{ \ \ \ }
+\boldsymbol{\Omega} =  
+\begin{bmatrix}
+\mathbf{I} & \mathbf{0} \\ 
+\mathbf{F} & \mathbf{0} 
+\end{bmatrix},
+\text{ \ \ \ }
+\boldsymbol{\Psi}^{0} =
+\begin{bmatrix}
+\boldsymbol{\Psi}_{P} \\
+\mathbf{0} 
+\end{bmatrix},
+\end{equation}
+
+Using this notation the Bloch Hamiltonian, $\mathbf{H}^{Bloch}$, may be written
+\begin{equation}
+\mathbf{H}^{Bloch} = \mathbf{P}\mathbf{H}\mathbf{\Omega}\mathbf{P}\mathbf{\Psi}.
+\end{equation}
+The generalized Bloch equation is  
+\begin{equation}
+\boldsymbol{\Omega}\mathbf{H}\boldsymbol{\Omega} =
+\mathbf{H}\boldsymbol{\Omega}
+\label{eqn:GeneralizedBloch}
+\end{equation}
+To see this more directly it can be written out using the matrices specified above;
+\begin{equation*}
+=
+\begin{bmatrix}
+\mathbf{1} & \mathbf{0} \\ 
+\mathbf{T} & \mathbf{0} \\ 
+\end{bmatrix}
+\begin{bmatrix}
+ \mathbf{H}_{PP} & \mathbf{H}_{PQ} \\ 
+ \mathbf{H}_{QP} & \mathbf{H}_{QQ} \\ 
+\end{bmatrix}
+\begin{bmatrix}
+\mathbf{1} & \mathbf{0} \\ 
+\mathbf{T} & \mathbf{0} \\ 
+\end{bmatrix}
+=
+\begin{bmatrix}
+ \mathbf{H}_{PP} & \mathbf{H}_{PQ} \\ 
+ \mathbf{H}_{QP} & \mathbf{H}_{QQ} \\ 
+\end{bmatrix}
+\begin{bmatrix}
+\mathbf{1} & \mathbf{0} \\ 
+\mathbf{T} & \mathbf{0} \\ 
+\end{bmatrix}
+\end{equation*}
+\begin{equation*}
+\begin{bmatrix}
+ \mathbf{H}_{PP} + \mathbf{H}_{PQ}\mathbf{T}& \mathbf{0} \\ 
+ \mathbf{T}\mathbf{H}_{PP} + \mathbf{T}\mathbf{H}_{PQ}\mathbf{T}& \mathbf{0} \\ 
+\end{bmatrix}
+=
+\begin{bmatrix}
+ \mathbf{H}_{PP} + \mathbf{H}_{PQ}\mathbf{T} & \mathbf{0} \\ 
+ \mathbf{H}_{QP} + \mathbf{H}_{QQ}\mathbf{T} & \mathbf{0} \\ 
+\end{bmatrix}
+\label{eqn:BlochGenMat}
+\end{equation*}
+to see that the last two lines are equivalent note use the fact that $\mathbf{T}$ is such that $\tilde{\mathbf{H}}_{QP}$ 
+as defined in (\ref{eqn:HQP}) vanishes. Rearranging (\ref{eqn:HQP}) yields 
+\begin{equation*}
+\mathbf{H}_{QP} + \mathbf{H}_{QQ}\mathbf{T} = \mathbf{\mathbf{H}}_{PP}\mathbf{T} + \mathbf{T}\mathbf{H}_{PQ}\mathbf{T}.
+\label{eqn:Tcondition}
+\end{equation*}
+Hence the two sides of (\ref{eqn:BlochGenMat}) are equivalent. It should be noted that it is in the 
+failure of the choice of $\mathbf{T}$ to satisfy the condition specified in (\ref{eqn:Tcondition}) 
+that many errors originate.\\
+
+\noindent Whilst (\ref{eqn:GeneralizedBloch}) is the perhaps the most generic form of the Bloch equation,
+it is not the one most commonly seen in the CASPT2 literature, which is 
+\begin{equation}
+(E_{0} - \mathbf{H}_{0})\mathbf{\Omega} \boldsymbol{\Psi}_{0} =
+ \mathbf{Q}\mathbf{V}\boldsymbol{\Omega}\boldsymbol{\Psi}_{0}- 
+ \mathbf{Q}\boldsymbol{\Omega}\mathbf{P}\mathbf{V}\boldsymbol{\Omega}\boldsymbol{\Psi}_{0} 
+\end{equation}
+To obtain this expression introduce the notation
+\begin{equation}
+\mathbf{H}_{0}=
+\begin{bmatrix}
+\mathbf{H}_{PP} & \mathbf{0} \\
+\mathbf{0} & \mathbf{H}_{QQ} \\
+\end{bmatrix},
+\text{ \ \ \ \ }
+\mathbf{V} =
+\begin{bmatrix}
+\mathbf{0} & \mathbf{H}_{PQ} \\
+\mathbf{H}_{QP} & \mathbf{0} \\
+\end{bmatrix}.
+\label{eqn:MatToAlgBloch}
+\end{equation}
+Where, 
+\begin{equation}
+\mathbf{H}_{0}\mathbf{\Psi}_{0} = \mathbf{E}^{(0)}\mathbf{\Psi}_{0}
+\label{eqn:unperturbedHE}
+\end{equation}
+and 
+\begin{equation}
+(\mathbf{H}_{0}+\mathbf{V})\mathbf{\Psi} = (\mathbf{E}^{0}+\mathbf{E}^{'})\mathbf{\Psi}
+\label{eqn:perturbedHE}
+\end{equation}
+Writing $\boldsymbol{\Psi}$ as $\boldsymbol{\Omega}\boldsymbol{\Psi}_{0}$, and using employing the generalized Bloch equation (\ref{eqn:GeneralizedBloch}) leads to
+\begin{equation}
+\boldsymbol{\Omega}(\mathbf{H}_{0}+\mathbf{V})\boldsymbol{\Omega}\mathbf{\Psi}_{0} =
+\boldsymbol{\Omega}(\mathbf{E}^{0}+\mathbf{E}^{'})\boldsymbol{\Omega}\mathbf{\Psi}_{0}
+\label{eqn:WWperturbedHE}
+\end{equation}
+and and expression for $\mathbf{E}^{'}$ (for those states within the $P$-block only);
+\begin{equation}
+\mathbf{E}^{'} = \boldsymbol{\Omega}\mathbf{P}\mathbf{V}\boldsymbol{\Omega}\mathbf{\Psi}_{0}.
+\label{eqn:EprimeGen}
+\end{equation}
+Similarly, it is also possible to write
+\begin{equation*}
+(\mathbf{H}_{0}+\mathbf{V})\boldsymbol{\Omega}\mathbf{\Psi}_{0} =
+(\mathbf{E}^{0}+\mathbf{E}^{'})\boldsymbol{\Omega}\mathbf{\Psi}_{0}
+\end{equation*}
+\begin{equation}
+\rightarrow
+(\mathbf{E}^{0}-\mathbf{H}_{0})\boldsymbol{\Omega}\mathbf{\Psi}_{0} =
+ (\mathbf{V}-\mathbf{E}^{'})\boldsymbol{\Omega}\mathbf{\Psi}_{0} 
+\label{eqn:WperturbedHE}
+\end{equation}
+Using the expression for $\mathbf{E}^{'}$ in  (\ref{eqn:EprimeGen}) gives
+\begin{equation}
+(\mathbf{E}^{0}-\mathbf{H}_{0})\boldsymbol{\Omega}\mathbf{\Psi}_{0} =
+\mathbf{V}\boldsymbol{\Omega}\mathbf{\Psi}_{0} - 
+\boldsymbol{\Omega}\mathbf{P}\mathbf{V}\boldsymbol{\Omega}\mathbf{\Psi}_{0}.
+\label{eqn:BGenIntermediate}
+\end{equation}
+The RHS can now be multiplied by $(\mathbf{P}+\mathbf{Q})$,  and upon noting that
+\begin{equation*}
+\mathbf{P}\mathbf{V}\boldsymbol{\Omega}\mathbf{\Psi}_{0} = \mathbf{P}\boldsymbol{\Omega}\mathbf{P}\mathbf{V}\boldsymbol{\Omega}\mathbf{\Psi}_{0}.
+\end{equation*}
+this term can be cancelled, leaving
+\begin{equation}
+(\mathbf{E}^{0}-\mathbf{H}_{0})\boldsymbol{\Omega}\mathbf{\Psi}_{0} =
+\mathbf{Q}\mathbf{V}\boldsymbol{\Omega}\mathbf{\Psi}_{0} - 
+\mathbf{Q}\boldsymbol{\Omega}\mathbf{P}\mathbf{V}\boldsymbol{\Omega}\mathbf{\Psi}_{0},
+\label{eqn:BGenMSCASPT2}
+\end{equation}
+which is the form in which the Bloch equation appears much of the perturbation theory literature.\\
+
+\noindent It is important to note that whilst (\ref{eqn:BGenMSCASPT2}) is the principal equation,
+for it to hold it (given the above definitions) it requires that $\mathbf{T}$ is such that
+(\ref{eqn:HQP}) vanishes. Often, approximations are used in the defintion of the matrix components
+which appear in (\ref{eqn:HQP}), and how these approximations impact the accuracy of methods based on
+(\ref{eqn:BGenMSCASPT2}) is an important topic which we return to in due course.
+ 
 \subsection{ Multistate CASTP2 and Extended Multistate CASPT2 }
- In state specific MS-CASPT2
-the expression is made to vanish through use of the assumption that $\hat{H}_{0}$ has eigenvectors
+ In state specific MS-CASPT2 the expression is made to vanish through use of the assumption that $\hat{H}_{0}$ has eigenvectors
 $\{|p\}$ with eigenvalues $\epsilon_{p}$. Considering that the
 $\{|p\rangle\}$ can easily be chosen such that this is the case this assumption is entirely resonable.
 However, that $\hat{H}_{0}$ is diagonal in $\{|p\rangle\}$ is no guarantee that derivatives
