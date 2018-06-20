@@ -179,6 +179,7 @@ which makes use of the fact that $ \hat{Q}\hat{V}|p\rangle= \hat{Q}\hat{H}|p\ran
 used to obtain an expression for the second order energy;
 \begin{equation}
 E_{p}^{(2)} = E_{p}^{(1)} + \langle p | \hat{H} \hat{\Omega}^{p,1}| p \rangle .
+\label{eqn:single_state_ptE_second_order}
 \end{equation}
 Provided the above orthogonality constraints are met there is considerable freedom in choosing the form of the terms in the
 series $(\ref{eqn:wave_op_series})$.  A natural choice is to have $\hat{\Omega}^{p,1}$, be the contribution
@@ -240,20 +241,6 @@ Rearranging and left multiplying by $\langle r | \in q^{st}$ gives
 \langle r' | \hat{H} |p\rangle = 0
 \label{eqn:Amplitude_eqn}
 \end{equation}
-%Generally speaking, the projection operators, e.g., $Q^{sd}_{p}$,
-%are replaced with excitation operators, e.g.,
-%\begin{equation}
-%\hat{Q}^{sd} = \sum_{ij}\sum_{kl}\hat{a}^{\dagger}_{i}\hat{a}^{\dagger}_{j}\hat{a}_{k}\hat{a}_{l}.
-%\end{equation}
-%The ranges of the summations over indexes, $k,l$, and ,$i,j$, are defined such that this corresponds the appropriate projection.
-%This leads to
-%\begin{equation}
-% \sum_{r}^{r\in q^{st}}
-%\langle p | \hat{E}^{\dagger}_{r'}(\epsilon_{p} - \hat{H}_{0} )T_{r}^{p}\hat{E}_{r}| p \rangle 
-%-
-%\langle p | \hat{E}^{\dagger}_{r'}\hat{H} |p\rangle = 0
-%\label{eqn:Hylleraas_st}
-%\end{equation}
 The derivative with respect $T$ should vanish, so at convergence,
 \begin{equation}
 \sum_{r}^{r\in q^{st}} \langle r' |(\epsilon_{p} - \hat{H}_{0} )T_{r}^{p} | r \rangle = G = 0 
@@ -312,7 +299,7 @@ methods, which will be discussed in due course.\\
 + \sum_{mqr}|m\rangle \langle m | (\epsilon_{p} - \hat{H}_{0}) | r \rangle T_{r}^{p}
 \label{eqn:P_on_EH_explicit_bas}
 \end{equation*}
-Multiplying from the left by state $\langle\Psi_{p}| = \sum_{k}\langle k | X_{k}^{p}$ yields
+Multiplying from the left by state $\langle\Psi_{p}| = \sum_{k}\langle k | X_{k}^{p \ \dagger}$ yields
 \begin{equation*}
 \sum_{kmnl}X^{p\dagger}_{k}\langle k | m\rangle \langle m | (\epsilon_{p} - \hat{H}_{0})   | l \rangle X_{l}^{p}
 + \sum_{kmqr}X^{p\dagger}_{k}\langle k | (\epsilon_{p} - \hat{H}_{0}) | r \rangle T_{r}^{p}
@@ -321,13 +308,8 @@ Multiplying from the left by state $\langle\Psi_{p}| = \sum_{k}\langle k | X_{k}
 =  \sum_{kl}X^{p\dagger}_{k}\langle k | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p}
 \label{eqn:P_on_EH_ms_nondiag}
 \end{equation}
-%Substituing this back into (\ref{eqn:multistate_pt_energy}) results in 
-%\begin{equation}
-%\sum_{kl}X^{p\dagger}_{k}\langle k | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p}
-%\label{eqn:multistate_PT_energy_nondiag}
-%\end{equation}
 The useful expression (\ref{eqn:singlestate_pt_energy}) for the perturbation energy, $E_{p}$, 
-may be obtained because the RHS of (\ref{eqn:P_on_EH}); the single state analogue of (\ref{eqn:P_on_EH_ms_nondiag}), vanishes.
+may be obtained because the RHS of (\ref{eqn:P_on_EH}), the single state analogue of (\ref{eqn:P_on_EH_ms_nondiag}), vanishes.
 Unfortunately, this does not happen here, a fact which will later prove significant.
 There is more than one way of handling this issue, but to summarize them properly it is
 worth first discussing the generalized Bloch equation.
@@ -351,7 +333,7 @@ Consider the matrix equation,
 \end{bmatrix} 
 \end{equation}
 Now introduce a transformation operator, $\mathbf{S}$, which can be used to obtain the full 
-vector, $\boldsymbol{\Psi}$, from just the component, $\boldsymbol{\Psi}_{P}$ within the $\mathrm{p}$ subspace, i.e.,
+vector, $\boldsymbol{\Psi}$, from just the component, $\boldsymbol{\Psi}_{P}$, within the $\mathrm{p}$ subspace, i.e.,
 \begin{equation}
 \mathbf{S}(\mathbf{T})\boldsymbol{\Psi}_{0}= 
 \begin{bmatrix}
@@ -471,9 +453,18 @@ This can now be connected to the Bloch equation stated earlier by making use of 
 
 Using this notation the Bloch Hamiltonian, $\mathbf{H}^{Bloch}$, may be written
 \begin{equation}
-\mathbf{H}^{Bloch} = \mathbf{P}\mathbf{H}\mathbf{\Omega}\mathbf{P}\mathbf{\Psi}.
+\mathbf{H}^{Bloch} = \mathbf{P}\mathbf{H}\boldsymbol{\Omega}\mathbf{P}\mathbf{\Psi}.
+\label{eqn:effective_Bloch}
 \end{equation}
-The generalized Bloch equation is  
+As stated earlier, if $\mathbf{T}$, and hence $\boldsymbol{\Omega}$, is defined such that (\ref{eqn:HQP}) vanishes,
+then the eigenvalues of this effective Hamiltonian will be a subset of the eigenvalues of the full Hamiltonian. 
+It is worth highlighting the identity $\boldsymbol{\Omega}\mathbf{P} = \boldsymbol{Omega}$, i.e., 
+the wave-operator $\Omega$ ensures that the effective Hamiltonian only acts on the components of states which are 
+within the $\mathrm{p}$ subspace. \\
+
+\noindent This effective Hamiltonian is the main workhorse of the multireference perturbation theories, but it is worth
+continuing with some further analysis and discussion of the Bloch equation so as to facilitate later
+discussions of approximate methods. The generalized Bloch equation is  
 \begin{equation}
 \boldsymbol{\Omega}\mathbf{H}\boldsymbol{\Omega} =
 \mathbf{H}\boldsymbol{\Omega}
@@ -605,57 +596,205 @@ for it to hold it (given the above definitions) it requires that $\mathbf{T}$ is
 (\ref{eqn:HQP}) vanishes. Often, approximations are used in the defintion of the matrix components
 which appear in (\ref{eqn:HQP}), and how these approximations impact the accuracy of methods based on
 (\ref{eqn:BGenMSCASPT2}) is an important topic which we return to in due course.
- 
-\subsection{ Multistate CASTP2 and Extended Multistate CASPT2 }
- In state specific MS-CASPT2 the expression is made to vanish through use of the assumption that $\hat{H}_{0}$ has eigenvectors
-$\{|p\}$ with eigenvalues $\epsilon_{p}$. Considering that the
-$\{|p\rangle\}$ can easily be chosen such that this is the case this assumption is entirely resonable.
-However, that $\hat{H}_{0}$ is diagonal in $\{|p\rangle\}$ is no guarantee that derivatives
-of $\hat{H}_{0}$ are diagonal in $\{|p\rangle\}$, hence terms such as 
-\begin{equation}
-\frac{\delta}{\delta \mathbf{R} }\sum_{kl}X^{p\dagger}\langle k | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p},
-\label{eqn:multistate_PT_energy_nondiag_deriv}
-\end{equation}
-where $\mathbf{R}$ is some perturbing parameter, may not vanish. Whilst the basic expressions
-for the peturbation energy may not appear to require consideration of such terms, they are highly relevant
-in developing computational methods for calculating the perturbation energies, and in obtaining expressions
-for derivative properties. To consider the various approaches to this issue it is worth taking a 
-brief detour to consider \\
 
-\noindent In XMS-CASPT2 the zeroth order Hamiltonian is
+\subsection{ Multistate CASTP2 and Extended Multistate CASPT2 }
+
+\noindent Multistate methods generally start from the effective Bloch Hamiltonian defined in 
+(\ref{eqn:effective_Bloch}) as 
+\begin{equation}
+\hat{H}^{Bloch} = \hat{P}\hat{H}\hat{\Omega}\hat{P}
+\label{eqn:effective_Bloch_opform}
+\end{equation}
+as in the perturbation theory for the single state case the wave operator, $\hat{\Omega}$, is expanded as a series 
+of which we take the only the first two terms
+\begin{equation}
+\hat{\Omega} =\hat{\Omega} =  1 + \hat{\Omega}^{sd}+ \hat{\Omega}^{qt}+ 
+\end{equation}
+\begin{equation}
+\hat{H}^{Bloch,2} = \hat{P}\hat{H}\hat{P} +  \hat{P}\hat{H}\hat{\Omega}^{sd}\hat{P}.
+\label{eqn:effective_Bloch_opform_secondorder}
+\end{equation}
+The eigenvalues of this effective Hamiltonian are the energies of the perturbed wavefunction.\\
+
+\noindent To reconnect with the previous discussion around (\ref{eqn:P_on_EH_ms_nondiag}) this may be 
+be written out with the summations made explicit,
+\begin{equation}
+\hat{H}^{Bloch,2} = 
+\sum_{mn}|m\rangle\langle m | \hat{H} |n \rangle\langle n|+
+\sum_{mn}|m\rangle\langle m | \hat{H}\hat{\Omega}^{sd}_{r} |n \rangle\langle n|
+\label{eqn:effective_Bloch_summation_explicit}
+\end{equation}
+Hereafter, $ \hat{H}^{eff} =  \hat{H}^{Bloch,2} $, unless otherwise stated. Using the definitions 
+\begin{equation}
+|\Psi_{i}\rangle = \sum_{l}^{l \in \mathrm{p}} X_{l}^{i} | l \rangle
+\text{\ \ \ and \ \ \ }
+\hat{\Omega}^{sd}| k \rangle  = \sum_{r} \hat{\Omega}_{k} = \Bigg{[}\sum_{r}^{r \in q^{sd}} T^{k}_{r} |r\rangle\langle k |\Bigg{]} |  k \rangle,
+\end{equation}
+an element of the effective Hamiltonian, $H_{ij}^{eff}$, may be written,
+\begin{equation*}
+\langle \Psi_{i} | \hat{H}^{Bloch,2} | \Psi_{j} \rangle =
+\end{equation*}
+\begin{equation}
+\sum_{mn}^{\in \mathbf{p}}
+X^{i\dagger}_{m} \langle m | \hat{H} |n \rangle  X^{j}_{n}
++\sum_{mnkl}^{\in \mathbf{p} }\sum_{r}^{\in \mathrm{q}^{sd}}
+X^{i\dagger}_{m}\langle m |
+\hat{H} T^{l}_{r}
+|r \rangle\langle n | n \rangle  X^{j}_{n}
+\label{eqn:effective_Bloch_summation_explicit}
+\end{equation}
+The above assumes that the members of p are orthogonal; $\langle n | k \rangle X^{i}_{k} = X^{i}_{n}\delta_{nk}$. \\ 
+
+\noindent Typically, members, $\{|p\rangle \}$, of subspace $\mathbf{p}$ are chosen such that they are 
+eigenvectors of $\hat{H}_{0}$, i.e., $\langle m | n \rangle X^{i}_{n} = \delta_{mn}$,
+which simplifies the above expression further still; 
+\begin{equation}
+H^{eff}_{ij} = 
+\langle i | \hat{H} | j \rangle
++\sum_{r}^{\in \mathrm{q}^{sd}}
+\langle i | \hat{H} T^{j}_{r} |r \rangle\langle j | j \rangle
+\label{eqn:effective_Bloch_summation_explicit_diag}
+\end{equation}
+The diagonal elements are the single state CASPT2 energies, and have contributions from both terms.
+The off diagonal elements $(i \neq j)$ only have contributions from the second term, 
+and are zero in the absence of the perturbation. \\
+
+\noindent To examine the interactions between different states more closely it is useful to partition the Hamiltonian into blocks;
+\begin{equation*}
+\hat{H} = 
+\hat{P}\hat{H}\hat{P}+ \hat{Q}\hat{H}\hat{Q}+ 
+\hat{P}\hat{H}\hat{Q}+ \hat{Q}\hat{H}\hat{P}.
+\end{equation*}
+\noindent Two of the most common definitions and requirements in perturbation theories are
+\begin{equation*}
+\hat{H} = \hat{H}^{0}+\hat{V} 
+\text{ \ \ \ and \ \ \ }
+\hat{H}_{0} |m \rangle = \epsilon^{0}_{m}|m\rangle \text{ \ \ } m \in \mathrm{p} 
+\end{equation*}
+which when combined with the third and fourth requirements gives
+\begin{equation}
+\langle m| \hat{V} |n \rangle = 0 
+\text{ \ \ and  \ \ }
+\langle m| \hat{H} |r \rangle = 0 \text{ \ \ } \forall m,n \in \mathrm{p} \text{,\ \ } \forall r \in \mathrm{q}^{sd} 
+\label{eqn:V_H_are_same_def}
+\end{equation}
+suggests the following definitions of $\hat{H}^{0}$ and $\hat{V}$,
+\begin{equation}
+\hat{H}^{0}  = \hat{P}\hat{H}\hat{P}+ \hat{Q}\hat{H}\hat{Q}
+\text{ \ \ \ and \ \ \ } \hat{V}  =  \hat{P}\hat{H}\hat{Q}+ \hat{Q}\hat{H}\hat{P}
+\label{eqn:H_V_definition}
+\end{equation}
+which may be used to rewrite the expression for $H^{eff}_{ij}$ in the perhaps more familiar form
+\begin{equation}
+H^{eff}_{ij} =  
+\langle i | \hat{H}_{0} | j \rangle
++\sum_{mn}^{\in \mathrm{p} }\sum_{r}^{\in \mathrm{q}^{sd}}
+\langle i | \hat{V} T^{j}_{r} |r \rangle\langle j | j \rangle.
+\label{eqn:effective_Bloch_H_plus_V}
+\end{equation}
+In the single state case, the second term of (\ref{eqn:effective_Bloch_H_plus_V}) reduces to the
+expression for the second order energy found in (\ref{eqn:single_state_ptE_second_order}). Furthermore, by comparing 
+the definitions in (\ref{eqn:H_V_definition}) and that in (\ref{eqn:MatToAlgBloch}), the
+connection between this expression and the generalized Bloch equation will hopefully become 
+more apparent.\\
+
+\subsection {MRPT2 energy derivatives}
+\noindent The conditions specified in (\ref{eqn:V_H_are_same_def}) clearly pertain to 
+a very specific situation, but are still often employed as part of a method, albeit an 
+indirect one, of expanding the basis used to describe the wavefunction.\\
+
+\noindent This is particularly useful when calculating the linear response of the energy to the
+perturbation of a parameter about zero, e.g., 
+\begin{equation}
+\frac{ \delta E }{ \delta \mathbf{R} } \Bigg{|}_{\mathbf{\mathbf{R}=0}}
+\text{\ \ where \ \ }
+\hat{H} = \hat{H}^{0}[\mathbf{R}] + \hat{V}[\mathbf{R}] 
+\text{\ \ and \ \ }
+\hat{V}[\mathbf{R} = 0 ]  = 0 
+\end{equation}
+Where $\mathbf{R} = 0$ is just some equilibrium value for $\mathbf{R}$, i.e., the derivative is begin taken
+about the point where the off diagonal blocks of the Hamiltonian are zero $\hat{H}_{PQ} = 0$. \\
+
+\noindent  In the many cases, notably where $\mathbf{R}$ is a nuclear coordinate,
+these gradients can be strongly influenced by the correlation with highly energetic orbitals not included
+within the active space, and MS-CASPT2 is a way of taking this into account.
+Provided the states in the model space are well seperated the interaction between them due
+to the perturbation is often small enough, e.g., smaller than the sum total of their 
+interaction with all states in the external space $\mathrm{q}$, to be safely neglected.\\
+
+\noindent Unfortunately, taking derivatives
+of the effective Hamiltonian with respect to a perturbation parameter is not
+straight forward. Consider the derivative of (\ref{eqn:effective_Bloch_summation_explicit})
+\begin{equation}
+\frac{\delta H^{eff}_{ij}} {\delta \mathbf{R} } =
+\frac{\delta } {\delta \mathbf{R} } \Bigg{[} \sum_{mn}
+ X_{m}^{i\dagger}\langle m | (\hat{H}^{0} + \hat{V}) | n \rangle X_{n}^{j} \Bigg {]}
+\frac{\delta } {\delta \mathbf{R} }
++ \Bigg{[}  
+\sum_{mn}^{\in \mathrm{p} }\sum_{r}^{\in \mathrm{q}^{sd}}
+ X_{m}^{i\dagger}
+\langle i | (\hat{H}^{0}+\hat{V}) T^{n}_{r} |r \rangle\langle n | n \rangle
+ X_{n}^{j\dagger}
+ \Bigg {]}.
+\label{eqn:effective_Bloch_summation_derivative}
+\end{equation}
+The dependence of $T^{j}_{r}$ on $\mathbf{R}$ is complicated; if $|j\rangle$ is a CASSCF wavefunction, then $T^{j}_{r}$ is
+dependent on the ci-coefficients and orbital coefficients used to define $|j\rangle$, which are dependent on $\hat{H}$,
+which is dependent on $\mathbf{R}$. This dependence of $T^{j}_{r}$ on the $j$ prevents the Hellman-Feynman theorem being used. 
+An alternative might be to use the chain rule, and determine the derivatives of the ci and
+orbital coefficients with respect to $\mathbf{R}$, but this is not feasible in terms of computational cost.
+Instead a Lagrangian approach is adopted, which incorporates all the various constraints associated with the optimization 
+of the T amplitudes, ci and orbital coefficients.\\
+
+\noindent Before proceeding it is worth noting that any resulting theory should be invariant with 
+respect to transformation in the reference space. Previously, it was stated that $\mathbf{X}_{n}^{j}$ 
+can effectively be set to $\delta_{nj}$ by requiring that the model space is comprised of eigenvectors
+of the zeroth order Hamiltonian $\hat{H}^{0}$. However, this is somewhat problematic when dealing with 
+degeneracies; the eigenstates are not uniquely defined. For example, in the case of a conical intersection two states are
+degenerate, but may have very different nuclear energy gradients. If these gradients are to
+be consistently defined for the two states there cannot be arbitrary rotations occuring between the
+different eigenvectors.\\
+
+\noindent Extended multistate CASPT2 (XMS-CASPT2) handles this issue by defining the zeroth order Hamiltonian as
 \begin{equation}
 \hat{H}_{0,XMS} = \hat{P}\hat{f}\hat{P} +  \hat{Q}\hat{f}\hat{Q},
 \end{equation}
 where $\hat{f}$ is the state averaged Fock operator defined by
 \begin{equation}
-\hat{f} = \sum_{rs}f_{rs} = \sum_{rs}
-\hat{a}^{\dagger}_{r}\hat{a}_{s}
-\Bigg{[} h_{rs} 
-+ \sum_{ij}d_{ij}
-\frac{1}{2}( 2J^{ij}_{rs}-K^{ij}_{rs})  \Bigg{]}
+\hat{f} = \sum_{cd}f_{cd} = \sum_{cd}
+\hat{a}^{\dagger}_{c}\hat{a}_{d}
+\Bigg{[} h_{cd} 
++ \sum_{ab}d_{ab}
+\frac{1}{2}( 2J^{ij}_{ab}-K^{ij}_{ab})  \Bigg{]}
 \end{equation}
-where, $J^{ij}_{rs} = (ij|rs)$ and $K^{ij}_{rs} = (ir|js)$ are the two electron integrals, and $d_{ij}$ are elements of the reduced, one-electron,
+where $a$,$b$,$c$ and $d$ are molecular orbital indices,
+$J^{cd}_{ab} = (ij|ab)$ and $K^{cd}_{ab} = (ca|db)$ are two electron integrals, and $d_{ab}$ are elements of the reduced, one-electron,
 state-averaged density matrix. The states $\{|p\rangle\}$ are unitary transformed into a set $\{|\tilde{p}\rangle\}$, 
 which are eigenvectors of $\hat{H}_{0,XMS}$ with eigenvalues $\tilde{\epsilon}_{p}$;
 \begin{equation}
 |\tilde{p} = \sum_{l}|l\rangle U_{lp}
 \end{equation}
-The importance of state averaging will become apparent in later stages of the derivation, 
-where it ensures that the elements $f_{ij}$ are invariant under rotations
-between states. The $XMS$ subscript on $\hat{H}_{0,XMS}$ will be omitted hereafter.\\ 
+The state averaging ensures that the elements $f_{cd}$, and their derivative with respect to any perturbing 
+parameter, are invariant under rotations between states. This will result in a consistent definition of 
+the energy derivatives, even at conical intersections.\\
 
-\noindent  A final comment before proceeding is that a unitary transformation of
-$\mathrm{p}$ should have no impact on the final results, i.e., whether $|\Psi_{p} \rangle$
-is considered to be a perturbation of state $|p\rangle$ or $|\tilde{p}\rangle$ should
-not make any difference. \\
+\noindent Another advantage is that choosing the zeroth order energies $\epsilon^{0}_{i}$ 
+to be the eigenvalues of the state averaged Fock operator greatly reduces the chances 
+of a zero occuring in the denominator of the expression (\ref{eqn:T_update}) used to calculate 
+the T-amplitudes. One added complexity in XMS-CASPT2 is that the eigenvectors of $\hat{f}^{sa}$, defined by coefficients $X_{n}^{j}$, 
+have an implicit dependence on $\mathbf{R}$. This can be handled by adding another constraint to the Lagrangian,
+but must be bourne in mind. Hereafter, the $XMS$ subscript on $\hat{H}_{0,XMS}$ will be omitted.
 
+%\noindent Before proceeding to the derivation of the Lagrangian, it is worth mentioning
+%that a significant case in which the requirements in (\ref{eqn:V_H_are_same_def}),
+%are unreasonable is when $\mathrm{p}$ is comprised of a number of degenerate states
+%within a spin multiplet, and $\hat{V}$ is an external magnetic field. 
 
-
-(\ref{eqn:Q_on_both_sides_singlestate}),
-If there is more than one state in  
-\begin{equation*}
-  \sum_{kl}X^{p\dagger}\langle m | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p}
-+ \sum_{kr}X^{p\dagger}\langle m | (\epsilon_{p} - \hat{H}_{0}) | r \rangle T_{r}^{p}
-\end{equation*}
+%(\ref{eqn:Q_on_both_sides_singlestate}),
+%If there is more than one state in  
+%\begin{equation*}
+%  \sum_{kl}X^{p\dagger}\langle m | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p}
+%+ \sum_{kr}X^{p\dagger}\langle m | (\epsilon_{p} - \hat{H}_{0}) | r \rangle T_{r}^{p}
+%\end{equation*}
 
 \end{document}
