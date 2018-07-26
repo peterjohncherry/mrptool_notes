@@ -85,16 +85,16 @@ on the values over which the molecular orbital indexes range; all indexes on
 annihilation operators must correspond to orbitals occupied in $|J\rangle$, and 
 creation operators must correspond to orbitals occupied in $|I\rangle$. 
 This is a consequence of how determinants are constructed in 
-active space based methods. A generic determinant can be written
+active space based methods. A generic determinant can be written 
+corresponding to the case where the, molecular orbitals, $\{\psi_{x_{i}}\}$,
+with indexes  $X = \{x_{0},...,x_{n}\}$ are occupied can be written
 \begin{equation}
-\Psi_{K} = \sum^{\zeta \in S_{X}}_{\zeta} \epsilon_{x} \bigotimes_{i=0}^{n}  \psi_{x_{i}},
+\Psi_{K} = \sum^{\zeta \in S_{X}}_{\zeta} \epsilon_{\zeta} \bigotimes_{i=0}^{n}  \psi_{x_{i}},
 \end{equation}
 where $X$ is a set of molecular orbital indexes $\{x_{0},...,x_{n}\}$,
 $\epsilon$ is the nth rank Levi-Cevita
 tensor, $\zeta$ is a member of the symmetric group $S_{X}$,
-consisting of all possible permutations on the set of indexes,
-$X = \{x_{0},...,x_{n}\}$, of molecular orbitals $\psi_{x_{i}}$ from which the
-determinant is constructed.\\
+consisting of all possible permutations on the set of indexes $X$.
 
 \noindent In CI based methods it is common to use the fact that 
 each distinct ordered set, $X$, of indexes corresponds to a different 
@@ -107,27 +107,28 @@ those determinants which corresponding $X \in {F^{CAS}}$, where
 F^{CAS} = \{ X | (X = X^{c} \cup X^{a}) \wedge (X^{a} \subset P) \wedge ( \text{card}(X) = n_{act} )  \}
 \end{equation*}
 where $P$ is the list of all "active" molecular orbital indexes, 
-$X^{a}$ is a subset of set of $n_{act}$ orbitals occupied in the determinant defined by $X$, and
+$X^{a}$ is a subset of active orbitals occupied in the determinant defined by $X$, and
 where $X^{c}$ is the list of closed orbital indexes, all of which are occupied in all determinants defined
 from members of $F^{CAS}$.\\
 
 \noindent Unfortunately, $F^{CAS}$ can get very large, leading to computational difficulties. 
-One way of trying to manage this is to decompose the set of active orbital indexes, $P$, up into subsets;
+One way of trying to manage this is to decompose the set of active orbital indexes, $P$, up into $n_{p}$ subsets;
 \begin{equation}
-P = \bigcup\limits_{j=0} P_{j}, 
+P = \bigcup\limits_{j=0}^{n_{p}} P_{j}, 
 \end{equation}
-and performing a similar decomposition on the sets of molecular orbital indexes $X$;
+and then splitting $F^{CAS}$ up into subsets, $F_{o_{1},...,o_{n_{p}}}$, based on the 
+number, $o_{j}$, of orbitals in each subspace, $P_{j}$, which are occupied : 
 \begin{equation}
-X = X_{c} \cup  \bigcup\limits_{j=0} X_{j} \text{ \ \ \ \ \ where \ \ \ \ \ } X_{j} \subset P_{j}. 
+F_{o_{1},...,o_{n_{p}}} =
+\Bigg{\{} X =   X_{c} \cup \Bigg{[} \bigcup\limits_{j=0}^{n_{p}} X_{j}\Bigg{]}
+ \Bigg{|} ( X_{j} \subset P_{j} ) \wedge \Bigg{(} \sum_{j}^{n_{p}} o_{j}  = n_{act} \Bigg{)}\Bigg{\}} . 
 \end{equation}
-This leads to a related decomposition of $F^{CAS}$ into smaller subspaces;
-\begin{equation*}
-F^{CAS} = \cup_{n_{1},..,n_{N}} F^{CAS}_{p_{1},...,p_{N}},
-\end{equation*}
-where the indexes ${p_{1},...,p_{N}}$, define the number of elements any given $X \in F^{CAS}_{p_{1},...,p_{N}}$
-may have in common with each of the different subsets of $P$.\\
+Here $X_{j}$ is the subset of $P_{j}$ with cardinality $o_{j}$. The second constraint
+is just the requirement that the sum of all the occupancy numbers, $o_{j}$, associated
+with each of the different subspaces, $P_{j}$, adds up to the total number of
+occupied electrons.\\ 
 
-\noindent  For example, suppose $P$ is split into $\mu$ and $\nu$ indexes;
+\noindent To illustrate this consider the case where $P$ is split into two subspaces;
 \begin{equation}
 P = P_{\mu} \cup  P_{\nu}.
 \end{equation}
@@ -139,7 +140,7 @@ For the case where
 \text{, \ \ \ and \ \ \ }
 n_{act} = 3
 \end{equation*}
-The space, $F^{CAS}$, can then be split up according to how many $\gamma$ and $\nu$
+\noindent The space, $F^{CAS}$, can then be split up according to how many $\gamma$ and $\nu$
 electrons are occupied in a given element;
 \begin{equation*}
 F^{CAS} = F^{CAS}_{3,0} \cup F^{CAS}_{2,1} \cup F^{CAS}_{1,2} 
@@ -161,18 +162,20 @@ X = X^{c} \cup X^{a}_{\mu} \cup X^{a}_{\nu}.
 \noindent I shall hereafter refer to these subspaces of $F^{CAS}$ as
 ci-sectors (and in specific cases, spin-sectors). Decomposing the active space in
 this manner has a number of benefits, as the different ci-sectors may not interact,
-the most prominent example of this is the non-interaction
+or have their interaction limited in some way.
+The most prominent example of this is the non-interaction
 of ci-sectors with different numbers of occupied $\alpha$ and $\beta$ orbitals 
 in the non-relativistic framework.  However, even if they do,
 the decomposition of the active space makes it is possible to handle
 this interaction a piece wise manner, i.e., deal with interactions
-between two ci-sectors at a time. \emph{Note : Please correct me if I am wrong,
-but I interpret relativistic CI as a kind of A.S.D., albeit with very different rules 
-governing the interactions between the different sectors. I realize the implementations
-and approaches to optimization are very different.}\\
+between two ci-sectors at a time.
+%\emph{Note : Please correct me if I am wrong,
+%but I interpret relativistic CI as a kind of A.S.D., albeit with very different rules 
+%governing the interactions between the different sectors. I realize the implementations
+%and approaches to optimization are very different.}\\
 
 \noindent One major advantage is that decomposition of the active-space
-into different components faciliates the block wise decomposition of the reduced density matrices (RDMs),
+into different components facilitates the block wise decomposition of the reduced density matrices (RDMs),
 as a block of an RDM can being defined by the CI-sectors to 
 which the Bra and Ket belong. Using the above decomposition of the 
 active space as an example;
@@ -191,9 +194,9 @@ into which the total Fock space $\mathcal{F}_{all}$ has been decomposed.\\
 
 \noindent Unfortunately, this decomposition brings with it a number of
 complexities which are not present for undecomposed active spaces. However, 
-as we shall hopefully see, the reduction in the size, number, and complexity is
-substanstial, and is particularly valuable when treating multi-reference,
-relativistic wavefunctions.\\ 
+use of such decomposition techniques can lead to significant gains 
+in computational efficiency, particularly for methods which much handle
+multi-reference, relativistic wavefunctions.\\ 
 
 \noindent Allowance for the fact that the Bra and Ket may belong to different CI-sectors,
 the blockwise decomposition of the molecular orbital tensors, and the exploitation 
@@ -206,8 +209,25 @@ important ramifications for the program structure, however, before discussing
 these in depth it is necessary to discuss the basics of the task list
 construction.\\
 
-\noindent As discussed in section(), we typically wish to evaluate terms of the
-following form;
+\noindent In the previous section we discussed the construction of the task list 
+used for calculating contractions between multiple different tensors, e.g., the 
+task list for obtaining
+\begin{equation}
+A_{kwzm} = 
+[\tilde{B}\tilde{C}\tilde{D}]^{(jy,lx,no,pi)}_{kwzm} = \sum_{jy}\sum_{no}\sum_{lx}\sum_{ip} B_{ijkl}C_{mnop}D_{wxyz} \delta_{jy} \delta_{no} \delta_{lx}\delta_{ip}.
+\end{equation}
+
+\noindent  The construction of this "contraction task list" (referred to as \emph{A\_compute\_list} in the code, 
+is effectively independent from the task list to be discussed now, which concerns determination of which
+contracted tensors, e.g., which $A_{kwzm}$, that need to be calculated in order to obtain the expectation value
+or derivative.\\
+
+\noindent As stated in the program overview, the total equation (or expression) to be solved (or evaluated), is 
+broken down into a number of \emph{Terms}, e.g., 
+\begin{equation*}
+\langle M | \hat{Y}\hat{Z} | N \rangle ,
+\end{equation*}
+which using second quantization as
 \begin{equation}
 \sum_{ijkl}\sum_{mnop} \sum_{IJ} \langle I | i^{\dagger}j^{\dagger}klm^{\dagger}n^{\dagger}op | J \rangle c^{M}_{I} c_{J}^{N} Y^{ML}_{ijkl}Z^{NP}_{mnop}.
 \label{eqn:basic_term_again}
@@ -263,23 +283,24 @@ these new terms will be of lower rank than the original.  This fact, combined
 with the range constraints and elimination of terms means that the increase
 number of computational tasks to be performed is generally well worth it.\\  
 
-\noindent Perhaps most importantly of all is that it means that
-all calculations can be done piece-wise, treating only one combination of CI-sectors
-at a time. This is particularly useful when calculating expressions requiring reduced density matrix derivatives;
+\noindent Perhaps most importantly of all this means calculations
+can be done in a piece-wise fashion, treating only one combination of CI-sectors
+at a time. This is particularly useful when calculating expressions requiring reduced density matrix derivatives,
 \begin{equation}
 \Gamma^{I}_{ijklmn}\sum_{J}\langle I | i^{\dagger}j^{\dagger}m^{\dagger}n^{\dagger}opkl | J \rangle c_{J},
 \end{equation}
-which due to the lack of a summation over one of the CI-indexes, $I$, can prove extremely large. This
-would prove highly problematic for implementations of energy derivative expressions in the
-relativistic framework. However, the block decomposition of molecular orbital tensors,
-the decomposition of the active space, and the seperation of blocks into
+which due to the lack of a summation over one of the CI-indexes, $I$, can prove extremely large. 
+could prove highly problematic for implementations of energy derivative expressions in the
+relativistic framework; the treatment of $\alpha$ and $\beta$ electrons effectively doubles
+the size of the active space. However, the block decomposition of molecular orbital tensors,
+the decomposition of the active space, and the separation of blocks into
 a real and imaginary components, ensures that the peak memory requirements of the 
-calculations need not exceed those for similar expressions in a non-relativstic framework.\\
+calculations need not exceed those for similar expressions in a non-relativistic framework.\\
 
 \noindent A disadvantage is that the algebraic operations of
 rearranging the tensors must be performed for every possible block, of which
 there can in principal be millions\footnote{ If each range is divided in to 
-six, and we have ten indexes, then $6^{10} =60466176 $. }. Fortunately, there
+six, and we have ten indexes, $6^{10} =60466176 $. }. Fortunately, there
 are a number of ways to mitigate this, but it is not so trivial an issue that it can
 be completely ignored.\\
 
@@ -293,16 +314,23 @@ are chosen and generated, it is necessary to discuss the implementation of symme
 
 \section{Handling of block and spin-sector symmetry}
 
-\noindent One of the defining features of the program is that
-symmetry is incorporated at the stage of algebraic manipulation, 
-and precedes the task list construction, i.e., it is only after 
-all expressions have been rewritten to involve some minimal set of 
-distinct terms that the task list is generated. Thus if two terms are 
-equivalent, one will of these terms will never appear at any stage of the final task list.
-This is primarily to facilitate the identification of terms which can be merged or reused (to save memory),
-and terms which can be completely seperated (to facilitate parallization).\\
+\noindent One of the defining features of the program is that symmetry is
+incorporated at the stage of algebraic manipulation, and precedes the task list
+construction, i.e., it is only after all expressions have been rewritten to
+involve some minimal set of distinct terms that the task list is generated.
+Thus if two terms are equivalent, one will of these terms will never appear at
+any stage of the final task list.  This is primarily to facilitate the
+identification of terms which can be merged or reused (to save memory), and
+terms which can be completely separated (to facilitate parallelization).\\
 
-\noindent Broadly speaking, the goal is that given the following equivalences;
+\noindent Whilst the previous section discussed how symmetry was applied in 
+execution and representation of the contraction task list, it did not
+discuss how symmetry was used to decide what quantities that task list was
+attempting to calculated. The focus of this section is the latter of these 
+two points.\\
+
+\noindent Broadly speaking, the algorithm should function such that
+given the following equivalences:
 \begin{equation*}
 \hat{T}^{KM}= \hat{T}^{KP} \text{\ , \ \ \  }
 \hat{T}^{-1} = T^{\dagger} \text{\ , and \ \ \ }
@@ -318,7 +346,7 @@ and terms which can be completely seperated (to facilitate parallization).\\
 \boldsymbol{\sigma_{y,2\times 2}} = 
 \begin{bmatrix}
 \boldsymbol{\sigma_{y}} && \mathbf{0} \\ 
-\mathbf{0} && \boldsymbol{\sigma_{y}} \\
+\mathbf{0} && \boldsymbol{\sigma_{y}}, \\
 \end{bmatrix}
 \end{equation*}
 \noindent any contribution written using the terms on the left
@@ -339,27 +367,35 @@ is re-expressed as this term
 \mathbf{c}_{J}^{M*} \mathbf{c}_{I}^{M}
 H^{b4}_{mnop}T_{lkji}^{KM,b2}
 \end{equation*}
-plus some sequence of transformations, and potentially a number of lower order terms which will arise due to the switching of
-the order of $\hat{H}$ and $\hat{T}$. Here the notations $\overline{i}$ is the index corresponding to the Kramer's pair of
-orbital $i$. \\
+plus some sequence of transformations, and potentially a number of lower order
+terms which will arise due to the switching of the order of $\hat{H}$ and
+$\hat{T}$. Here the notations $\overline{i}$ is the index corresponding to the
+Kramer's pair of orbital $i$. \\
 
-\noindent The key thing to note in the above is that the transformations of the blocks range limits on the
-summations are not transformed, whilst those on the molecular orbital tensors are. Furthermore, the indexes inside the BraKet 
-are not transformed with the representations of the molecular orbital tensors, but are transformed due 
-to the time reversal symmetry operation resulting from the substitution $|K\rangle = |\overline{I}\rangle$, and
-the hermitian conjugation operation applied to $\hat{T}$.\\
+\noindent The key thing to note in the above is that the transformations of the
+blocks range limits on the summations are not transformed, whilst those on the
+molecular orbital tensors are. Furthermore, the indexes inside the BraKet are
+not transformed with the representations of the molecular orbital tensors, but
+are transformed due to the time reversal symmetry operation resulting from the
+substitution $|K\rangle = |\overline{I}\rangle$, and the Hermitian conjugation
+operation applied to $\hat{T}$.\\
 
-\noindent This is because transformations of the 
-operator, such as inversion and time-reversal, are fundamentally different to transformations
-of to the representation of an operator in the molecular orbital basis, e.g., mapping $T_{ijkl}^{b1} \rightarrow T_{klij}^{b2} $. Transformations to the operator itself will impact the ranges on which the creation and annihilation
-operators used to define that operator act, e.g., in the above case time-reversal alters the ranges
-on which the creation and annihilation operators act, and hence alters the ranges within the BraKet. 
-Conversely, symmetries arising from properties of the molecular orbital indexes
-on the molecular orbital tensors do not influence the ranges on which the creation and annihilation operators 
-act, as these are symmetries arising from the molecular orbital basis chosen to represent the operator.\\
+\noindent This is because transformations of the operator, such as inversion
+and time-reversal, are fundamentally different to transformations of to the
+representation of an operator in the molecular orbital basis, e.g., mapping
+$T_{ijkl}^{b1} \rightarrow T_{klij}^{b2} $. Transformations to the operator
+itself will impact the ranges on which the creation and annihilation operators
+used to define that operator act, e.g., in the above case time-reversal alters
+the ranges on which the creation and annihilation operators act, and hence
+alters the ranges within the BraKet.  Conversely, symmetries arising from
+properties of the molecular orbital indexes on the molecular orbital tensors do
+not influence the ranges on which the creation and annihilation operators act,
+as these are symmetries arising from the molecular orbital basis chosen to
+represent the operator.\\
 
-\noindent Clearly, there is a very close link between the two, but they are distinct. By way of
-example consider an operator, $\hat{W}$, which is split into two blocks 
+\noindent Clearly, there is a very close link between the two, but they are
+distinct. By way of example consider an operator, $\hat{W}$, which is split
+into two blocks 
 \begin{equation*}
 b1 = \{ \alpha,\alpha,\alpha,\alpha \} 
 \text { \ \ \ \ and \ \ \ }  
@@ -395,16 +431,23 @@ no $\beta$ electrons to destroy, hence,
 \begin{equation*}
 \neq 2 \sum_{ijkl}^{b1} \sum_{IJ}\langle I |\hat{i}^{\dagger}\hat{j}^{\dagger}\hat{k}\hat{l} | J \rangle c_{I}c_{J} W^{b1}_{ijkl}.
 \end{equation*}
-This means that whilst we can transform all occurrences of $\mathbf{W}^{b2}$ into occurrences of $\mathbf{W}^{b1}$, we are typically unable to apply
-the same transformation to the ranges to the molecular orbital indexes which appear withing the braket. Transformations of
-these indexes only arise when performing transformations on the physical action of the operator, such as time-reversal, or inversion. \\
+This means that whilst we can transform all occurrences of $\mathbf{W}^{b2}$
+into occurrences of $\mathbf{W}^{b1}$, we are typically unable to apply the
+same transformation to the block ranges and the molecular orbital indexes which
+appear withing the braket. Transformations of these indexes only arise when
+performing transformations on the physical action of the operator, such as
+time-reversal, or inversion. \\
 
-\noindent It is for this reason that symmetries are not dealt with by using a single $i<j<k<l$ type rule, but instead are
-subdivided into three distinct types, which can be combined to guide construction of the task list. These
-three basic symmetry types are : operator symmetry, representation (or block) symmetry, and CI-sector symmetry.\\ 
+\noindent It is for this reason that symmetries are not dealt with by using a
+single $i<j<k<l$ type rule, but instead are subdivided into three distinct
+types, which can be combined to guide construction of the task list. These
+three basic symmetry types are : operator symmetry, representation (or block)
+symmetry, and CI-sector symmetry.\\ 
 
-\noindent Operator symmetry refers to transformations on the action of the operator, and equivalences between operators
-which act on different combinations of states (dictated by time reversal, or potentially spatial symmetry). For example,
+\noindent Operator symmetry refers to transformations on the action of the
+operator, and equivalences between operators which act on different
+combinations of states (dictated by time reversal, or potentially spatial
+symmetry). For example,
 \begin{equation}
 \hat{T}^{LM} = \hat{T}^{\overline{L}\overline{M}}_{ijkl} 
 \end{equation}
@@ -440,9 +483,9 @@ $L$ and $M$ respectively.\\
 \mathbf{0} && \boldsymbol{\sigma_{y}} \\
 \end{bmatrix}
 \end{equation*}
-\noindent This is just standard time reversal symmetry.
+\noindent This is just time reversal symmetry.\\
 
-\noindent Initially, the state dependence of the operators seems perculiar; the
+\noindent Initially, the state dependence of the operators seems peculiar; the
 molecular orbitals themselves do not differ between states, hence the state
 dependence of the representations suggests that it is not possible to interpret
 these operators as describing interactions between 1, 2, or n-electrons.  In

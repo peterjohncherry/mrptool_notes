@@ -72,7 +72,7 @@ attributes of the space, $\mathrm{s}$, stated in (\ref{eqn:space_props}) leads t
 \hat{P}(\epsilon_{p} - \hat{H}_{0})(\hat{P}+\hat{Q})| \Psi_{p} \rangle  =  \hat{P}(\hat{V}-E_{p})(\hat{P}+\hat{Q})|\Psi_{p} \rangle .
 \label{eqn:P_on_both sides}
 \end{equation}
-Taking each side seperately:
+Taking each side separately:
 \begin{equation}
 \hat{P}(\epsilon_{p} - \hat{H}_{0})(\hat{P}+\hat{Q})| \Psi_{p} \rangle  = 0  ,
 \label{eqn:P_on_EH}
@@ -81,7 +81,7 @@ Taking each side seperately:
 \hat{P}(\hat{V}-E_{p})(\hat{P}+\hat{Q})|\Psi_{p} \rangle = \hat{P}\hat{V}\hat{Q}|\Psi_{p} \rangle + \hat{Q}E_{p}\hat{Q}|\Psi_{p}\rangle .
 \label{eqn:P_on_VE}
 \end{equation}
-Substutiting (\ref{eqn:P_on_EH}) and (\ref{eqn:P_on_VE}) back into (\ref{eqn:P_on_both sides}) and rearranging we obtain
+Substituting (\ref{eqn:P_on_EH}) and (\ref{eqn:P_on_VE}) back into (\ref{eqn:P_on_both sides}) and rearranging we obtain
 \begin{equation}
 \hat{P}\hat{V}\hat{Q}|\Psi_{p} \rangle =  \hat{P}E_{p}\hat{P}|\Psi_{p}\rangle .
 \label{eqn:pt_energy}
@@ -96,7 +96,7 @@ hence
 \label{eqn:multistate_pt_energy}
 \end{equation}
 Whilst the primary intention of the MRPTool module is to tackle multistate, highly degenerate cases, it helpful\footnote{for me, at least} 
-to first consider the singlestate case, i.e., where the dimenation of $\mathrm{p}$ is 1. 
+to first consider the singlestate case, i.e., where the dimension of $\mathrm{p}$ is 1. 
 If intermediate normalization, $\langle p | \Psi_{p} \rangle = 1$, is assumed then 
 \begin{equation}
 \hat{P}E_{p}\hat{P}|\Psi_{p}\rangle = E_{p},
@@ -151,7 +151,7 @@ This may be used to rewrite (\ref{eqn:Q_on_both_sides_singlestate}) as
 \begin{equation}
 ( \epsilon_{p}- \hat{H}_{0} )\hat{\Omega}^{p}|p\rangle = 
 \hat{Q}\hat{V}\hat{\Omega}^{p}|p \rangle -  \hat{Q}\hat{\Omega}^{p}|p\rangle[\langle p | \hat{V}\hat{\Omega}^{p} |p \rangle]. 
-\label{eqn:Bloch_singlestate}
+\label{eqn:BlochSingleState}
 \end{equation}
 CASPT2 and related theories discussed in the following can be thought of as techniques for finding approximate methods for finding $\Omega_{p}$. 
 
@@ -169,7 +169,7 @@ where
 \end{equation} 
 Where  $\langle p^{i} | p^{j} \rangle=  \delta_{ij}$,  hence $(\hat{Q}\hat{\Omega}^{p,0}) = 0$.
 Expanding out the energy in a similar manner,
-substituting the above expansion into (\ref{eqn:Block_singlestate}) and equating first order terms leads to the first order
+substituting the above expansion into (\ref{eqn:BlockSingleState}) and equating first order terms leads to the first order
 wave equation,
 \begin{equation}
 (\epsilon_{p} - \hat{H}_{0} )\Omega^{p,1}|p\rangle = \hat{Q}\hat{H}|p\rangle ,
@@ -183,8 +183,8 @@ E_{p}^{(2)} = E_{p}^{(1)} + \langle p | \hat{H} \hat{\Omega}^{p,1}| p \rangle .
 \end{equation}
 Provided the above orthogonality constraints are met there is considerable freedom in choosing the form of the terms in the
 series $(\ref{eqn:wave_op_series})$.  A natural choice is to have $\hat{\Omega}^{p,1}$, be the contribution
-to $|\Psi_{p}\rangle$ from single and doubly excitated states, $\hat{\Omega}^{p,2}$,  the contribution from triply
-and quadruply excitated states, and so on:
+to $|\Psi_{p}\rangle$ from single and doubly excited states, $\hat{\Omega}^{p,2}$,  the contribution from triply
+and quadruply excited states, and so on:
 \begin{equation*}
 \hat{\Omega}^{p,0} = \sum_{m} |m \rangle \langle m |   \text{, \ \ \  } m \in \mathrm{p}
 \end{equation*}
@@ -195,7 +195,7 @@ and quadruply excitated states, and so on:
 \hat{\Omega}^{p,2} = \sum_{x}| x \rangle \langle p | T^{p}_{x} \text{ \ \ \ } x \in \mathrm{q}^{tq}  \text{, \  etc.. }.
 \end{equation*}
 The above makes use of the fact that the space, $q$, may be split up into mutually orthogonal 
-subspaces corresponding to singly and doubly excitated states, triply and quadruply excited states, etc..,
+subspaces corresponding to singly and doubly excited states, triply and quadruply excited states, etc..,
 \begin{equation}
 \mathrm{q} = \mathrm{q}^{sd} + \mathrm{q}^{tq} + ...
 \end{equation}
@@ -207,7 +207,7 @@ which excite the appropriate number of electrons from the closed or active orbit
 \begin{equation}
 \hat{E}^{sd}_{\omega}|p\rangle = |r_{p}\rangle  \text{ \ \ \ \ } |r\rangle \in q^{sd} .
 \end{equation}
-Note that the state onto which the operator $\hat{E}^{sd}_{\omega}$ projects is dependent on the
+Note that the state onto which the operator $\hat{E}^{sd}_{\omega}$ projects is dependent on
 the state $|p\rangle $  upon which it acts. So in principal, it is possible to replace the index denoting 
 orbital excitations with a subscripted index, $\omega_{p}$, where $\omega_{p}$ is the state onto which
 the action of $\hat{E}_{\omega}$ on $|p\rangle$ projects, i.e.,
@@ -280,12 +280,12 @@ the above expressions are now rewritten using an explicit basis for spaces $\mat
 where $X_{l}^{p}$ and $T_{r}^{p}$ are coefficients. The $X_{l}^{p}$ may be interpreted
 as the coefficients describing how the perturbation acts to mix together the
 states within the reference space, $\mathrm{p}$. If the states within the reference 
-space are well seperated energetically, then it is reasonable to assume that this
-mixing is small, and $X_{l}^{p} \rightarrow \delta_{lp} $, however, this is not the case,
+space are well separated energetically, then it is reasonable to assume that this
+mixing is small, and $X_{l}^{p} \rightarrow \delta_{l}^{p} $, however, this is not the case,
 by definition, in the vicinity of conical intersections.\\
 
 \noindent In the following initial discussion of approaches to this problem it shall be assumed that 
-the sets of $\{|l\rangle\}$ and $\{|r\rangle\}$ being summed over are identitical to the respective sets
+the sets of $\{|l\rangle\}$ and $\{|r\rangle\}$ being summed over are identical to the respective sets
 $\{|p\rangle\}$ and $\{|q\rangle\}$. This assumption is not valid in the case of internally contracted 
 methods, which will be discussed in due course.\\
 
@@ -399,9 +399,9 @@ The blocks of the transformed matrix $\mathbf{\tilde{H}} = \mathbf{S}(\mathbf{T}
 \end{equation} 
 
 \noindent The expression (\ref{eqn:HPP}) defines the effective Bloch Hamiltonian, and can be directly connected to the Bloch equation
-specified in (\ref{eqn:Bloch_singlestate}). Requiring that $\mathbf{T}$ is such that (\ref{eqn:HQP}) is zero will decouple the
+specified in (\ref{eqn:BlochSingleState}). Requiring that $\mathbf{T}$ is such that (\ref{eqn:HQP}) is zero will decouple the
 $H_{PP}$ block rest of the blocks of the transformed matrix, enabling the obtain eigenvalues associated with the $PP$ block to be obtained
-seperately from those associated with the rest of the matrix;
+separately from those associated with the rest of the matrix;
 \begin{equation}
 \mathbf{\tilde{H}}
 \begin{bmatrix}
@@ -555,7 +555,7 @@ Writing $\boldsymbol{\Psi}$ as $\boldsymbol{\Omega}\boldsymbol{\Psi}_{0}$, and u
 \boldsymbol{\Omega}(\mathbf{E}^{0}+\mathbf{E}^{'})\boldsymbol{\Omega}\mathbf{\Psi}_{0}
 \label{eqn:WWperturbedHE}
 \end{equation}
-and and expression for $\mathbf{E}^{'}$ (for those states within the $P$-block only);
+and expression for $\mathbf{E}^{'}$ (for those states within the $P$-block only);
 \begin{equation}
 \mathbf{E}^{'} = \boldsymbol{\Omega}\mathbf{P}\mathbf{V}\boldsymbol{\Omega}\mathbf{\Psi}_{0}.
 \label{eqn:EprimeGen}
@@ -593,7 +593,7 @@ which is the form in which the Bloch equation appears much of the perturbation t
 
 \noindent It is important to note that whilst (\ref{eqn:BGenMSCASPT2}) is the principal equation,
 for it to hold it (given the above definitions) it requires that $\mathbf{T}$ is such that
-(\ref{eqn:HQP}) vanishes. Often, approximations are used in the defintion of the matrix components
+(\ref{eqn:HQP}) vanishes. Often, approximations are used in the definition of the matrix components
 which appear in (\ref{eqn:HQP}), and how these approximations impact the accuracy of methods based on
 (\ref{eqn:BGenMSCASPT2}) is an important topic which we return to in due course.
 
@@ -718,7 +718,7 @@ about the point where the off diagonal blocks of the Hamiltonian are zero $\hat{
 \noindent  In the many cases, notably where $\mathbf{R}$ is a nuclear coordinate,
 these gradients can be strongly influenced by the correlation with highly energetic orbitals not included
 within the active space, and MS-CASPT2 is a way of taking this into account.
-Provided the states in the model space are well seperated the interaction between them due
+Provided the states in the model space are well separated the interaction between them due
 to the perturbation is often small enough, e.g., smaller than the sum total of their 
 interaction with all states in the external space $\mathrm{q}$, to be safely neglected.\\
 
@@ -752,7 +752,7 @@ can effectively be set to $\delta_{nj}$ by requiring that the model space is com
 of the zeroth order Hamiltonian $\hat{H}^{0}$. However, this is somewhat problematic when dealing with 
 degeneracies; the eigenstates are not uniquely defined. For example, in the case of a conical intersection two states are
 degenerate, but may have very different nuclear energy gradients. If these gradients are to
-be consistently defined for the two states there cannot be arbitrary rotations occuring between the
+be consistently defined for the two states there cannot be arbitrary rotations occurring between the
 different eigenvectors.\\
 
 \noindent Extended multistate CASPT2 (XMS-CASPT2) handles this issue by defining the zeroth order Hamiltonian as
@@ -780,10 +780,10 @@ the energy derivatives, even at conical intersections.\\
 
 \noindent Another advantage is that choosing the zeroth order energies $\epsilon^{0}_{i}$ 
 to be the eigenvalues of the state averaged Fock operator greatly reduces the chances 
-of a zero occuring in the denominator of the expression (\ref{eqn:T_update}) used to calculate 
+of a zero occurring in the denominator of the expression (\ref{eqn:T_update}) used to calculate 
 the T-amplitudes. One added complexity in XMS-CASPT2 is that the eigenvectors of $\hat{f}^{sa}$, defined by coefficients $X_{n}^{j}$, 
 have an implicit dependence on $\mathbf{R}$. This can be handled by adding another constraint to the Lagrangian,
-but must be bourne in mind. Hereafter, the $XMS$ subscript on $\hat{H}_{0,XMS}$ will be omitted.
+but must be borne in mind. Hereafter, the $XMS$ subscript on $\hat{H}_{0,XMS}$ will be omitted.
 
 %\noindent Before proceeding to the derivation of the Lagrangian, it is worth mentioning
 %that a significant case in which the requirements in (\ref{eqn:V_H_are_same_def}),
