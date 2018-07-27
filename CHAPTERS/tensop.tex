@@ -166,7 +166,7 @@ which represent this data using the task list construction.
 \section{ MultiTensOp } 
 \noindent Another important matter is combinations of multiple operators, e.g.,
 \begin{equation}
-\langle I | \hat{lambda}\hat{H}\hat{T} | J \rangle .
+\langle I | \hat{\lambda}\hat{H}\hat{T} | J \rangle .
 \end{equation}
 The symmetry operations associated with these operators are combined; the increase in the saving
 associated with block symmetry is multiplicative, and so increases steeply with
@@ -174,7 +174,7 @@ the number of concatenated operators. Furthermore, there is a canonical
 operator ordering, so as to avoid storing multiple terms which differ only by some transpose, 
 e.g., 
 \begin{equation}
-lambda^{b1}H^{b1}T^{b1} = T^{b1}H^{b1}\lambda^{b1}. 
+\lambda^{b1}H^{b1}T^{b1} = T^{b1}H^{b1}\lambda^{b1}. 
 \label{eqn:tens_block_combined}
 \end{equation}
 \section{CtrTensOp and CtrMultiTensOp}
@@ -185,7 +185,7 @@ H^{(b1,jk)}_{il} = \sum_{jk} H^{b1}_{ijkl}\delta{jk},
 \end{equation*}
 or different tensors, 
 \begin{equation}
-[HT]^{(b1,b2,jz,kw)}_{ilxy} = \sum_{jz} \sum_{kw} H^{b1}_{ijkl}T^{b2}_{wxyz}\delta{jz}\delta{kw}.
+[HT]^{(b1,b2,jz,kw)}_{ilxy} = \sum_{jz} \sum_{kw} H^{b1}_{ijkl}T^{b2}_{wxyz}\delta_{jz}\delta_{kw}.
 \label{eqn:cmtp_example}
 \end{equation}
 These correspond to the CtrTensOp object; note that once the contraction between $H$ and $T$ has occurred, they
@@ -196,10 +196,10 @@ two individual tensors\footnote{this is currently not done everywhere in the cod
 operation does not, in the cases relevant here, carry the same cost as decomposing the tensors).\\
 
 \noindent It is vital that all transformations are taken account of before the task list of required contractions
-is generated. Hence, the RHS in (\ref{eqn:cmpt_example}) above may well be replaced with something like this in
+is generated. Hence, the RHS in (\ref{eqn:cmtp_example}) above may well be replaced with something like this in
 the algebraic task list
 \begin{equation}
-[HT]^{(b1,b2,jz,kw)}_{ilxy} \mapsto \sum_{ix} \sum_{ly} \rho(H^{\tilde{b1}}_{jilk}T^{\tilde{b2}}_{yzwx}\delta{ix}\delta{ly}).
+[HT]^{(b1,b2,jz,kw)}_{ilxy} \mapsto \sum_{ix} \sum_{ly} \rho(H^{\tilde{b1}}_{jilk}T^{\tilde{b2}}_{yzwx}\delta_{ix}\delta_{ly}).
 \label{eqn:cmtp_example_symm}
 \end{equation}
 \noindent Here the original blocks,  $b1$ and $b2$, have been replaced with blocks, $\tilde{b1}$ and $\tilde{b2}$,
@@ -251,7 +251,7 @@ can be connected by symmetry, this should be recognized and taken advantage of.
 \item The algebraic task list is purely symbolic, and the tasks themselves should not be dependent on
 how the tensor data is stored.
 \end{itemize}
-\noindent These principals lead to the following, more specific rules.
+\noindent These principals lead to the following, more specific rules:\\
 
 \noindent \textbf{Rule 1} : Contractions between indexes on the same tensor are
 performed first; this will help reduce the rank of the largest tensor to be stored to
@@ -341,7 +341,7 @@ untransformed blocks are noted on the right. By waiting until the last
 possible moment to apply the index transpositions,
 only one index transposition is required; the swapping of the indexes 2 and 3.
 Furthermore, it enables the program to identify that the $[\tilde{B}\tilde{C}]^{(ip,no)}_{jklm}$,
-obtained in Task 2 (\ref{eqn:ctr_list_t2}) of the previous example task list, can be reused. 
+obtained in Task 2 (\ref{eqn:ctr_list_t2}) of the previous example task list, can be reused.\\ 
  
 \noindent \textbf{Rule 6} : All factors
 arising from symmetry transformations are applied after all necessary

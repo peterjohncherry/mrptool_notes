@@ -59,7 +59,15 @@ specifing algebraic expressions directly via the input file.
 
 \section*{Structural outline}
 \noindent The program is split into three main components; an algebraic manipulator, an FCI
-and tensor contraction library, and a task manager (make figure).\\
+and tensor contraction library, and a task manager.\\
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{prog_structure.jpg}
+\caption{ Basic program structure. }
+\end{center}
+\label{fig:prog_structure}
+\end{figure}
 
 \noindent The algebraic manipulator interprets the expressions defined
 in the input, and restructures these into a number of quantities which are
@@ -85,12 +93,13 @@ totally independently. The FCI library is designed such that it can calculate
 density matrices (and derivatives) of arbitrary order. In a similar vein, the
 tensor library can operate on tensor of arbitrary rank, with each dimension
 being a different size. At present the FCI  library uses the Determinant class
-defined in Bagel. The tensor libraries make use of the SMITH::Tensor class defined in Bagel,
-which in turn makes use of the TiledArray libraries for parallel storage of the data. 
+defined in Bagel~\cite{BAGEL}.
+The tensor libraries make use of the SMITH::Tensor class defined in Bagel,
+which in turn makes use of the TiledArray~\cite{TiledArray} libraries for parallel storage of the data. 
 The routines in the tensor arithmetic library are built using 
-a combination of calls to LAPACK, and the tensor transposition routine defined in
-btas\footnote{ To clarify, whilst btas has some tensor contraction routines, 
-these were found to not be suitable for the current purpose, and are not used.}\\
+a combination of calls to LAPACK~\cite{LAPACK}, and the tensor transposition routine defined in
+TiledArray\footnote{ To clarify, whilst btas has some tensor contraction routines, 
+these were found to not be suitable for the current purpose, and are not used.}.\\
 
 \noindent The final major component of the program is the task translator,
 which faciliates communication between the algebraic manipulator and the 
