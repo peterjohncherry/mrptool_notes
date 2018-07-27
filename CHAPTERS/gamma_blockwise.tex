@@ -1,35 +1,3 @@
-\documentclass[12pt]{article}
-\usepackage[utf8x]{inputenc}
-\usepackage[english]{babel}
-\usepackage[T1]{fontenc}
-\usepackage{color}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{textcomp}
-\usepackage{array}
-\usepackage{booktabs}
-\usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
-\usepackage{longtable}
-\usepackage{calc}
-\usepackage{setspace}
-\usepackage{hhline}
-\usepackage{ifthen}
-\usepackage{lscape}
-\usepackage{pdfpages}
-\usepackage{geometry}
- \geometry{
- a4paper,
- total={170mm,257mm},
- left=20mm,
- top=20mm,
- bottom=20mm,
- right=20mm,
- }
-\usepackage{cite}
-\linespread{1.3}
-
-\begin{document}
-\section{Gamma generator}
 Consider a term
 \begin{equation}
 \sum_{ijkl}\sum_{mnop} \sum_{IJ} \langle I | i^{\dagger}j^{\dagger}klm^{\dagger}n^{\dagger}op | J \rangle c^{M}_{I} c_{J}^{N} Y^{ML}_{ijkl}Z^{NP}_{mnop},
@@ -203,7 +171,7 @@ the blockwise decomposition of the molecular orbital tensors, and the exploitati
 of symmetry which exists within and between different blocks \emph{and}  different CI-sectors,
 are the distinguishing features of the program.
 
-\subsection{ Blockwise handling of terms } 
+\section{ Blockwise handling of terms } 
 \noindent That different the Bra and Ket may have different CI-sectors has
 important ramifications for the program structure, however, before discussing
 these in depth it is necessary to discuss the basics of the task list
@@ -495,4 +463,3 @@ of a perturbed state in terms via interaction of a number of unperturbed states.
 An important consequence of this is that the symmetry of the operator
 representations is determined by the form of the equations from which they are
 obtained, rather than from consideration of the form of operators themselves.
-\end{document}

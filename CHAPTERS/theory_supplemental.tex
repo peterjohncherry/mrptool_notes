@@ -1,27 +1,3 @@
-\documentclass[12pt]{article}
-\usepackage[utf8x]{inputenc}
-\usepackage[english]{babel}
-\usepackage[T1]{fontenc}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{textcomp}
-\usepackage{array}
-\usepackage{pdfpages}
-\usepackage{geometry}
- \geometry{
- a4paper,
- total={170mm,257mm},
- left=15mm,
- top=15mm,
- bottom=15mm,
- right=15mm,
- }
-
-\usepackage{cite}
-\linespread{1.3}
-
-\begin{document}
-\section{ Supplementary material }
 Begin by defining a space $\mathrm{s}$, split into a reference, $\mathrm{p}$, and external, $\mathbf{q}$, space;
 \begin{equation}
 \mathrm{s} = \mathrm{p} + \mathrm{s} = \{ |p\rangle \} \cup \{|q\rangle \}
@@ -314,7 +290,7 @@ Unfortunately, this does not happen here, a fact which will later prove signific
 There is more than one way of handling this issue, but to summarize them properly it is
 worth first discussing the generalized Bloch equation.
 
-\subsection{ Generalized Bloch Equation } 
+\section{ Generalized Bloch Equation } 
 Consider the matrix equation,
 \begin{equation}
 \mathbf{H}\boldsymbol{\Psi} =
@@ -597,7 +573,7 @@ for it to hold it (given the above definitions) it requires that $\mathbf{T}$ is
 which appear in (\ref{eqn:HQP}), and how these approximations impact the accuracy of methods based on
 (\ref{eqn:BGenMSCASPT2}) is an important topic which we return to in due course.
 
-\subsection{ Multistate CASTP2 and Extended Multistate CASPT2 }
+\section{ Multistate CASTP2 and Extended Multistate CASPT2 }
 
 \noindent Multistate methods generally start from the effective Bloch Hamiltonian defined in 
 (\ref{eqn:effective_Bloch}) as 
@@ -698,7 +674,7 @@ the definitions in (\ref{eqn:H_V_definition}) and that in (\ref{eqn:MatToAlgBloc
 connection between this expression and the generalized Bloch equation will hopefully become 
 more apparent.\\
 
-\subsection {MRPT2 energy derivatives}
+\section {MRPT2 energy derivatives}
 \noindent The conditions specified in (\ref{eqn:V_H_are_same_def}) clearly pertain to 
 a very specific situation, but are still often employed as part of a method, albeit an 
 indirect one, of expanding the basis used to describe the wavefunction.\\
@@ -796,5 +772,3 @@ but must be borne in mind. Hereafter, the $XMS$ subscript on $\hat{H}_{0,XMS}$ w
 %  \sum_{kl}X^{p\dagger}\langle m | (\epsilon_{p} - \hat{H}_{0}) | l \rangle X_{l}^{p}
 %+ \sum_{kr}X^{p\dagger}\langle m | (\epsilon_{p} - \hat{H}_{0}) | r \rangle T_{r}^{p}
 %\end{equation*}
-
-\end{document}
