@@ -1,0 +1,68 @@
+To better illustrate the capabilities of the program, 
+consider the following input, which could be used to 
+obtain the T-amplitudes in MS-CASPT2, 
+\definecolor{light-gray}{gray}{0.75}
+\lstset{ frameround=fttt, language=Java, basicstyle=\tiny, backgroundcolor=\color{lightgray}}
+\begin{lstlisting}[label={lst:input}]
+{
+  "title" : "proptool",
+  "frozen" : false,
+  "nfrozenvirt" : 0,
+  "nact" : 4,
+  "nclosed" : 3,
+
+  "variables" : {
+     "factors" : [ { "name" : "shift", "value" :  0.2 } ],
+     "ranges" :  [ { "name" : "states", "range_vec" : [ 0, 1, 2 ] } ,
+                   { "name" : "act" ,   "range_vec" : [ 3, 4, 5, 6 ] } ]
+   },
+
+  "operators" : [
+    { "name"   : "T", "factor" : 1.0, "TimeSymm" : "none", "HermConj" : 0,
+      "idxs"   : ["T0", "T1", "T2", "T3"],
+      "ranges" : [["act", "vir"], ["act", "vir"], ["cor", "act"], ["cor", "act"]],
+      "aops"   : [ 1, 1, 0, 0 ] ,
+      "state dependence" : 2 } ] ,
+
+  "terms" : [
+    { "name" : "X(H-E)T", "type" : "orb_exc_deriv",
+        "brakets" : [
+          { "ops"    : [ { "name" : "X",   "ids" : [ "none" ] },
+                         { "name" : "H-E", "ids" : [ "N" ] },
+                         { "name" : "T",   "ids" : [ "L", "N" ] } ] ,
+                           "bra" : "M", "ket" : "N" }, 
+          { "ops"    : [ { "name" : "X" , "ids" : [ "none" ] },
+                         { "name" : "T" , "ids" : [ "L", "N" ] } ] ,
+                           "factor" : "shift", "bra" : "M", "ket" : "N" } ] },
+   { "name" : "-X(H-E)X", "type" : "orb_exc_deriv",
+     "brakets" : [
+       { "ops"    : [ { "name" : "X",   "ids" : [ "none" ] },
+                      { "name" : "H-E", "ids" : [ "N" ] },
+                      { "name" : "X",   "ids" : [ "none" ] } ] ,
+                        "bra" : "M", "ket" : "N" } ] } ],
+
+  "equations" :  [
+     { "name" : "T_update", "type" : "LinearRM" , "target" : "T", "target indexes" : [ "L", "N" ],
+      "expressions" : [
+         { "name"  : "residual",
+           "terms" : [
+             { "term" : "X(H-E)T", "factor" : "one",
+               "indexes" : [ { "name" : "M", "range" : "states", "sum" : false },
+                             { "name" : "L", "range" : "states", "sum" : false },
+                             { "name" : "N", "range" : "states", "sum" : false } ] },
+             { "term" : "-XT",     "factor" : "shift",
+               "indexes" : [ { "name" : "M", "range" : "states", "sum" : false },
+                             { "name" : "L", "range" : "states", "sum" : false },
+                             { "name" : "N", "range" : "states", "sum" : false } ] } ] },
+         { "name"  : "denominator",
+           "terms" : [
+             { "term" : "X(H-E)X", "factor" : "one",                                                 
+               "indexes" : [ { "name" : "M", "range" : "states", "sum" : false },
+                             { "name" : "L", "range" : "states", "sum" : false },
+                             { "name" : "N", "range" : "states", "sum" : false } ] } ] } ]
+                      
+                      
+   } ]
+}                        
+                         
+\end{lstlisting}         
