@@ -1,4 +1,6 @@
-To better illustrate the capabilities of the program, 
+To better illustrate the capabilities of the program a small example is
+provided to show the input necessary for calculating the T-amplitudes
+in CASPT2. 
 consider the following input, which could be used to 
 obtain the T-amplitudes in MS-CASPT2, 
 \definecolor{light-gray}{gray}{0.75}
@@ -6,7 +8,7 @@ obtain the T-amplitudes in MS-CASPT2,
 \begin{lstlisting}[label={lst:input}]
 {
   "title" : "proptool",
-  "frozen" : false,
+  "nfrozencore" : 0,
   "nfrozenvirt" : 0,
   "nact" : 4,
   "nclosed" : 3,
@@ -60,9 +62,177 @@ obtain the T-amplitudes in MS-CASPT2,
                "indexes" : [ { "name" : "M", "range" : "states", "sum" : false },
                              { "name" : "L", "range" : "states", "sum" : false },
                              { "name" : "N", "range" : "states", "sum" : false } ] } ] } ]
-                      
-                      
    } ]
-}                        
-                         
+}                                                 
 \end{lstlisting}         
+
+\noindent The input makes use of the json format, which is discussed more fully in  \cite{JSON}.
+Admittedly, the interface is currently rather prolix, and will be substantially reduced in complexity
+as the program nears full release. Nonetheless, the above form is useful for demonstrating the capabilities,
+and flexibility, or the program. \\
+
+\noindent Due to the  To explain the above it is best to discuss each section one at a time. First,
+\lstset{ frameround=fttt, language=Java, basicstyle=\tiny, backgroundcolor=\color{lightgray}}
+\begin{lstlisting}[label={lst:casscf}]
+  "frozen" : false,
+  "nfrozenvirt" : 0,
+  "nact" : 4,
+  "nclosed" : 3,
+\end{lstlisting}         
+\noindent These keywords just designate the number of the various kinds of orbitals used in the CASSCF.
+The "\texttt{nfrozencore} and \texttt{nfrozenvirt} specify the number of core or virtual orderings to be "frozen";
+such orbitals are not excited either from or to.\\
+
+\lstset{ frameround=fttt, language=Java, basicstyle=\tiny, backgroundcolor=\color{lightgray}}
+\begin{lstlisting}[label={lst:variables}]
+  "variables" : {
+     "factors" : [ { "name" : "shift", "value" :  0.2 } ],
+     "ranges" :  [ { "name" : "states", "range_vec" : [ 0, 1, 2 ] } ,
+                   { "name" : "act" ,   "range_vec" : [ 3, 4, 5, 6 ] } ,
+                   { "name" : "virt" ,  "range_vec" : [ 7, 8, 9, 10, 11, 12, 13, 14, 15 ] } ]
+   },
+\end{lstlisting}         
+\noindent This section is used to define ranges and variables which may be used in later definitions. For example,
+when \texttt{shift} is specified here to be 0.2 (default units are Hartrees, and currently, this cannot be 
+changed). 
+
+\lstset{ frameround=fttt, language=Java, basicstyle=\tiny, backgroundcolor=\color{lightgray}}
+\begin{lstlisting}[label={lst:operators}]
+  "operators" : [
+    { "name"     : "T",
+      "factor" : 1.0,
+      "TimeSymm" : "none",
+      "HermConj" : true,
+      "idxs"     : ["T0", "T1", "T2", "T3"],
+      "ranges"   : [["act", "vir"], ["act", "vir"], ["cor", "act"], ["cor", "act"]],
+      "aops"     : [ 1, 1, 0, 0 ] ,
+      "state dependence" : 2 } ] ,
+\end{lstlisting}         
+\noindent This section enables the used to define their own operator, and
+specify some of it's symmetries. For example, here \texttt{TimeSymm} and
+\texttt{HermConj} determine whether this operator has time reversal symmetry 
+and whether or not it is Hermitian. The symmetry functions are 
+currently hard coded, but there is the facility for user defined ones
+to be added with relative ease.
+ The \texttt{aops} specifies the ordering of the   
+creation and annihilation operators; 1 is creation, 0 is annihilation.  Here it
+is specified that the T tensor has four indexes. The \texttt{ranges} array specifies the
+orbitals on which the operator acts.  Each subarray in the \texttt{ranges} section
+specifies a different sub range used to divide up the T tensor into blocks.
+For example, in one possible block of the T operator the first index would be
+active, the second index could be virtual, whilst the third and fourth blocks
+would be core.  Note that in the aforementioned \texttt{variables} section the user is
+able to specify the exact orbital indexes to which each range corresponds,
+enabling the user to have very tight control over the block decomposition of
+the tensor, and the ranges on which an operator acts. 
+The \texttt{state dependence} section determines how many state indexes 
+the operator has.
+\lstset{ frameround=fttt, language=Java, basicstyle=\tiny, backgroundcolor=\color{lightgray}}
+\begin{lstlisting}[label={lst:terms}]
+  "terms" : [
+    { "name" : "residual", "type" : "orb_exc_deriv", "Target" : "T'",
+        "brakets" : [
+          { "ops"    : [ { "name" : "T'",   "ids" : [ "none" ], "transform" : "inverse" },
+                         { "name" : "H-E", "ids" : [ "N" ] },
+                         { "name" : "T",   "ids" : [ "L", "N" ] } ] ,
+                           "bra" : "M", "ket" : "N" }, 
+
+          { "ops"    : [ { "name" : "T'" , "ids" : [ "none" ], "transform" : "inverse" },
+                         { "name" : "T" , "ids" : [ "L", "N" ] } ] ,
+                           "factor" : "shift", "bra" : "M", "ket" : "N" } ] },
+
+   { "name" : "-X(H-E)X", "type" : "value", "target" : "T'",
+     "brakets" : [
+       { "ops"    : [ { "name" : "X",   "ids" : [ "none" ] },
+                      { "name" : "H-E", "ids" : [ "N" ] },
+                      { "name" : "X",   "ids" : [ "none" ] } ] ,
+                        "bra" : "M", "ket" : "N" } ] } ],
+\end{lstlisting}         
+The terms section is used to specify which specific terms to be used in later expressions
+which we wish the program to evaluate.  The \texttt{name} is used by the program to
+identify the expression internally, and in printing the results. It must be unique. 
+The \texttt{orb\_exc\_deriv} specifies that the kind of term, in this case, that the partial
+derivative of the terms is taken with respect to the elements of the
+\texttt{T'} tensor as specified in \texttt{Target}.\\
+
+\noindent To clarify things, it is worth considering the \texttt{brakets} array seperately:
+
+\lstset{ frameround=fttt, language=Java, basicstyle=\tiny, backgroundcolor=\color{lightgray}}
+\begin{lstlisting}[label={lst:brakets}]
+"brakets" : [
+  { "ops"    : [ { "name" : "X",   "ids" : [ "none" ] },
+                 { "name" : "H-E", "ids" : [ "N" ] },
+                 { "name" : "T",   "ids" : [ "L", "N" ] } ] ,
+                   "bra" : "M",
+                   "ket" : "N"                          }, 
+  { "ops"    : [ { "name" : "X" , "ids" : [ "none" ] },
+                 { "name" : "T" , "ids" : [ "L", "N" ] } ] ,
+                   "factor" : "shift",
+                   "bra" : "M",
+                   "ket" : "N" } ] 
+\end{lstlisting}         
+The above represents the mathematical term:
+\begin{equation}
+\sum_{T'}
+\langle \Psi_{M} |  \hat{X}_{ijkl} ( \hat{H}-E^{0}_{L} ) \hat{T}^{LN}_{ t_{0}t_{1}t_{2}t_{3} } | \Psi_{N} \rangle + 
+E_{shift}\langle \Psi_{M} |  \hat{X}_{ijkl}  \hat{T}^{LN}_{ t_{0}t_{1}t_{2}t_{3} }| \Psi_{N} \rangle 
+\end{equation}
+\noindent Note that there are no summations specified in the \texttt{brakets} array. 
+The \texttt{ops} specifies the operators used, and \texttt{ids} specifies the names of the state indexes
+for these operators. It is important to note that several operators, or combinations of
+operators with scalar arrays, e.g., "H-E", are predefined in the code. 
+This is necessary for defining the ranges of summations later on, and also to enable indexes on 
+different operators to be tied to one another. For example the first index, $L$, on the T tensor is the same in 
+both brakets. The \texttt{none} indicates that the operator is state independent.
+The \texttt{factor} defines the factor associated by which the braket is multiplied, and this
+defaults to 1.0. The \texttt{Bra} and \texttt{Ket} specify the name of the state index of the Bra and Ket. \\
+
+\lstset{ frameround=fttt, language=Java, basicstyle=\tiny, backgroundcolor=\color{lightgray}}
+\begin{lstlisting}[label={lst:equations}]
+"equations" :  [
+   { "name" : "T_update", "type" : "LinearRM" , "target" : "T", "target indexes" : [ "L", "N" ],
+    "expressions" : [
+       { "name"  : "residual",
+         "terms" : [
+           { "term" : "residual", "factor" : "mone",
+             "indexes" : [ { "name" : "M", "range" : "states", "sum" : true },
+                           { "name" : "L", "range" : "states", "sum" : false },
+                           { "name" : "N", "range" : "states", "sum" : false } ] },
+       { "name"  : "denominator",
+         "terms" : [
+           { "term" : "X(H-E)X", "factor" : "one",                                                 
+             "indexes" : [ { "name" : "M", "range" : "states", "sum" : false },
+                           { "name" : "L", "range" : "states", "sum" : false },
+                           { "name" : "N", "range" : "states", "sum" : false } ] } ] } ]
+    } ]
+  } ]
+\end{lstlisting}         
+The \texttt{equations} section is used to specify what is actually calculated. The above corresponds to
+finding the \texttt{T} which minimizes the following
+\begin{equation}
+\frac{ \Phi_{M} |  \hat{X}_{\Omega} ( \hat{H}-E^{0}_{L}-E_{shift} )  \hat{T}^{LN}_{\Omega'} | \Phi_{N} \rangle } 
+{ \langle \Phi_{N} | \hat{X}^{\dagger}_{\Omega}
+  ( \hat{H}- E^{0}_{M} )
+  \hat{X}_{\Omega'} | \Phi_{M} \rangle}
+\end{equation}
+It should be noted that for reasons of clarity, I have omitted the various transformations and orthogonalizations associated
+with XMS-CASPT2 and the use of internally contracted wavefunctions. Such transformations 
+will be performed by default, and do not impact the input. \\
+
+\noindent The  \texttt{equations} section first specifies the \texttt{type} of equation to be solved, in
+this case \texttt{LinearRM} (linear residual minimization). The type dictates what other keywords must appear.
+Due to the choice of the \texttt{LinearRM} type, it is necessary to specify a \texttt{target} tensor for 
+which we are solving, as well as a \texttt{residual} and \texttt{denominator}. These are two \texttt{expressions}
+which are defined by a list of \texttt{term}s, which were themselves defined by the user in the previous section. 
+It is at this stage that the user specifies the summations over the state indexes which appear in the terms.
+
+\noindent An expression may be composed of multiple different terms even though, in principle, these could be merged.
+However, breaking down the expression into smaller, independent parts facilitates identification of
+quantities which may be reused, and eases control of summations over different state indexes. 
+se terms with the exception that it is also necessary to specify the ranges over
+which the summations on the state indexes are performed.
+
+lists a number of \texttt{expressions},
+in this case \
+ relevant to the equation to
+be solved. the \texttt{
