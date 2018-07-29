@@ -48,13 +48,13 @@ for calculating the T-amplitudes in an MS-CASPT2 calculation :
              { "term" : "X(H-E-Es)T", "factor" : "one",
                "indexes" : [ { "name" : "M", "range" : "states", "sum" : false },
                              { "name" : "L", "range" : "states", "sum" : false },
-                             { "name" : "N", "range" : "states", "sum" : false } ] } ] }
+                             { "name" : "N", "range" : "states", "sum" : true } ] } ] }
          { "name"  : "denominator",
            "terms" : [
              { "term" : "X(H-E)X", "factor" : "one",                                                 
                "indexes" : [ { "name" : "M", "range" : "states", "sum" : false },
                              { "name" : "L", "range" : "states", "sum" : false },
-                             { "name" : "N", "range" : "states", "sum" : false } ] } ] } ]
+                             { "name" : "N", "range" : "states", "sum" : true } ] } ] } ]
    } ]
 }                                                 
 \end{lstlisting}         

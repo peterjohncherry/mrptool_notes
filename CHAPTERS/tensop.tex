@@ -1,6 +1,6 @@
 \section{Tensor Decomposition}
 \noindent In most cases the ranges of the molecular orbital indexes can be split into a
-number of different subranges, which enable us to define each of the operator
+number of different subranges. This enables definition of each of the operator
 tensors as the sum of a number of different blocks, each one associated with a
 different combination of these subranges. Decomposing the tensors in this
 manner reduces the maximum size of the data structure the computer has to deal
@@ -61,9 +61,8 @@ referring to tensor blocks, never the full operators themselves.
 
 \section {Block symmetry and sparsity }
 
-\noindent Some blocks of the tensor can be obtained by transforming other
-blocks. How the program exploits this is best explained through a series of
-examples.\\ 
+\noindent Some blocks of the tensor can be obtained through transformation of others.
+How the program exploits this is best explained with a number of examples.\\ 
 
 \noindent Consider two tensor blocks $Q^{b1}$ and $Q^{b2}$ between which there is the relation
 \begin{equation}
@@ -87,44 +86,45 @@ This tensor block is large, and $r^{\nu}$ has far greater extent than $r^{\chi}$
 
 \noindent For example, consider calculation of elements of a tensor $\mathbf{X}$ from contractions between tensors $\mathbf{Q}$ and $\mathbf{R}$;
 \begin{equation}
-X_{mn} = \sum_{ijkl} Q^{b1}_{ijkl} R_{ijklmn}+ \sum_{ijkl} R^{b3}_{ijlkmn}Q^{b2}_{ijkl}.
+X_{mn} = \sum_{ijkl} Q^{b1}_{ijkl} R^{b3}_{ijklmn}+ \sum_{ijkl} Q^{b2}_{ijkl}R^{b3}_{ijlkmn}.
 \label{eqn:Xexample}
 \end{equation} 
-Note that the $l$ and $k$ indexes on $R$ have been interchanged. \\
+Note that the $l$ and $k$ indexes on $R^{b3}$ have been interchanged. \\
 
 \noindent A straight forward way to calculate this is by the following two tasks:
 \begin{equation*}
-\text{task A1\ : \ \ \  \ } X_{mn} = \sum_{ijkl}  Q^{b1}_{ijkl}R^{b3}_{ijklmn},
+\text{Task A1\ : \ \ \  \ } X_{mn} = \sum_{ijkl}  Q^{b1}_{ijkl}R^{b3}_{ijklmn},
 \end{equation*}                                                             
 \begin{equation*}                                                           
-\text{task A2\ : \ \ \  \ } X_{mn} += \sum_{ijkl} Q^{b2}_{ijlk}R^{b3}_{ijklmn}.
+\text{Task A2\ : \ \ \  \ } X_{mn} += \sum_{ijkl} Q^{b2}_{ijlk}R^{b3}_{ijklmn}.
 \end{equation*}
 where the indexes on $Q^{b2}$ have been swapped to avoid the swapping the indexes on $R$.
 Applying symmetry we end up with three tasks, but don't need to store $Q^{b2}$, i.e., 
 \begin{equation*}
-\text{task B1\ : \ \ \  \ } X_{mn} = \sum_{ijkl}  Q^{b1}_{ijkl}R^{b3}_{ijklmn}
+\text{Task B1\ : \ \ \  \ } X_{mn} = \sum_{ijkl}  Q^{b1}_{ijkl}R^{b3}_{ijklmn}
 \end{equation*}                                                             
 \begin{equation*}                                                           
-\text{task B2\ : \ \ \  \ } Q^{b2}_{ijkl} = - (\text{swap}(k,l)[ Q^{b1}_{ijkl}])
+\text{Task B2\ : \ \ \  \ } Q^{b2}_{ijkl} = - (\text{swap}(k,l)[ Q^{b1}_{ijkl}])
 \end{equation*}
 \begin{equation*}                                                           
-\text{task B3\ : \ \ \  \ } X_{mn} += \sum_{ijkl} Q^{b2}_{ijkl}R^{b3}_{ijlkmn}
+\text{Task B3\ : \ \ \  \ } X_{mn} += \sum_{ijkl} Q^{b2}_{ijkl}R^{b3}_{ijlkmn}
 \end{equation*}
 However, this saves on storage, not computation time. A better approach would be
 \begin{equation*}                                                           
-\text{task D1\ : \ \ \  \ } A^{b1}_{ijkl} =  Q^{b1}_{ijkl} + \rho(\text{swap}(k,l)[Q^{b1}_{ijkl}] ) 
+\text{Task D1\ : \ \ \  \ } A^{b1}_{ijkl} =  Q^{b1}_{ijkl} + \rho(\text{swap}(k,l)[Q^{b1}_{ijkl}] ) 
 \end{equation*}
 \begin{equation*}                                                           
-\text{task D2\ : \ \ \  \ } X_{mn} = \sum_{ijkl} A^{b1}_{ijkl}R^{b3}_{ijklmn}.
+\text{Task D2\ : \ \ \  \ } X_{mn} = \sum_{ijkl} A^{b1}_{ijkl}R^{b3}_{ijklmn}.
 \end{equation*}
 This could be improved even further to
 \begin{equation*}                                                           
-\text{task E1\ : \ \ \  \ } X_{mn} = \sum_{ijkl} (1+\rho) Q^{b1}_{ijkl}R^{b3}_{ijklmn}.
+\text{Task E1\ : \ \ \  \ } X_{mn} = \sum_{ijkl} (1+\rho) Q^{b1}_{ijkl}R^{b3}_{ijklmn}.
 \end{equation*}
-\noindent Getting to this final task list, containing just task E1, can be
+\noindent Getting to this final task list, containing just Task E1, can be
 extremely beneficial, not only because we can often replace several transposes
 and summations with a single scalar multiplication, but also because if $\rho =
--1$, then no computation needs to be performed at all.\\  
+-1$, then no computation needs to be performed at all. A key feature of the program is
+that it has the ability to recognise this, and skip the relevant operations.\\  
 
 \noindent To go from tasks $A1$ and $A2$ to tasks $D1$ and $D2$ all that is
 required is that whenever the program wants the data for tensor block $Q^{b2}$,
@@ -164,7 +164,7 @@ written such that multiple transformations can be applied to the same block; in 
 there is a transpose operation, followed by the transformation into the minimal set 
 associated with $\lambda$. Note that actual data  corresponding to the tensor representations
 (i.e., the large, many index arrays) is not being transformed, only the algebraic objects 
-which represent this data using the task list construction.
+used in the task list construction.
 
 \section{MultiTensOp } 
 \noindent Another important matter is combinations of multiple operators, e.g.,
@@ -191,7 +191,7 @@ or different tensors,
 [HT]^{(b1,b2,jz,kw)}_{ilxy} = \sum_{jz} \sum_{kw} H^{b1}_{ijkl}T^{b2}_{wxyz}\delta_{jz}\delta_{kw}.
 \label{eqn:cmtp_example}
 \end{equation}
-These correspond to the CtrTensOp object; note that once the contraction between $H$ and $T$ has occurred, they
+These correspond to the \emph{CtrTensOp} object; note that once the contraction between $H$ and $T$ has occurred, they
 are usually inextricable (short of performing some potentially expensive decomposition), and so 
 are treated just like a normal tensor block. In terms involving two
 tensors which are not contracted all operations on the product tensor should be decomposed into operations of these 
@@ -212,7 +212,7 @@ from the minimal set, the indexes reshuffled, and a factor $\rho$ associated wit
 \noindent In most contexts, the tensor contractions are performed using a recursive sequence of binary contractions. For example,
 \begin{equation}
 A_{kwzm} = 
-[\tilde{B}\tilde{C}\tilde{D}]^{(jy,lx,no,pi)}_{kwzm} = \sum_{jy}\sum_{no}\sum_{lx}\sum_{ip} B_{ijkl}C_{mnop}D_{wxyz} \delta_{jy} \delta_{no} \delta_{lx}\delta_{ip}
+[\tilde{B}\tilde{C}\tilde{D}]^{(jy,lx,no,pi)}_{kwzm} = \sum_{jy}\sum_{no}\sum_{lx}\sum_{ip} B_{ijkl}C_{mnop}D_{wxyz} \delta_{jy} \delta_{no} \delta_{lx}\delta_{ip}.
 \end{equation}
 The far LHS is just the output tensor. 
 The term $[\tilde{B}\tilde{C}\tilde{D}]^{(jy,lx,no,pi)}_{kwzm}$, indicates that the tensor blocks
@@ -243,7 +243,7 @@ The tensor $A_{kwzm}$ would be obtained through the following sequence of operat
 \label{eqn:ctr_list_t4}
 \end{equation}
 A task list for performing the necessary contractions, transpositions, multiplications, etc.,
-is generated from the information stored in the CtrMultiTensOp corresponding to $[BCD]^{(jy,lx,no,pi)}_{kwzm}$.
+is generated from the information stored in the \emph{CtrMultiTensOp} corresponding to $[\tilde{B}\tilde{C}\tilde{D}]^{(jy,lx,no,pi)}_{kwzm}$.
 The design of the algorithm for generating the task list is motivated by five basic principles: 
 \begin{itemize}
 \item Avoid storing or multiplying large tensor blocks. The size of a tensor block
@@ -277,7 +277,7 @@ and $[\tilde{B}\tilde{C}\tilde{D}]^{(kw,lz,no,pi)}_{jxym}$ will always perform t
 $(n,o)$ first, followed by the contraction over $(i,p)$. This has two 
 advantages; first the "intermediate" tensor (intermediate in the sense 
 it is not the result we seek), $[\tilde{B}\tilde{C}]^{(ip,no)}_{jklm}$ can be reused, and the first two tasks need not be
-repeated. Furthermore, this consistent ordering facilitates merging of contraction lists.\\
+repeated. Furthermore, this consistent ordering facilitates merging of task lists.\\
 
 \noindent \textbf{Rule 3} : A canonical ordering is defined for the indexes and tensors, and
 any transpositions are defined relative to this canonical order. For example, tensor
@@ -298,7 +298,7 @@ which reduces to a factor when using real arithmetic.}, and an index
 transposition.  Rather than transposing the indexes of the tensor blocks, and
 then executing the task list, the indexes over which the contractions are
 performed are altered to reflect the index transpositions, and the actual
-index transpositions are performed as the final stage of the task list, i.e.,
+index transpositions are performed as the final step of the task list, i.e.,
 after all contractions have been performed. To illustrate why
 this approach is taken please consider the following example, suppose we would
 like to calculate

@@ -62,7 +62,7 @@ with indexes  $X = \{x_{0},...,x_{n}\}$ are occupied can be written
 where $X$ is a set of molecular orbital indexes $\{x_{0},...,x_{n}\}$,
 $\epsilon$ is the nth rank Levi-Cevita
 tensor, $\zeta$ is a member of the symmetric group $S_{X}$,
-consisting of all possible permutations on the set of indexes $X$.
+consisting of all possible permutations on the set of indexes $X$.\\
 
 \noindent In CI based methods it is common to use the fact that 
 each distinct ordered set, $X$, of indexes corresponds to a different 
@@ -136,7 +136,7 @@ of CI-sectors with different numbers of occupied $\alpha$ and $\beta$ orbitals
 in the non-relativistic framework.  However, even if they do,
 the decomposition of the active space makes it is possible to handle
 this interaction in a piecewise manner, i.e., deal with interactions
-between two CI-sectors at a time.
+between two CI-sectors at a time.\\
 %\emph{Note : Please correct me if I am wrong,
 %but I interpret relativistic CI as a kind of A.S.D., albeit with very different rules 
 %governing the interactions between the different sectors. I realize the implementations
@@ -148,16 +148,16 @@ as a block of an RDM can being defined by the CI-sectors to
 which the Bra and Ket belong. Using the above decomposition of the 
 active space as an example;
 \begin{equation*}
-\sum_{J}^{ \in \mathcal{F}_{all} }
-\sum_{I}^{ \in \mathcal{F}_{all} } \langle I | i^{\dagger}j^{\dagger}m^{\dagger}n^{\dagger}klop | J \rangle c^{M}_{I} c_{J}^{N}
+\sum_{IJ}^{ \in \mathcal{F}_{all} }
+\langle I | i^{\dagger}j^{\dagger}m^{\dagger}n^{\dagger}klop | J \rangle c^{M}_{I} c_{J}^{N}
 \end{equation*}
 \begin{equation*}
-\sum^{ \in \mathcal{F}_{all} }_{ \mathcal{F}_{sub} }
-\sum^{ \in \mathcal{F}_{all} }_{ \mathcal{F}_{sub} }
-\sum^{ \in \mathcal{F}_{sub}}_{I}
-\sum^{ \in \mathcal{F}_{sub}}_{J} \langle I | i^{\dagger}j^{\dagger}m^{\dagger}n^{\dagger}klop | J \rangle c^{M}_{I} c_{J}^{N},
+=\sum^{ \in \mathcal{F}_{all} }_{ \mathcal{F}_{sub},\mathcal{F'}_{sub} }
+\sum^{ \in \mathcal{F'}_{sub}}_{I}
+\sum^{ \in \mathcal{F}_{sub}}_{J}
+ \langle I | i^{\dagger}j^{\dagger}m^{\dagger}n^{\dagger}klop | J \rangle c^{M}_{I} c_{J}^{N},
 \end{equation*}
-\noindent where $\mathcal{F}_{sub}$ is one of the sub-spaces
+\noindent where $\mathcal{F}_{sub}$ is one of the sub-spaces, or CI-sectors,
 into which the total Fock space $\mathcal{F}_{all}$ has been decomposed.\\
 
 \noindent Unfortunately, this decomposition brings with it a number of
@@ -185,7 +185,7 @@ A_{kwzm} =
 [\tilde{B}\tilde{C}\tilde{D}]^{(jy,lx,no,pi)}_{kwzm} = \sum_{jy}\sum_{no}\sum_{lx}\sum_{ip} B_{ijkl}C_{mnop}D_{wxyz} \delta_{jy} \delta_{no} \delta_{lx}\delta_{ip}.
 \end{equation}
 
-\noindent  The construction of this "contraction task list" (referred to as \emph{A\_compute\_list} in the code, 
+\noindent  The construction of this "contraction task list" (referred to as \emph{A\_compute\_list} in the code), 
 is effectively independent from the task list to be discussed now, which concerns determination of which
 contracted tensors, e.g., which $A_{kwzm}$, that need to be calculated in order to obtain the expectation value
 or derivative.\\

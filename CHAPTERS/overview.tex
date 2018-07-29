@@ -1,12 +1,12 @@
-The program is intended to help with evaluation of the many index expressions
-which arise in multi-reference perturbation theory.  Essentially, it aims to
-evaluate one of the following three kinds of expressions, the simplest of which
-is
+The program is intended to aid calculation of properties using multi-reference perturbation theory,
+and to provide a computationally efficient means of handling the very large data structures 
+and complex expressions associated with such methods. Essentially, this involves
+having a generic interface for evaluating expressions of the form
 \begin{equation}
 \langle M | \hat{X} \hat{Y} ... | N \rangle,
 \label{eqn:basic}
 \end{equation}
-\noindent here $\hat{X}$ and $\hat{Y}$ are some arbitrary operators, and $| N
+\noindent where $\hat{X}$ and $\hat{Y}$ are some arbitrary operators, and $| N
 \rangle$  is a multireference wavefunction represented as a linear combination
 of determinants, $|I\rangle $;
 \begin{equation}
@@ -65,7 +65,7 @@ Bagel~\cite{BAGEL} code.
 \section{Structural outline}
 \noindent The program is split into three main components; an algebraic manipulator, an FCI
 iand linear algebra library (mainly consisting of routines for performing tensor contractions),
-and a task translation module for facilitating communication between .\\
+and a task translation module for facilitating communication between these two components.\\
 
 \begin{figure}[!ht]
 \begin{center}
@@ -78,7 +78,7 @@ The intention is that each component, with the exception of the driver, function
 \end{figure}
 
 \noindent The algebraic manipulator interprets the expressions defined
-in the input, and restructures these into a number of quantities which are
+in the input, and restructures them into a number of quantities which are
 more suited to computational evaluation. To accomplish this the
 algebraic manipulator makes extensive use of the commutation
 relations of the creation and annihilation operators, as well as the physical
@@ -94,9 +94,9 @@ task list do not in any way specify what kind of data structures need to
 be used to store the quantities necessary for their evaluation.\\
 
 \noindent The FCI and tensor libraries contain generic routines for calculating
-density matrices and their derivatives, and performing tensor contractions (and
-other various tensor manipulations). The tensor and FCI library are completely
-distinct from the algebraic manipulator, and operate totally independently. The
+density matrices and their derivatives, and performing tensor contractions and
+various other tensor manipulations. The tensor and FCI library are completely
+seperate from the symbolic algebraic manipulator, and operate totally independently. The
 routines within the FCI library have a recursive structure, which 
 enables calculation of density matrices (and
 derivatives) of arbitrary order. In a similar vein, the tensor library can
@@ -107,7 +107,7 @@ defined in Bagel, which in turn makes use of the TiledArray~\cite{TiledArray}
 libraries for parallel storage of the data.  The routines in the tensor
 arithmetic library are built using a combination of calls to
 LAPACK~\cite{LAPACK}, and the tensor transposition routine defined in
-TiledArray\footnote{ To clarify, whilst btas has some tensor contraction
+TiledArray\footnote{ To clarify, whilst TiledArray has some tensor contraction
 routines, these were found to not be suitable for the current purpose, and are
 not used.}.\\
 
@@ -152,12 +152,10 @@ may correspond to quantities such as
 information regarding how they relate to one another and the quantity requested by the user.
 In a single instance of the \emph{expression} class corresponding to (\ref{eqn:Hylleras}),
 the values of $L$ and $M$  would be set, whilst the range of
-summation over $N$ would be defined. Note that unlike the equation the expression
-contains no information about what the expression should be equal to.
-Typically, an \emph{equation} will contain many \emph{expressions}, but
+summation over $N$ would be defined. Typically, an \emph{equation} will contain many \emph{expressions}, but
 these will only differ from one another by the values of the indices, or the 
-constraints placed on the ranges of summations. The motivation for this is to aid in parallelization;
-as seperate expressions may be evaluated entirely independently from one another.\\
+constraints placed on the ranges of summations. This is to aid in parallelization;
+the intention being that seperate expressions may be evaluated entirely independently from one another.\\
 
 \noindent Each \emph{expression} is further broken down into a number of \emph{term}s.
 \emph{Terms} differ from \emph{expressions} in that any state index summation in
