@@ -70,10 +70,10 @@ are unlikely to change.\\
 
 \noindent The input makes use of the json format, which is discussed more fully in  \cite{JSON}.
 Admittedly, the interface is currently rather prolix, and will be substantially reduced in complexity
-as the program nears full release. Nonetheless, the above form is useful for demonstrating the capabilities,
-and flexibility, or the program. \\
+as the program nears full release. Nonetheless, the above form is useful for demonstrating the capabilities
+of the program. \\
 
-\noindent Due to the  To explain the above it is best to discuss each section one at a time. First,
+\noindent To explain the above it is best to discuss each section one at a time. First,
 \lstset{ frameround=fttt, language=Java, basicstyle=\tiny, backgroundcolor=\color{lightgray}}
 \begin{lstlisting}[label={lst:casscf}]
   "frozen" : false,
@@ -110,15 +110,15 @@ changed).
       "aops"     : [ 1, 1, 0, 0 ] ,
       "state dependence" : 2 } ] ,
 \end{lstlisting}         
-\noindent This section enables the used to define their own operator, and
-specify some of it's symmetries. For example, here \texttt{TimeSymm} and
+\noindent This section enables the user to define their own operator, and
+specify some of its symmetries. For example, here \texttt{TimeSymm} and
 \texttt{HermConj} determine whether this operator has time reversal symmetry 
 and whether or not it is Hermitian. The symmetry functions are 
 currently hard coded, but there is the facility for user defined ones
 to be added with relative ease.
  The \texttt{aops} specifies the ordering of the   
 creation and annihilation operators; 1 is creation, 0 is annihilation.  Here it
-is specified that the T tensor has four indexes. The \texttt{ranges} array specifies the
+is specified that the T tensor has four indices. The \texttt{ranges} array specifies the
 orbitals on which the operator acts.  Each subarray in the \texttt{ranges} section
 specifies a different sub range used to divide up the T tensor into blocks.
 For example, in one possible block of the T operator the first index would be
@@ -150,12 +150,11 @@ the operator has.
                       { "name" : "X",   "ids" : [ "none" ] } ] ,
                         "bra" : "M", "ket" : "N" } ] } ],
 \end{lstlisting}         
-The terms section is used to specify which specific terms to be used in later expressions
-which we wish the program to evaluate.  The \texttt{name} is used by the program to
+The terms section defines quantities to facilitate construct the expressions
+the user wishes the program to evaluate.  The \texttt{name} is used by the program to
 identify the expression internally, and in printing the results. It must be unique. 
-The \texttt{orb\_exc\_deriv} specifies that the kind of term, in this case, that the partial
-derivative of the terms is taken with respect to the elements of the
-\texttt{T'} tensor as specified in \texttt{Target}.\\
+The \texttt{type : orb\_exc\_deriv} specifies the kind of term;  in this case the partial
+derivative of the terms is taken with respect to the elements of the tensor specified by \texttt{Target : T'}.\\
 
 \noindent To clarify things, it is worth considering the \texttt{brakets} array seperately:
 

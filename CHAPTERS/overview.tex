@@ -1,6 +1,6 @@
 The program is intended to help with evaluation of the many index expressions
-which arise in multi-reference pertrbation theory.  Essentially, it aims to
-evaluate one of the follwing three kinds of expressions, the simplest of which
+which arise in multi-reference perturbation theory.  Essentially, it aims to
+evaluate one of the following three kinds of expressions, the simplest of which
 is
 \begin{equation}
 \langle M | \hat{X} \hat{Y} ... | N \rangle,
@@ -32,7 +32,7 @@ molecular orbitals. \\
 c^{N}_{J}
 \label{eqn:ci_derivative}
 \end{equation}
-\noindent In a simlar vein, it is possible to expressions of form:
+\noindent In a similar vein, it is possible to evaluate expressions of form:
 \begin{equation*}
 \sum_{\substack{ x_{1}x_{2}...\\ y_{1}y_{2}... \\ ...}} X_{x_{1}x_{2}...} Y_{y_{1}y_{2}...} ...
 \sum_{\Omega}
@@ -55,7 +55,7 @@ virtual space.\\
 
 \noindent The program is intended to be flexible; and instead of asking for
 specific perturbation theories or properties, the user has the option of
-specifing algebraic expressions directly via the input file.
+specifying algebraic expressions directly via the input file.
 
 \section*{Structural outline}
 \noindent The program is split into three main components; an algebraic manipulator, an FCI
@@ -90,10 +90,10 @@ be used to store the quantities necessary for their evaluation.\\
 \noindent The FCI and tensor libraries contain generic routines for
 calculating density matrices and their derivatives, and performing tensor
 contractions (and other various tensor manipulations). The tensor and FCI
-library are completely disctinct from the algebraic manipulator, and operate
+library are completely distinct from the algebraic manipulator, and operate
 totally independently. The FCI library is designed such that it can calculate
 density matrices (and derivatives) of arbitrary order. In a similar vein, the
-tensor library can operate on tensor of arbitrary rank, with each dimension
+tensor library can operate on tensors of arbitrary order, with each dimension
 being a different size. At present the FCI  library uses the Determinant class
 defined in Bagel~\cite{BAGEL}.
 The tensor libraries make use of the SMITH::Tensor class defined in Bagel,
@@ -106,7 +106,7 @@ these were found to not be suitable for the current purpose, and are not used.}.
 \noindent The final major component of the program is the task translator,
 which faciliates communication between the algebraic manipulator and the 
 FCI and tensor libraries. This is necessary, as
-the neither the arithmetic component has now knowledge of the classes used in
+neither the arithmetic component has knowledge of the classes used in
 the algebraic manipulator, and vice versa. Whilst this has complicated the
 design slightly, it should enable greater portability, as well as making the
 program substantially easier to extend and upgrade.\\ 
@@ -117,7 +117,7 @@ input reading, and some initialization. However, whilst this component is practi
 important, and not particularly small, it is rather simple, and not of
 interest, so I will not discuss it significantly.
 
-\section*{ Specific components}
+\section*{Specific components}
 The functioning of the program is best explained by example. In the following,
 use of italicized words indicate that word is a class defined in the program.
 The "highest level" class is the \emph{equation}, which could be something like 
@@ -158,9 +158,9 @@ requires two:
 \langle M | \hat{E}^{\dagger}_{\Omega} \hat{H} | L  \rangle  
 \label{eqn:Hylleras2}
 \end{equation}
-\noindent Without this seperation (\ref{eqn:Hylleras2}) would be summed over $N$ times,
+\noindent Without this separation (\ref{eqn:Hylleras2}) would be summed over $N$ times,
 despite the fact $N$ does not occur. 
-Whilst this constraints seems needless and annoying there are justifications for them stemming
+Whilst this constraint seems needless and annoying there are justifications for them stemming
 from the strategies, to be elaborated upon later in this document, used to merge different \emph{term}s together. \\ 
 
 \noindent Each \emph{term} is further broken down into a list of \emph{braket}s. The \emph{term} 
@@ -184,15 +184,15 @@ lists associated with different \emph{term}s together, though not the
 typically it is useful to store and evaluate \emph{term}s independently.\\
 
 \noindent The remaining fundamental classes are the \emph{TensOps}, which contain
-information regarding the second-quatized presentation of the operators, e.g.,
+information regarding the second-quantized presentation of the operators, e.g.,
 the tensor $\mathbf{H}$, with elements $H_{ijkl}$, where $i, j, k$ and $l$ are
 molecular orbital indices. And the \emph{StatesInfo}, \emph{CIVecInfo}
 classes, which contains information about which ci-sectors are used to represent the 
 wavefunction, and which orbitals were used to construct these ci-sectors,  respectively.\\
 
-\noindent The above describe components are the targets upon which the 
+\noindent The above described components are the targets upon which the 
 algebraic manipulation routines act to generate the algebraic task list.
-I shall now describe the proceedure, and introduce further classes as necessary.\\
+I shall now describe the procedure, and introduce further classes as necessary.\\
 
 \noindent It is important to note that due to the nature of the program I shall not describe the
 program in the order in which it is executed, but instead start from the simplest operations it

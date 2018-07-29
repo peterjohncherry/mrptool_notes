@@ -128,15 +128,15 @@ F^{CAS}_{1,2} = \{ X | \wedge (X^{a}_{\mu} \subset P_{\mu}) \wedge ( \text{card}
 X = X^{c} \cup X^{a}_{\mu} \cup X^{a}_{\nu}.
 \end{equation*}
 \noindent I shall hereafter refer to these subspaces of $F^{CAS}$ as
-ci-sectors (and in specific cases, spin-sectors). Decomposing the active space in
-this manner has a number of benefits, as the different ci-sectors may not interact,
+CI-sectors (and in specific cases, spin-sectors). Decomposing the active space in
+this manner has a number of benefits, as the different CI-sectors may not interact,
 or have their interaction limited in some way.
 The most prominent example of this is the non-interaction
-of ci-sectors with different numbers of occupied $\alpha$ and $\beta$ orbitals 
+of CI-sectors with different numbers of occupied $\alpha$ and $\beta$ orbitals 
 in the non-relativistic framework.  However, even if they do,
 the decomposition of the active space makes it is possible to handle
-this interaction a piece wise manner, i.e., deal with interactions
-between two ci-sectors at a time.
+this interaction in a piecewise manner, i.e., deal with interactions
+between two CI-sectors at a time.
 %\emph{Note : Please correct me if I am wrong,
 %but I interpret relativistic CI as a kind of A.S.D., albeit with very different rules 
 %governing the interactions between the different sectors. I realize the implementations
@@ -172,7 +172,7 @@ of symmetry which exists within and between different blocks \emph{and}  differe
 are the distinguishing features of the program.
 
 \section{ Blockwise handling of terms } 
-\noindent That different the Bra and Ket may have different CI-sectors has
+\noindent That different Bra and Ket may have different CI-sectors has
 important ramifications for the program structure, however, before discussing
 these in depth it is necessary to discuss the basics of the task list
 construction.\\
@@ -249,7 +249,7 @@ smaller than the other subranges, such as those corresponding to core, $r^{c}$, 
 the commutation relations of the creation and annihilation operators, all of
 these new terms will be of lower rank than the original.  This fact, combined
 with the range constraints and elimination of terms means that the increase
-number of computational tasks to be performed is generally well worth it.\\  
+in the number of computational tasks to be performed is generally well worth it.\\  
 
 \noindent Perhaps most importantly of all this means calculations
 can be done in a piece-wise fashion, treating only one combination of CI-sectors
@@ -257,13 +257,13 @@ at a time. This is particularly useful when calculating expressions requiring re
 \begin{equation}
 \Gamma^{I}_{ijklmn}\sum_{J}\langle I | i^{\dagger}j^{\dagger}m^{\dagger}n^{\dagger}opkl | J \rangle c_{J},
 \end{equation}
-which due to the lack of a summation over one of the CI-indexes, $I$, can prove extremely large. 
-could prove highly problematic for implementations of energy derivative expressions in the
+which, due to the lack of a summation over one of the CI-indexes, $I$, can prove extremely large. 
+This could prove highly problematic for implementations of energy derivative expressions in the
 relativistic framework; the treatment of $\alpha$ and $\beta$ electrons effectively doubles
 the size of the active space. However, the block decomposition of molecular orbital tensors,
 the decomposition of the active space, and the separation of blocks into
-a real and imaginary components, ensures that the peak memory requirements of the 
-calculations need not exceed those for similar expressions in a non-relativistic framework.\\
+real and imaginary components, ensures that the peak memory requirements of the 
+calculations need not drastically exceed those for similar expressions in a non-relativistic framework.\\
 
 \noindent A disadvantage is that the algebraic operations of
 rearranging the tensors must be performed for every possible block, of which
@@ -286,7 +286,7 @@ are chosen and generated, it is necessary to discuss the implementation of symme
 incorporated at the stage of algebraic manipulation, and precedes the task list
 construction, i.e., it is only after all expressions have been rewritten to
 involve some minimal set of distinct terms that the task list is generated.
-Thus if two terms are equivalent, one will of these terms will never appear at
+Thus if two terms are equivalent, one of these terms will never appear at
 any stage of the final task list.  This is primarily to facilitate the
 identification of terms which can be merged or reused (to save memory), and
 terms which can be completely separated (to facilitate parallelization).\\
@@ -349,7 +349,7 @@ substitution $|K\rangle = |\overline{I}\rangle$, and the Hermitian conjugation
 operation applied to $\hat{T}$.\\
 
 \noindent This is because transformations of the operator, such as inversion
-and time-reversal, are fundamentally different to transformations of to the
+and time-reversal, are fundamentally different to transformations of the
 representation of an operator in the molecular orbital basis, e.g., mapping
 $T_{ijkl}^{b1} \rightarrow T_{klij}^{b2} $. Transformations to the operator
 itself will impact the ranges on which the creation and annihilation operators
@@ -440,7 +440,7 @@ molecular orbital index ranges which define block $b$. Similarly, $\overline{L}$
 and  $\overline{M}$ are the indexes of the states which are Kramers pairs of
 $L$ and $M$ respectively.\\
 
-\noindent Finally, and example of CI-sector symmetry would be
+\noindent Finally, an example of CI-sector symmetry would be
 \begin{equation*} 
 \mathbf{c}_{K}^{P} =  -\boldsymbol{\sigma_{y,2\times 2}}\mathbf{c}_{J}^{M*}, 
 |K\rangle =  |\overline{J}\rangle, 
