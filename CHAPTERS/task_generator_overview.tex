@@ -90,37 +90,34 @@ confined to evaluation of linear combinations of terms with one of the following
 \noindent and these distinctions do not impact the initial discussion.}.\\
 
 \noindent The algebraic manipulator accomplishes this by performing the operations as outlined in figure
-% \ref{fig:alg_manip_overview}.
+\ref{fig:alg_manip_overview}. Note that both the $\mathbf{\gamma}$ tensors
+and the tensors used to construct the $\mathbf{A}$ tensors are split up into blocks, and each block 
+of the $\mathbf{\gamma}$ tensor corresponds to a different task list.
 
-\noindent Chapter 5 focuses on the machinery (called the "gamma generator") for chosing the form of the series (\ref{eqn:A_list}),
-whilst Chapter 4 focuses on evaluation of terms contained therein. The reason for this seemingly backwards order is that
-the decisions made in the former and wholly dependent on the factors governing the 
-efficiency of the task lists generated in the latter.\\
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[width=0.6\textwidth]{alg_manip_over.png}
+\caption{ Outline of the algebraic manipulator. }
+\end{center}
+\label{fig:alg_manip_overview}
+\end{figure}
 
-However, we want blocks; 
-1) Identify unique tensor blocks.
+\noindent Chapter 5 focuses on the machinery (called the "gamma generator") for
+chosing the the series of form (\ref{eqn:A_list}). Chapter 4 focuses on
+evaluation of terms contained therein. The reason for this seemingly backwards
+order is that the decisions made in the former and wholly dependent on the
+factors governing the efficiency of the task lists generated in the latter.\\
 
-2) Feed each block into gamma task list generator -> generates A and gammas block list.
-
-3) Merge all gamma task lists generated.
-
-3) Construst A task lists for all gamma blocks.
-
-4) Begin loop over gamma blocks. 
-
-5) Identify required mo tensor blocks. 
-
-6) Execute A task list to obtain all A associated with a given gamma block.
-
-7) Calculate blocks of gammas. 
-
-8) Contract gamma block  with A and save result.
-
-9) Throw away information which will not be needed by later iterations. 
-
-10) Cycle loop until out of gamma blocks.
-
-11) Combine into final result.
-
-
-
+%However, we want blocks; 
+%1) Identify unique tensor blocks.
+%2) Feed each block into gamma task list generator -> generates A and gammas block list.
+%3) Merge all gamma task lists generated.
+%3) Construst A task lists for all gamma blocks.
+%4) Begin loop over gamma blocks. 
+%5) Identify required mo tensor blocks. 
+%6) Execute A task list to obtain all A associated with a given gamma block.
+%7) Calculate blocks of gammas. 
+%8) Contract gamma block  with A and save result.
+%9) Throw away information which will not be needed by later iterations. 
+%10) Cycle loop until out of gamma blocks.
+%11) Combine into final result.
