@@ -1,26 +1,30 @@
-\noindent The introduction section illustrated how the input is broken down to yield a number of smaller and more manageable \emph{terms}, 
-generally corresponding to a single braket. Each of these terms is fed into the algebraic manipulator. This generates a set of instructions for
-evaluating this term, which are the task translator then converts into calls to the FCI and linear algebra routines. Construction
-of this task list is split up into two major parts; the tensor contraction task list generator, and the 
-"gamma list" generator. Before these individual components are discussed in detail it is necessary to discuss the qualities 
-the final task list should possess, and what distinguishes and motivates the current approach. \\
+\noindent The introduction section illustrated how the input is broken down to
+yield a number of smaller and more manageable \emph{terms}, generally
+corresponding to a single braket. Each of these terms is fed into the algebraic
+manipulator. This component of the program generates a set of instructions
+for evaluating this term, which the task translator then converts into calls to the FCI
+and linear algebra routines. Construction of this task list is split up into two major
+parts; the tensor contraction task list generator, and the "gamma generator".
+Before these individual components are discussed in detail it is
+necessary to discuss the qualities the final task list should possess, and what
+distinguishes and motivates the current approach. \\
 
 \section{Core functionality}
 \noindent At its core, the basic operation of the program is to evaluate terms such as 
 \begin{equation}
 \sum_{ijkl}\sum_{mnop} \sum_{IJ} \langle I | i^{\dagger}j^{\dagger}klm^{\dagger}n^{\dagger}op | J \rangle c^{M}_{I} c_{J}^{N} Y^{ML}_{ijkl}Z^{NP}_{mnop},
-\label{eqn:basic_term}
+\label{eqn:generic_term}
 \end{equation}
 where $I$ and $J$ each denote a Slater determinant, and $L,M,N,P$ are state
 indexes.  $\mathbf{Y}^{ML}$ and $\mathbf{Z}^{NP}$ are representations of
 operators and $\hat{Y}$ and $\hat{Z}$ in the molecular orbital basis. For the time being
-the state dependence of the operator representations will be ignored, but has important consequences
+the state dependence of the operator representations will be ignored, but this has important consequences
 for exploitation of symmetry, and will be discussed at length later. \\ 
 
-\noindent The computational cost of directly evaluating terms such as (\ref{eqn:basic_term}) can be prove prohibitive,
+\noindent The computational cost of directly evaluating terms such as (\ref{eqn:generic_term}) can be prove prohibitive,
 particularly if the ranges of the indexes $i$, $j$, $k$, $l$, $m$, $n$, $o$, and $p$ are large (e.g., if they
 range over virtual and core orbitals). The algebraic manipulator uses various commutation and symmetry relations
-to rearrange expressions, such as (\ref{eqn:basic_term}), into a sum of terms in which
+to rearrange expressions, such as (\ref{eqn:generic_term}), into a sum of terms in which
 the orbital indexes only range over the active orbitals, e.g.,
 \begin{equation}
 =\sum_{stuvwxyz}\gamma_{stuvwxyz} A_{stuvwxyz}
@@ -70,11 +74,12 @@ $\alpha$ and $\beta$ electrons can result in much larger tensors. For example, i
 an eight index tensor is doubled, then the number of elements increases by a factor of 256.\\ 
 
 \noindent The challenge faced by the algebraic manipulator is that whilst there are several different
-series of form (\ref{eqn:A_list}) which are equal to (\ref{eqn:basic_term}), these different series 
+series of form (\ref{eqn:A_list}) which are equal to (\ref{eqn:generic_term}), these different series 
 often differ wildly in the amount of computational effort their evaluation requires. Hence the algebraic manipulator must
-accomplish two things. First, it must decide on the most series of form (\ref{eqn:A_list}) that is least computationally expensive to
-evaluate. Second, it must determine how to evaluate the terms in this series. This second point may seem trivial,
-but is complicated substantially by the decomposition of the tensors, and the need to take advantage of the symmetry in 
+accomplish two things. First, it must decide on the series of form (\ref{eqn:A_list}) that is
+least computationally expensive to
+evaluate. Second, it must produce a sequence of instructions for evaluating the terms in this series.
+This second point may seem trivial, but is complicated substantially by the decomposition of the tensors, and the need to take advantage of the symmetry in 
 an effective manner\footnote{Whilst
 the algebraic manipulator can also generate task lists for derivative expressions, the task lists remain 
 confined to evaluation of linear combinations of terms with one of the following forms : 
@@ -90,16 +95,20 @@ confined to evaluation of linear combinations of terms with one of the following
 \noindent and these distinctions do not impact the initial discussion.}.\\
 
 \noindent The algebraic manipulator accomplishes this by performing the operations as outlined in figure
-\ref{fig:alg_manip_overview}. Note that both the $\mathbf{\gamma}$ tensors
-and the tensors used to construct the $\mathbf{A}$ tensors are split up into blocks, and each block 
-of the $\mathbf{\gamma}$ tensor corresponds to a different task list.
+\ref{fig:alg_manip_overview}. Both the $\mathbf{\gamma}$ tensors, as well as the
+the tensors contracted to produce the $\mathbf{A}$ tensors, are split up into blocks. 
+As calculation and storage of the $\mathbf{\gamma}$ and $\mathbf{\Gamma}^{I}$ is typically more
+computationally demanding than obtaining the $\mathbf{A}$, minimization of the
+number of distinct $\mathbf{\gamma}$ and $\mathbf{\Gamma}^{I}$ blocks
+is prioritized, and each such block corresponds to a different task list, which
+are typically evaluated seperately. \\
 
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics[width=0.6\textwidth]{alg_manip_over.png}
 \caption{ Outline of the algebraic manipulator. }
-\end{center}
 \label{fig:alg_manip_overview}
+\end{center}
 \end{figure}
 
 \noindent Chapter 5 focuses on the machinery (called the "gamma generator") for

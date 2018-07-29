@@ -12,19 +12,18 @@ of determinants, $|I\rangle $;
 \begin{equation}
 |N\rangle = \sum_{I} c_{I}^{N}| I \rangle.
 \end{equation} 
-\noindent There are three main types of terms the program can calculate. The simplest is :
+\noindent Written using second quantization (\ref{eqn:basic}) would be
 \begin{equation}
 \sum_{\substack{ x_{1}x_{2}...\\ y_{1}y_{2}... \\ ...}} X_{x_{1}x_{2}...} Y_{y_{1}y_{2}...} ...
 \sum_{I}\sum_{J}
 \langle I | a^{\dagger}_{x_{1}} a_{x_{2}}...a^{\dagger}_{y_{1}}a_{y_{2}}....| J \rangle 
- c^{M \dagger}_{I}c^{N}_{J}
+ c^{M \dagger}_{I}c^{N}_{J}.
 \label{eqn:basic_2nd_quantized}
 \end{equation}
-\noindent  Which is just (\ref{eqn:basic}) written using second quantization;
-$X_{x_{1},x_{2}...}$ is a representation of operator $\hat{X}$ in a basis of
-molecular orbitals. \\
+\noindent  Here, $X_{x_{1},x_{2}...}$ and $Y_{y_{1},y_{2}...}$ are just representations of operators 
+$\hat{X}$ and $\hat{Y}$ in the molecular orbital basis.\\
 
-\noindent It is also possible to calculate derivatives of (\ref{eqn:basic_2nd_quantized})  with respect to ci-coefficients, $c_{I}^{N}$;
+\noindent It is also possible to calculate derivatives of (\ref{eqn:basic_2nd_quantized})  with respect to CI-coefficients, $c_{I}^{N}$;
 \begin{equation}
 \sum_{\substack{ x_{1}x_{2}...\\ y_{1}y_{2}... \\ ...}} X_{x_{1}x_{2}...} Y_{y_{1}y_{2}...} ...
 \sum_{J}
@@ -48,13 +47,12 @@ c^{N}_{J}
  c^{M \dagger}_{I}c^{N}_{J}
 \label{eqn:basic_2nd_quantized_projector}
 \end{equation}
-\noindent where the $\hat{E}^{\dagger}_{\Omega}$ is an projection operator
-which excites electrons from the orbitals used to construct the space in which
-the reference wavefunctions, $\{|N\rangle\}$, were originally defined into some
-virtual space.\\
+\noindent where the $\hat{E}^{\dagger}_{\Omega}$ is a projection operator
+which excites electrons into the virtual space, from the orbitals used to construct
+the space in which the reference wavefunctions, $\{|N\rangle\}$, were originally defined.\\
 
 \noindent The program is intended to be flexible; and instead of asking for
-specific perturbation theories or properties, the user has the option of
+specific perturbation theories or properties the user has the option of
 specifying algebraic expressions directly via the input file.\\
 
 \noindent It is important to note that the program is intended to facilitate property 
@@ -88,9 +86,9 @@ symmetries of the operators, in order to minimize the number of terms, and
 avoid the need for calculation of terms which are likely to be computationally
 expensive to evaluate (e.g., those with large numbers of indexes). This series
 of expressions is used to form an algebraic task list; a sequence of
-mathematical operations which need to be evaluated.  It is important to note
-that the algebraic manipulator is entirely based around symbolic manipulation,
-and does not handle any of the large data structures, e.g., civectors,
+generic mathematical operations which are evaluated by other parts of the program.
+It is important to note that the algebraic manipulator is entirely based around symbolic manipulation,
+and does not handle any of the large data structures, e.g., CI-vectors,
 molecular orbital integral tensors, etc.. The expressions in the algebraic
 task list do not in any way specify what kind of data structures need to
 be used to store the quantities necessary for their evaluation.\\
@@ -99,7 +97,8 @@ be used to store the quantities necessary for their evaluation.\\
 density matrices and their derivatives, and performing tensor contractions (and
 other various tensor manipulations). The tensor and FCI library are completely
 distinct from the algebraic manipulator, and operate totally independently. The
-FCI library is designed such that it can calculate density matrices (and
+routines within the FCI library have a recursive structure, which 
+enables calculation of density matrices (and
 derivatives) of arbitrary order. In a similar vein, the tensor library can
 operate on tensors of arbitrary order, with each dimension being a different
 size. At present the FCI  library uses the Determinant class defined in
@@ -121,37 +120,44 @@ design slightly, it should enable greater portability, as well as making the
 program substantially easier to extend and upgrade.\\ 
 
 \noindent In a sense there is a fourth component, a driving routine, which
-performs some communication between the three routines, and which deals with
-input reading, and some initialization. However, whilst this component is practically
-important, and not particularly small, it is rather simple, and not of
+performs some communication between the three routines, parsing of the input,
+and some initialization. However, whilst this component is practically
+important, and not particularly small, it is rather simple and of little
 interest, so I will not discuss it significantly.
 
 \section{Specific components}
 The functioning of the program is best explained by example. In the following,
 use of italicized words indicate that word is a class defined in the program.
-The "highest level" class is the \emph{equation}, which could be something like 
-find the $\hat{T}^{LN}$, for all desired values of $L$ and $N$, which satisfy 
+The "highest level" class is the \emph{equation}, which determines what the
+final output of the program is. For example, the user may ask the program to find the 
+$\hat{T}^{LN}$ which satisfy 
 \begin{equation}
 \sum_{N} 
 \langle M | \hat{E}^{\dagger}_{\Omega} (\hat{H}-\epsilon_{L}) \hat{T}^{LN} | N \rangle  +
 \langle M | \hat{E}^{\dagger}_{\Omega} \hat{H} | L  \rangle = 0 \text{ \ \ \ \ } \forall \text{ \ \ }  M . 
+\label{eqn:eqn_example}
 \end{equation}
-\noindent This equation for is broken down into a number of components, 
-or \emph{expression}s, which can be evaluated independently:
+\noindent To accomplish this, the user will specify the equation in the input file, and the 
+program will use the information to construct an \emph{equation} object. This is \emph{equation}
+is then used to generate a number of \emph{expression} objects, which can be evaluated independently. 
+For the equation specified by (\ref{eqn:eqn_example}) these \emph{expression} objects
+may correspond to quantities such as
 \begin{equation}
 \sum_{N} 
 \langle M | \hat{E}^{\dagger}_{\Omega} (\hat{H}-\epsilon_{L}) \hat{T}^{LN} | N \rangle  +
-\langle M | \hat{E}^{\dagger}_{\Omega} \hat{H} | L  \rangle  
+\langle M | \hat{E}^{\dagger}_{\Omega} \hat{H} | L  \rangle.
 \label{eqn:Hylleras}
 \end{equation}
-\noindent The \emph{equation} contains a number of \emph{expression}s, along with
-information regarding how they relate to one another and the solution to the equation.
-In an expression of the above type the values of $L$ and $M$  would be set, whilst the range of
+\noindent Each \emph{equation} contains a number of such \emph{expression} objects, along with
+information regarding how they relate to one another and the quantity requested by the user.
+In a single instance of the \emph{expression} class corresponding to (\ref{eqn:Hylleras}),
+the values of $L$ and $M$  would be set, whilst the range of
 summation over $N$ would be defined. Note that unlike the equation the expression
 contains no information about what the expression should be equal to.
-Typically, a given equation will have several similar expressions,
-which only different from one another by the values of the indexes or the 
-ranges of the index summation.\\
+Typically, an \emph{equation} will contain many \emph{expressions}, but
+these will only differ from one another by the values of the indices, or the 
+constraints placed on the ranges of summations. The motivation for this is to aid in parallelization;
+as seperate expressions may be evaluated entirely independently from one another.\\
 
 \noindent Each \emph{expression} is further broken down into a number of \emph{term}s.
 \emph{Terms} differ from \emph{expressions} in that any state index summation in
@@ -181,12 +187,12 @@ in (\ref{eqn:Hylleras1}) would be broken down into $2N$ \emph{brakets}:
 \langle M | \hat{E}^{\dagger}_{\Omega} (-\epsilon_{L}) \hat{T}^{LN} | N \rangle  
 \end{equation}
 \noindent Within a \emph{braket} the values of all the indexes are specified.
-A single \emph{braket} consists of a bra and a ket, surrounding some operator
-formed from the product of an arbitrary number of other operators.  The
+A single \emph{braket} consists of a bra and a ket, surrounding some many electron 
+operator formed from the product of an arbitrary number of 1- and 2-electron operators.  The
 individual \emph{braket}s comprising a \emph{term} are never\footnote{Excepting
 the situation where a \emph{term} consists of a single \emph{braket}.}
 evaluated independently; the arithmetic operations to evaluate \emph{braket}s
-with common bra- and ket will be merged together, provided these bra and ket
+with common bra and ket will be merged together, provided these bra and ket
 exist within the same term. Similarly, it is also possible to merge the compute
 lists associated with different \emph{term}s together, though not the
 \emph{term} objects themselves. However, this is not done by default, as
@@ -200,21 +206,4 @@ classes, which contains information about which ci-sectors are used to represent
 wavefunction, and which orbitals were used to construct these ci-sectors,  respectively.\\
 
 \noindent The above described components are the targets upon which the 
-algebraic manipulation routines act to generate the algebraic task list.
-I shall now describe the procedure, and introduce further classes as necessary.\\
-
-\noindent It is important to note that due to the nature of the program I shall not describe the
-program in the order in which it is executed, but instead start from the simplest operations it
-performs, and then gradually build up to show how these can be linked together to
-generate the task lists necessary for solution of the equations.
-%\section{Operator definition, formation, blocking and symmetry } 
-%\textbf{Key classes:} \emph{TensOp/MultiTensOp, CtrTensorPart/CtrMultiTensorPart, RangeBlock/SplitRangeBlock}  
-
-%\section{Braket Formation} 
-%\textbf{Key classes:} \emph{Expression, BraKet, GammaGenerator, GammaInfo, StateInfo, CIVecInfo}  
-
-%\section{Algebraic Task List generation} 
-%\textbf{Key classes:} \emph{Expression, GammaGenerator, AContribInfo, CtrTensOp/CtrMultiTensOp}  
-
-%\section{Equation solver} 
-%\textbf{Key classes:} \emph{Expression, TensOp/MultiTensOp, SystemInfo, Computer classes, }  
+algebraic manipulation routines act to generate the algebraic task list.  

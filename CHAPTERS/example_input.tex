@@ -1,5 +1,5 @@
-To better illustrate the capabilities of the program below is an example input
-for calculating the T-amplitudes in an XMS-CASPT2 :
+To illustrate the capabilities of the program below is an example input
+for calculating the T-amplitudes in an MS-CASPT2 calculation :
 \definecolor{light-gray}{gray}{0.75}
 \lstset{ frameround=fttt, language=Java, basicstyle=\tiny, backgroundcolor=\color{lightgray}}
 \begin{lstlisting}[label={lst:input}]
@@ -59,17 +59,18 @@ for calculating the T-amplitudes in an XMS-CASPT2 :
 }                                                 
 \end{lstlisting}         
 
-\noindent \textbf{Important Note}: As the program is still undergoing development and debugging, 
-the input structure is highly volatile, and the above input is unlikely to be compatible with
+\noindent \textbf{Important Note :} As the program is still undergoing development and debugging, 
+the input structure is highly volatile. Accordingly, the above input is unlikely to be compatible with
 the current version of the program.\\
 
-\noindent The input makes use of the JavaScript object notation\cite{JSON} format, which 
-is enables specification of relatively complicated objects using of nested arrays.
+\noindent The input makes use of the JavaScript Object Notation~\cite{JSON} format, which 
+enables specification of relatively complicated objects through use of nested arrays.
 Currently, the interface is rather prolix, and will be substantially reduced in complexity
-as the program nears full release. Nonetheless, the above form is useful for demonstrating the capabilities
-of the program.\\
+as the program nears full release. Nonetheless, the above form remains useful for demonstrating the program's
+basic functionality.\\
 
-\noindent To explain the above it is best to discuss each section one at a time. First,
+\noindent To explain the above input it is best to discuss each section individually. The 
+first section is largely to help connection to the rest of Bagel:
 \lstset{ frameround=fttt, language=Java, basicstyle=\tiny, backgroundcolor=\color{lightgray}}
 \begin{lstlisting}[label={lst:casscf}]
   "frozen" : false,
@@ -77,8 +78,8 @@ of the program.\\
   "nact" : 4,
   "nclosed" : 3,
 \end{lstlisting}         
-\noindent These keywords just designate the number of the various kinds of orbitals used in the CASSCF.
-The "\texttt{nfrozencore} and \texttt{nfrozenvirt} specify the number of core or virtual orderings to be "frozen";
+\noindent These keywords just specify the number of the various kinds of orbitals used in the CASSCF.
+The \texttt{nfrozencore} and \texttt{nfrozenvirt} specify the number of core or virtual orbitals to be "frozen";
 such orbitals are not excited either from or to.\\
 
 \lstset{ frameround=fttt, language=Java, basicstyle=\tiny, backgroundcolor=\color{lightgray}}
@@ -91,8 +92,8 @@ such orbitals are not excited either from or to.\\
    },
 \end{lstlisting}         
 \noindent This section is used to define ranges and variables which may be used in later definitions. For example,
-when \texttt{shift} is specified here to be 0.2 (default units are Hartrees, and currently, this cannot be 
-changed). 
+\texttt{shift} is specified here to be 0.2, and is the level shift\footnote{Units are Hartrees, currently this cannot be 
+changed.} and will be used later on to specify some of the terms we wish to calculate.\\
 
 \lstset{ frameround=fttt, language=Java, basicstyle=\tiny, backgroundcolor=\color{lightgray}}
 \begin{lstlisting}[label={lst:operators}]
@@ -121,8 +122,8 @@ For example, in one possible block of the T operator the first index would be
 active, the second index could be virtual, whilst the third and fourth blocks
 would be core.  Note that in the aforementioned \texttt{variables} section the user is
 able to specify the exact orbital indexes to which each range corresponds,
-enabling the user to have very tight control over the block decomposition of
-the tensor, and the ranges on which an operator acts. 
+enabling tight control over the block decomposition of
+the tensor, as well as the ranges on which an operator acts. 
 The \texttt{state dependence} section determines how many state indexes 
 the operator has.
 \lstset{ frameround=fttt, language=Java, basicstyle=\tiny, backgroundcolor=\color{lightgray}}
@@ -146,23 +147,23 @@ the operator has.
                       { "name" : "X",   "ids" : [ "none" ] } ] ,
                         "bra" : "N", "ket" : "N" } ] } ],
 \end{lstlisting}         
-The terms section defines quantities to facilitate construct the expressions
+This \texttt{terms} section defines quantities to facilitate construct the expressions
 the user wishes the program to evaluate.  The \texttt{name} is used by the program to
-identify the expression internally, and in printing the results. It must be unique. 
+identify the term internally, and in printing the results. It must be unique. 
 The \texttt{type : orb\_exc\_deriv} specifies the kind of term;  in this case the partial
 derivative of the terms is taken with respect to the elements of the tensor specified by \texttt{Target : T'}.\\
 
-\noindent To clarify things, it is worth considering the \texttt{brakets} array seperately:
+\noindent It is worth considering the \texttt{brakets} array seperately:
 
 \lstset{ frameround=fttt, language=Java, basicstyle=\tiny, backgroundcolor=\color{lightgray}}
 \begin{lstlisting}[label={lst:brakets}]
 "brakets" : [
-  { "ops"    : [ { "name" : "X",   "ids" : [ "none" ] },
+  { "ops"    : [ { "name" : "T'",   "ids" : [ "none" ] },
                  { "name" : "H-E", "ids" : [ "L" ] },
                  { "name" : "T",   "ids" : [ "L", "N" ] } ] ,
                    "bra" : "M",
                    "ket" : "N"                          }, 
-  { "ops"    : [ { "name" : "X" , "ids" : [ "none" ] },
+  { "ops"    : [ { "name" : "T'" , "ids" : [ "none" ] },
                  { "name" : "T" , "ids" : [ "L", "N" ] } ] ,
                    "factor" : "shift",
                    "bra" : "M",
@@ -170,17 +171,19 @@ derivative of the terms is taken with respect to the elements of the tensor spec
 \end{lstlisting}         
 The above represents the mathematical term:
 \begin{equation}
-\sum_{T'}
-\langle \Psi_{M} |  \hat{X}_{ijkl} ( \hat{H}-E^{0}_{L} ) \hat{T}^{LN}_{ t_{0}t_{1}t_{2}t_{3} } | \Psi_{N} \rangle + 
-E_{shift}\langle \Psi_{M} |  \hat{X}_{ijkl}  \hat{T}^{LN}_{ t_{0}t_{1}t_{2}t_{3} }| \Psi_{N} \rangle 
+\langle \Psi_{M} |  \hat{T'}_{t'_{0}t'_{1}t'_{2}t'_{3}}
+ ( \hat{H}-E^{0}_{L} ) \hat{T}^{LN}_{ t_{0}t_{1}t_{2}t_{3} } | \Psi_{N} \rangle + 
+E_{shift}\langle \Psi_{M} | \hat{T'}_{t'_{0}t'_{1}t'_{2}t'_{3}}\hat{T}_{ijkl}  \hat{T}^{LN}_{ t_{0}t_{1}t_{2}t_{3} }| \Psi_{N} \rangle 
 \end{equation}
-\noindent Note that there are no summations specified in the \texttt{brakets} array. 
-The \texttt{ops} specifies the operators used, and \texttt{ids} specifies the names of the state indexes
-for these operators. It is important to note that several operators, or combinations of
-operators with scalar arrays, e.g., "H-E", are predefined in the code. 
-This is necessary for defining the ranges of summations later on, and also to enable indexes on 
-different operators to be tied to one another. For example the first index, $L$, on the T tensor is the same in 
-both brakets. The \texttt{none} indicates that the operator is state independent.
+\noindent Note that there are no summations specified in the \texttt{brakets} array; the summations to
+be performed are determined from the \texttt{type} specified in \texttt{term}, and the final
+\texttt{equation} input.
+The \texttt{ops} specifies the operators used in the \texttt{braket}. Most relevant operators and combinations of
+operators with scalar arrays, e.g., \texttt{H-E}, are predefined in the code. The \texttt{ids}
+specifies the names of the state indexes for these operators. 
+This naming aids the program in determinating the correct ranges of the various summations, and also to enables
+indexes on different operators to be tied to one another. For example the first index, $L$, on the \texttt{T}
+tensor is the same in both brakets. The \texttt{none} indicates that the operator is state independent.
 The \texttt{factor} defines the factor associated by which the braket is multiplied, and this
 defaults to 1.0. The \texttt{Bra} and \texttt{Ket} specify the name of the state index of the Bra and Ket. \\
 
@@ -207,20 +210,19 @@ defaults to 1.0. The \texttt{Bra} and \texttt{Ket} specify the name of the state
 The \texttt{equations} section is used to specify what is actually calculated. The above corresponds to
 finding the \texttt{T} which minimizes the following
 \begin{equation}
-\frac{ \Phi_{M} |  \hat{X}_{\Omega} ( \hat{H}-E^{0}_{L}-E_{shift} )  \hat{T}^{LN}_{\Omega'} | \Phi_{N} \rangle } 
-{ \langle \Phi_{N}   | \hat{X}^{\dagger}_{\Omega}
+\frac{ \langle \Psi_{M} |  \hat{X}_{\Omega} ( \hat{H}-E^{0}_{L}-E_{shift} )  \hat{T}^{LN}_{\Omega'} | \Psi_{N} \rangle } 
+{ \langle \Psi_{M}   | \hat{X}^{\dagger}_{\Omega}
                      ( \hat{H}- E^{0}_{L} )
-                       \hat{X}_{\Omega'} |
- \Phi_{M} \rangle}
+                       \hat{X}_{\Omega'} | \Psi_{M} \rangle}
 \end{equation}
-It should be noted that for reasons of clarity, the various transformations and orthogonalizations associated
+It should be noted that for reasons of simplicity, the various transformations and orthogonalizations associated
 with XMS-CASPT2 and the internally contracted wavefunctions are not included here. Ultimately, XMS-CASPT2
 will be assumed to be the default, and the corresponding transformations will be performed automatically, however
 this will not substantially impact the input. \\
 
 \noindent The  \texttt{equations} section first specifies the \texttt{type} of equation to be solved, in
-this case \texttt{LinearRM} (linear residual minimization). The type dictates what other keywords must appear.
-Due to the choice of the \texttt{LinearRM} type, it is necessary to specify a \texttt{target} tensor for 
+this case \texttt{LinearRM} (linear residual minimization). The \texttt{type} dictates what other keywords must appear.
+Due to the choice of \texttt{LinearRM}, it is necessary to specify a \texttt{target} tensor for 
 which we are solving, as well as a \texttt{residual} and \texttt{denominator}. These are two \texttt{expressions}
 which are defined by a list of \texttt{term}s, which were themselves defined by the user in the previous section. 
 It is at this stage that the user specifies the summations over the state indexes which appear in the terms.\\
@@ -228,5 +230,3 @@ It is at this stage that the user specifies the summations over the state indexe
 \noindent An expression may be composed of multiple different terms even though, in principle, these could be merged.
 However, breaking down the expression into smaller, independent parts facilitates identification of
 quantities which may be reused, and eases control of summations over different state indexes. 
-se terms with the exception that it is also necessary to specify the ranges over
-which the summations on the state indexes are performed.
