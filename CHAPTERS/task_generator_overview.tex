@@ -1,8 +1,8 @@
 \noindent The introduction section illustrated how the input is broken down to
 yield a number of smaller and more manageable \emph{terms}, generally
-corresponding to a single braket. Each of these terms is fed into the algebraic
+corresponding to a single braket. Each of these \emph{terms} is fed into the algebraic
 manipulator. This component of the program generates a set of instructions
-for evaluating this term, which the task translator then converts into calls to the FCI
+for evaluating each of these \emph{terms}, which the task translator then converts into calls to the FCI
 and linear algebra routines. Construction of this task list is split up into two major
 parts; the tensor contraction task list generator, and the "gamma generator".
 Before these individual components are discussed in detail it is
@@ -26,10 +26,10 @@ particularly if the ranges of the indexes $i$, $j$, $k$, $l$, $m$, $n$, $o$, and
 range over virtual and core orbitals). The algebraic manipulator uses various commutation and symmetry relations
 to rearrange expressions, such as (\ref{eqn:generic_term}), into a sum of terms in which
 the orbital indexes only range over the active orbitals, e.g.,
-\begin{equation}
-=\sum_{stuvwxyz}\gamma_{stuvwxyz} A_{stuvwxyz}
+\begin{equation*}
+\sum_{stuvwxyz}\gamma_{stuvwxyz} A_{stuvwxyz}
 +\sum_{stuvxy} \gamma_{stuvwx} A_{stuvwx}
-\end{equation}
+\end{equation*}
 \begin{equation}
 +\sum_{stuv}\sum_{mnop} \gamma_{stuv} A_{stuv},
 +\sum_{st} \gamma_{st}  A_{st}
@@ -37,7 +37,7 @@ the orbital indexes only range over the active orbitals, e.g.,
 \label{eqn:A_list}
 \end{equation}
 
-\noindent Where the tensors $A_{ijkl...}$ are formed by performing the 
+\noindent Here the tensors $A_{ijkl...}$ are formed by performing 
 contractions between and re-orderings of the indexes of tensors on $Y$ and $Z$ as 
 determined from the commutation relations of the creation and annihilation operations, e.g.,
  
@@ -73,16 +73,19 @@ This kind of decomposition is particularly advantageous for relativistic systems
 $\alpha$ and $\beta$ electrons can result in much larger tensors. For example, if the range of each index on
 an eight index tensor is doubled, then the number of elements increases by a factor of 256.\\ 
 
-\noindent The challenge faced by the algebraic manipulator is that whilst there are several different
-series of form (\ref{eqn:A_list}) which are equal to (\ref{eqn:generic_term}), these different series 
-often differ wildly in the amount of computational effort their evaluation requires. Hence the algebraic manipulator must
-accomplish two things. First, it must decide on the series of form (\ref{eqn:A_list}) that is
-least computationally expensive to
-evaluate. Second, it must produce a sequence of instructions for evaluating the terms in this series.
-This second point may seem trivial, but is complicated substantially by the decomposition of the tensors, and the need to take advantage of the symmetry in 
-an effective manner\footnote{Whilst
-the algebraic manipulator can also generate task lists for derivative expressions, the task lists remain 
-confined to evaluation of linear combinations of terms with one of the following forms : 
+\noindent The challenge faced by the algebraic manipulator is that whilst there
+are several different series of form (\ref{eqn:A_list}) which are equal to
+(\ref{eqn:generic_term}), these different series often differ wildly in the
+amount of computational effort their evaluation requires. Hence the algebraic
+manipulator must accomplish two things. First, it must decide on the series of
+form (\ref{eqn:A_list}) that is least computationally expensive to evaluate.
+Second, it must produce a sequence of instructions for evaluating the terms in
+this series.  This second point may seem trivial, but is complicated
+substantially by the decomposition of the tensors, and the need to take
+advantage of symmetry in an effective manner\footnote{Whilst the algebraic
+manipulator can also generate task lists for derivative expressions, the task
+lists remain confined to evaluation of linear combinations of terms with one of
+the following forms : 
 
 \begin{equation}
 \sum_{\substack{ijkl \\ mnop} }\gamma_{ijklmnop} A_{ijklmnop},
@@ -92,7 +95,7 @@ confined to evaluation of linear combinations of terms with one of the following
 \sum_{\substack{ijkl \\ mnop}}\Gamma^{I}_{ijklmnop} A_{ijklmnop}.
 \label{eqn:kinds_of_terms}
 \end{equation}
-\noindent and these distinctions do not impact the initial discussion.}.\\
+\noindent and the distinctions between these terms do not impact this preliminary discussion.}.\\
 
 \noindent The algebraic manipulator accomplishes this by performing the operations as outlined in figure
 \ref{fig:alg_manip_overview}. Both the $\mathbf{\gamma}$ tensors, as well as the
@@ -116,17 +119,3 @@ chosing the the series of form (\ref{eqn:A_list}). Chapter 4 focuses on
 evaluation of terms contained therein. The reason for this seemingly backwards
 order is that the decisions made in the former and wholly dependent on the
 factors governing the efficiency of the task lists generated in the latter.\\
-
-%However, we want blocks; 
-%1) Identify unique tensor blocks.
-%2) Feed each block into gamma task list generator -> generates A and gammas block list.
-%3) Merge all gamma task lists generated.
-%3) Construst A task lists for all gamma blocks.
-%4) Begin loop over gamma blocks. 
-%5) Identify required mo tensor blocks. 
-%6) Execute A task list to obtain all A associated with a given gamma block.
-%7) Calculate blocks of gammas. 
-%8) Contract gamma block  with A and save result.
-%9) Throw away information which will not be needed by later iterations. 
-%10) Cycle loop until out of gamma blocks.
-%11) Combine into final result.
