@@ -60,14 +60,14 @@ for calculating the T-amplitudes in an XMS-CASPT2 :
 \end{lstlisting}         
 
 \noindent \textbf{Important Note}: As the program is still undergoing development and debugging, 
-the input structure is highly volatile, and the above is unlikely to be compatible with
-the current version of the program. However, the basic contents and guiding principals
-are unlikely to change substantially.\\
+the input structure is highly volatile, and the above input is unlikely to be compatible with
+the current version of the program.\\
 
-\noindent The input makes use of the json format discussed more fully in  \cite{JSON}.
-Interface is currently rather prolix, and will be substantially reduced in complexity
+\noindent The input makes use of the JavaScript object notation\cite{JSON} format, which 
+is enables specification of relatively complicated objects using of nested arrays.
+Currently, the interface is rather prolix, and will be substantially reduced in complexity
 as the program nears full release. Nonetheless, the above form is useful for demonstrating the capabilities
-of the program. \\
+of the program.\\
 
 \noindent To explain the above it is best to discuss each section one at a time. First,
 \lstset{ frameround=fttt, language=Java, basicstyle=\tiny, backgroundcolor=\color{lightgray}}
@@ -223,7 +223,7 @@ this case \texttt{LinearRM} (linear residual minimization). The type dictates wh
 Due to the choice of the \texttt{LinearRM} type, it is necessary to specify a \texttt{target} tensor for 
 which we are solving, as well as a \texttt{residual} and \texttt{denominator}. These are two \texttt{expressions}
 which are defined by a list of \texttt{term}s, which were themselves defined by the user in the previous section. 
-It is at this stage that the user specifies the summations over the state indexes which appear in the terms.
+It is at this stage that the user specifies the summations over the state indexes which appear in the terms.\\
 
 \noindent An expression may be composed of multiple different terms even though, in principle, these could be merged.
 However, breaking down the expression into smaller, independent parts facilitates identification of

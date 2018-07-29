@@ -55,11 +55,19 @@ virtual space.\\
 
 \noindent The program is intended to be flexible; and instead of asking for
 specific perturbation theories or properties, the user has the option of
-specifying algebraic expressions directly via the input file.
+specifying algebraic expressions directly via the input file.\\
+
+\noindent It is important to note that the program is intended to facilitate property 
+calculations on wavefunctions obtained from multireference calculations. Hence it
+is necessary to first run a CASSCF calculation before calling the program. Furthermore,
+the program does not contain routines for evaluation of molecular orbital integrals;
+when such integrals are needed it calls to the pre-existing routines in the 
+Bagel~\cite{BAGEL} code.
 
 \section*{Structural outline}
 \noindent The program is split into three main components; an algebraic manipulator, an FCI
-and tensor contraction library, and a task manager.\\
+iand linear algebra library (mainly consisting of routines for performing tensor contractions),
+and a task translation module for facilitating communication between .\\
 
 \begin{figure}[!ht]
 \begin{center}
@@ -87,21 +95,22 @@ molecular orbital integral tensors, etc.. The expressions in the algebraic
 task list do not in any way specify what kind of data structures need to
 be used to store the quantities necessary for their evaluation.\\
 
-\noindent The FCI and tensor libraries contain generic routines for
-calculating density matrices and their derivatives, and performing tensor
-contractions (and other various tensor manipulations). The tensor and FCI
-library are completely distinct from the algebraic manipulator, and operate
-totally independently. The FCI library is designed such that it can calculate
-density matrices (and derivatives) of arbitrary order. In a similar vein, the
-tensor library can operate on tensors of arbitrary order, with each dimension
-being a different size. At present the FCI  library uses the Determinant class
-defined in Bagel~\cite{BAGEL}.
-The tensor libraries make use of the SMITH::Tensor class defined in Bagel,
-which in turn makes use of the TiledArray~\cite{TiledArray} libraries for parallel storage of the data. 
-The routines in the tensor arithmetic library are built using 
-a combination of calls to LAPACK~\cite{LAPACK}, and the tensor transposition routine defined in
-TiledArray\footnote{ To clarify, whilst btas has some tensor contraction routines, 
-these were found to not be suitable for the current purpose, and are not used.}.\\
+\noindent The FCI and tensor libraries contain generic routines for calculating
+density matrices and their derivatives, and performing tensor contractions (and
+other various tensor manipulations). The tensor and FCI library are completely
+distinct from the algebraic manipulator, and operate totally independently. The
+FCI library is designed such that it can calculate density matrices (and
+derivatives) of arbitrary order. In a similar vein, the tensor library can
+operate on tensors of arbitrary order, with each dimension being a different
+size. At present the FCI  library uses the Determinant class defined in
+Bagel~\cite{BAGEL}. The tensor libraries make use of the SMITH::Tensor class
+defined in Bagel, which in turn makes use of the TiledArray~\cite{TiledArray}
+libraries for parallel storage of the data.  The routines in the tensor
+arithmetic library are built using a combination of calls to
+LAPACK~\cite{LAPACK}, and the tensor transposition routine defined in
+TiledArray\footnote{ To clarify, whilst btas has some tensor contraction
+routines, these were found to not be suitable for the current purpose, and are
+not used.}.\\
 
 \noindent The final major component of the program is the task translator,
 which faciliates communication between the algebraic manipulator and the 
