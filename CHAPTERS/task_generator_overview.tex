@@ -1,0 +1,181 @@
+\noindent The introduction section illustrated how the input is broken down to yield a number of smaller and more manageable \emph{terms}, 
+generally corresponding to a single braket. Each of these terms is fed into the algebraic manipulator. This generates a set of instructions for
+evaluating this term, which are the task translator then converts into calls to the FCI and linear algebra routines. Construction
+of this task list is split up into two major parts; the tensor contraction task list generator, and the 
+"gamma list" generator. Before these individual components are discussed in detail it is necessary to discuss the qualities 
+the final task list should possess, and what distinguishes and motivates the current approach. \\
+
+\section{Core functionality}
+\noindent At its core, the basic operation of the program is to evaluate terms such as 
+\begin{equation}
+\sum_{ijkl}\sum_{mnop} \sum_{IJ} \langle I | i^{\dagger}j^{\dagger}klm^{\dagger}n^{\dagger}op | J \rangle c^{M}_{I} c_{J}^{N} Y^{ML}_{ijkl}Z^{NP}_{mnop},
+\label{eqn:basic_term}
+\end{equation}
+where $I$ and $J$ each denote a Slater determinant, and $L,M,N,P$ are state
+indexes.  $\mathbf{Y}^{ML}$ and $\mathbf{Z}^{NP}$ are representations of
+operators and $\hat{Y}$ and $\hat{Z}$ in the molecular orbital basis. For the time being
+the state dependence of the operator representations will be ignored, but has important consequences
+for exploitation of symmetry, and will be discussed at length later. \\ 
+
+\noindent The computational cost of directly evaluating terms such as (\ref{eqn:basic_term}) can be prove prohibitive,
+particularly if the ranges of the indexes $i$, $j$, $k$, $l$, $m$, $n$, $o$, and $p$ are large (e.g., if they
+range over virtual and core orbitals). The algebraic manipulator uses various commutation and symmetry relations
+to rearrange expressions, such as (\ref{eqn:basic_term}), into a sum of terms in which
+the orbital indexes only range over the active orbitals, e.g.,
+\begin{equation*}
+=\sum_{stuvwxyz} \sum_{IJ} \langle I | s^{\dagger}wt^{\dagger}zu^{\dagger}yv^{\dagger}wzyx | J \rangle c_{I} c^{*}_{J} A_{stuvwxyz},
+\end{equation*}
+
+\begin{equation*}
++\sum_{stuwxy} \sum_{IJ} \langle I | s^{\dagger}zt^{\dagger}yu^{\dagger}w | J \rangle c_{I} c^{*}_{J} A_{stuwxy},
+\end{equation*}
+
+\begin{equation*}
++\sum_{stwx}\sum_{mnop} \sum_{IJ} \langle I | s^{\dagger}wt^{\dagger}z | J \rangle c_{I} c^{*}_{J} A_{stwx},
+\end{equation*}
+
+\begin{equation*}
++\sum_{sw}\sum_{mnop} \sum_{IJ} \langle I | s^{\dagger}w | J \rangle c_{I} c^{*}_{J} A_{sw}
+\end{equation*}
+
+\begin{equation*}
++\sum_{sw}\sum_{mnop}  A .
+\end{equation*}
+
+\noindent Where the tensors $A_{ijkl...}$ are formed by performing the 
+contractions between and re-orderings of the indexes of tensors on $Y$ and $Z$ as 
+determined from the commutation relations of the creation and annihilation operations, e.g.,
+ 
+\begin{equation*}
+A_{stwx} = \sum_{r}^{R}\hat{\wp}_{r}\sum^{c1}_{\{u,y\}}\delta_{uy}\sum^{c2}_{\{v,z\}} \delta_{vz}Y_{ijkl}Z_{mnop},
+\end{equation*}
+
+\noindent where the $c1$ and $c2$ are sets of pairs of indexes to be contracted, e.g.,
+\begin{equation}
+c2 = \{ \{i, k\} \} , \{j, k\} \} ,\{l, m\} \}.....\} 
+\end{equation}
+and $\hat{\wp}_{r}$ which transforms the ordered set of indexes
+$\{u,v,s,t,w,x,y,z\}$ into some permutation, $r\in R$, of the ordered set of
+indexes $\{i,j,k,l,m,n,o,p\}$, whilst also acting to multiply the result of the
+summation by an appropriate factor.\\
+
+\noindent The program discussed in this document differs from some other programs in its rearrangement 
+of expressions and their method of evaluation, but at its core is still evaluating terms of the form : 
+
+\begin{equation}
+\sum_{\substack{ijkl \\ mnop} }\gamma_{ijklmnop} A_{ijklmnop},
+\text{ \ \ \ \ \ \ \ \ }
+\sum_{ijkl}\gamma_{imjo} A_{imjoknlp},
+\text{ \ \ \ \ \ \ \ \ }
+\sum_{\substack{ijkl \\ mnop}}\Gamma^{I}_{ijklmnop} A_{ijklmnop}.
+\label{eqn:kinds_of_terms}
+\end{equation}
+\noindent Where $\gamma$ and $\Gamma$ are defined by\footnote{It is worth noting that these are not normal ordered, the motivation for which
+will be explained in due course}:
+\begin{equation}
+\gamma_{swtzuyvx} = \sum_{IJ} \langle I | s^{\dagger}wt^{\dagger}zu^{\dagger}yv^{\dagger}x | J \rangle c_{I} c^{*}_{J},
+\end{equation}
+\begin{equation}
+\Gamma_{swtzuyvx}^{I} = 
+\sum_{stuvwxyz} \sum_{J} \langle I | s^{\dagger}wt^{\dagger}zu^{\dagger}yv^{\dagger}x | J \rangle c^{*}_{J},
+\end{equation}
+\noindent Evaluation of the terms in (\ref{eqn:kinds_of_terms}) is, broadly speaking, broken down into three steps:
+\begin{itemize}
+\item \textbf{Step 1:}  Evaluate $A_{ijklmnop}$.
+\item \textbf{Step 2:}  Evaluate $\gamma_{ijklmnop}$ or 
+\item \textbf{Step 3:}  Evaluate $\sum_{\substack{ijkl \\ mnop}}\gamma_{ijklmnop} A_{ijklmnop}$.
+\end{itemize}
+
+\noindent Generation and execution of efficient, parallelizable task list which accomplishes these
+steps is the main goal of the program. The task list itelf 
+
+ and  how the details of how these 
+
+\section{Block Decomposition}
+\noindent In most cases the ranges of the molecular orbital indexes can be split into a
+number of different subranges, which enable us to define each of the operator
+tensors as the sum of a number of different blocks, each one associated with a
+different combination of these subranges. Decomposing the tensors in this
+manner reduces the maximum size of the data structure the computer has to deal
+with at any one time. Block decomposition also facilitates the implementation
+of symmetry, as many blocks are either equivalent to one another or connected
+via some simple transformation. This is particularly relevant in the
+relativistic case, where Kramers symmetry can potentially be used to ensure
+that the size of the blocks we deal with is no larger than those encountered in
+the non-relativistic case.\\
+
+\noindent Before proceeding further it is worth mentioning that the design of
+the basic tensor operator object is heavily informed by the functionality
+required of the algebraic manipulation routines. For these manipulation 
+routines to make sense it is necessary to be very precise about the 
+definition of the tensors. Consequently, some of the exposition will 
+seem tedious, and the design choices unnatural, at least until the algorithms in the main algebraic
+manipulator are discussed.\\ 
+
+\noindent The design of this object is easiest explained by example. Consider an operator; $\hat{Q}$,
+which may be written in second quantized form as
+\begin{equation}
+\hat{Q} =  \sum_{i}^{R^{i}}\sum_{j}^{R^{j}}\sum_{k}^{R^{k}}\sum_{l}^{R^{l}} \hat{a}^{\dagger}_{i} \hat{a}^{\dagger}_{j} \hat{a}_{k} \hat{a}_{l} Q_{ijkl}.
+\label{eqn:Q_def}
+\end{equation}
+\noindent  The coefficients,
+$Q_{ijkl}$, can be thought of as elements of a tensor $\mathbf{Q}$, which is
+the representation of the operator $\hat{Q}$ in the molecular orbital basis.
+I shall refer to such tensors as operator tensors. The $R^{i}$ is just the set
+of values over which index $i$ runs (note the range is index specific). This
+$R^{i}$ can be broken down into $N_{block}$ disjoint subsets or sub ranges, i.e.,
+\begin{equation}
+R^{i} = r_{1}^{i} \cup r_{2}^{i} \cup r_{3}^{i} \cup ... = \bigcup^{N_{block}}_{\mu} r_{\mu}^{i}
+\end{equation}
+\noindent A range block, $\mathbf{B}$, specifies the combinations of indexes which lie within some specified ranges. For example, the (ordered) set
+of sub ranges, $\{ r_{\mu},\text{\ } r_{\nu}, \text{\ }r_{\xi}, \text{\ } r_{\chi} \}$, defines range block $B^{\mu\nu\xi\chi}$, which specifies the set
+of ranges.
+\begin{equation}
+B^{\mu\nu\xi\chi} :=  \{ \{i,j,k,l\}  \text{\ }|  \text{\ }i \in \ r_{\mu}^{i} , \text{\ } j \in r_{\nu}^{j},  \text{\ } k \in r_{\xi}^{k},  \text{\ }l\in r^{l}_{\chi} \}.
+\end{equation}
+The components, $ Q_{ijkl}^{b}$, of a tensor block, $\mathbf{Q}^{b}$ are those blocks which satisfy
+\begin{equation}
+Q_{ijkl} \in \mathbf{Q}^{b} \text{ \ \ iff \ \ }  \{ i, j, k, l \} \in b   
+\end{equation}
+using this notation we can rewrite (\ref{eqn:Q_def}) as 
+\begin{equation}
+\hat{Q} =  \sum_{b}^{\{B\}} \sum_{\{i,j,k,l\}}^{b }
+\hat{a}^{\dagger}_{i} \hat{a}^{\dagger}_{j} \hat{a}_{k} \hat{a}_{l} Q_{ijkl}.
+\label{eqn:Q_block_def}
+\end{equation}
+\noindent 
+
+\noindent For each operator $\hat{Q}$, we store a single \emph{TensOp} object, which corresponding to
+a molecular orbital tensor $\mathbf{Q}$. This object contains a list of blocks, $Q^{b}$, information about which is stored
+in  \emph{CtrTensorPart} objects. To facilitate the exploitation of symmetry and sparsity, the task list generated by the program 
+only contains instructions referring to tensor blocks, never the full operators themselves.
+
+
+
+However, we want blocks; 
+1) Identify unique tensor blocks.
+
+2) Feed each block into gamma task list generator -> generates A and gammas block list.
+
+3) Merge all gamma task lists generated.
+
+3) Construst A task lists for all gamma blocks.
+
+4) Begin loop over gamma blocks. 
+
+5) Identify required mo tensor blocks. 
+
+6) Execute A task list to obtain all A associated with a given gamma block.
+
+7) Calculate blocks of gammas. 
+
+8) Contract gamma block  with A and save result.
+
+9) Throw away information which will not be needed by later iterations. 
+
+10) Cycle loop until out of gamma blocks.
+
+11) Combine into final result.
+
+
+
