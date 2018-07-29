@@ -24,13 +24,13 @@ for calculating the T-amplitudes in an XMS-CASPT2 :
       "state dependence" : 2 } ] ,
 
   "terms" : [
-    { "name" : "X(H-E)T", "type" : "orb_exc_deriv",
+    { "name" : "X(H-E-Es)T", "type" : "orb_exc_deriv", "Target" : "T'",
         "brakets" : [
-          { "ops"    : [ { "name" : "X",   "ids" : [ "none" ] },
+          { "ops"    : [ { "name" : "T'",   "ids" : [ "none" ] },
                          { "name" : "H-E", "ids" : [ "N" ] },
                          { "name" : "T",   "ids" : [ "L", "N" ] } ] ,
                            "bra" : "M", "ket" : "N" }, 
-          { "ops"    : [ { "name" : "X" , "ids" : [ "none" ] },
+          { "ops"    : [ { "name" : "T'" , "ids" : [ "none" ] },
                          { "name" : "T" , "ids" : [ "L", "N" ] } ] ,
                            "factor" : "shift", "bra" : "M", "ket" : "N" } ] },
    { "name" : "-X(H-E)X", "type" : "orb_exc_deriv",
@@ -38,21 +38,17 @@ for calculating the T-amplitudes in an XMS-CASPT2 :
        { "ops"    : [ { "name" : "X",   "ids" : [ "none" ] },
                       { "name" : "H-E", "ids" : [ "N" ] },
                       { "name" : "X",   "ids" : [ "none" ] } ] ,
-                        "bra" : "M", "ket" : "N" } ] } ],
+                        "bra" : "M", "ket" : "M" } ] } ],
 
   "equations" :  [
      { "name" : "T_update", "type" : "LinearRM" , "target" : "T", "target indexes" : [ "L", "N" ],
       "expressions" : [
          { "name"  : "residual",
            "terms" : [
-             { "term" : "X(H-E)T", "factor" : "one",
+             { "term" : "X(H-E-Es)T", "factor" : "one",
                "indexes" : [ { "name" : "M", "range" : "states", "sum" : false },
                              { "name" : "L", "range" : "states", "sum" : false },
-                             { "name" : "N", "range" : "states", "sum" : false } ] },
-             { "term" : "-XT",     "factor" : "shift",
-               "indexes" : [ { "name" : "M", "range" : "states", "sum" : false },
-                             { "name" : "L", "range" : "states", "sum" : false },
-                             { "name" : "N", "range" : "states", "sum" : false } ] } ] },
+                             { "name" : "N", "range" : "states", "sum" : false } ] } ] }
          { "name"  : "denominator",
            "terms" : [
              { "term" : "X(H-E)X", "factor" : "one",                                                 
@@ -63,13 +59,13 @@ for calculating the T-amplitudes in an XMS-CASPT2 :
 }                                                 
 \end{lstlisting}         
 
-\noindent \textbf{Important Note}: As the program is still undergoing development the
-input structure is volatile, and the above is unlikely to be compatible with
-the current version of the program. However, the basic contents, and guiding principals,
-are unlikely to change.\\
+\noindent \textbf{Important Note}: As the program is still undergoing development and debugging, 
+the input structure is highly volatile, and the above is unlikely to be compatible with
+the current version of the program. However, the basic contents and guiding principals
+are unlikely to change substantially.\\
 
-\noindent The input makes use of the json format, which is discussed more fully in  \cite{JSON}.
-Admittedly, the interface is currently rather prolix, and will be substantially reduced in complexity
+\noindent The input makes use of the json format discussed more fully in  \cite{JSON}.
+Interface is currently rather prolix, and will be substantially reduced in complexity
 as the program nears full release. Nonetheless, the above form is useful for demonstrating the capabilities
 of the program. \\
 
@@ -135,7 +131,7 @@ the operator has.
     { "name" : "residual", "type" : "orb_exc_deriv", "Target" : "T'",
         "brakets" : [
           { "ops"    : [ { "name" : "T'",   "ids" : [ "none" ], "transform" : "inverse" },
-                         { "name" : "H-E", "ids" : [ "N" ] },
+                         { "name" : "H-E", "ids" : [ "L" ] },
                          { "name" : "T",   "ids" : [ "L", "N" ] } ] ,
                            "bra" : "M", "ket" : "N" }, 
 
@@ -146,9 +142,9 @@ the operator has.
    { "name" : "-X(H-E)X", "type" : "value", "target" : "T'",
      "brakets" : [
        { "ops"    : [ { "name" : "X",   "ids" : [ "none" ] },
-                      { "name" : "H-E", "ids" : [ "N" ] },
+                      { "name" : "H-E", "ids" : [ "L" ] },
                       { "name" : "X",   "ids" : [ "none" ] } ] ,
-                        "bra" : "M", "ket" : "N" } ] } ],
+                        "bra" : "N", "ket" : "N" } ] } ],
 \end{lstlisting}         
 The terms section defines quantities to facilitate construct the expressions
 the user wishes the program to evaluate.  The \texttt{name} is used by the program to
@@ -162,7 +158,7 @@ derivative of the terms is taken with respect to the elements of the tensor spec
 \begin{lstlisting}[label={lst:brakets}]
 "brakets" : [
   { "ops"    : [ { "name" : "X",   "ids" : [ "none" ] },
-                 { "name" : "H-E", "ids" : [ "N" ] },
+                 { "name" : "H-E", "ids" : [ "L" ] },
                  { "name" : "T",   "ids" : [ "L", "N" ] } ] ,
                    "bra" : "M",
                    "ket" : "N"                          }, 
@@ -196,15 +192,15 @@ defaults to 1.0. The \texttt{Bra} and \texttt{Ket} specify the name of the state
        { "name"  : "residual",
          "terms" : [
            { "term" : "residual", "factor" : "mone",
-             "indexes" : [ { "name" : "M", "range" : "states", "sum" : true },
+             "indexes" : [ { "name" : "M", "range" : "states", "sum" : false },
                            { "name" : "L", "range" : "states", "sum" : false },
-                           { "name" : "N", "range" : "states", "sum" : false } ] },
+                           { "name" : "N", "range" : "states", "sum" : true } ] },
        { "name"  : "denominator",
          "terms" : [
            { "term" : "X(H-E)X", "factor" : "one",                                                 
              "indexes" : [ { "name" : "M", "range" : "states", "sum" : false },
                            { "name" : "L", "range" : "states", "sum" : false },
-                           { "name" : "N", "range" : "states", "sum" : false } ] } ] } ]
+                           { "name" : "N", "range" : "states", "sum" : true } ] } ] } ]
     } ]
   } ]
 \end{lstlisting}         
@@ -212,13 +208,15 @@ The \texttt{equations} section is used to specify what is actually calculated. T
 finding the \texttt{T} which minimizes the following
 \begin{equation}
 \frac{ \Phi_{M} |  \hat{X}_{\Omega} ( \hat{H}-E^{0}_{L}-E_{shift} )  \hat{T}^{LN}_{\Omega'} | \Phi_{N} \rangle } 
-{ \langle \Phi_{N} | \hat{X}^{\dagger}_{\Omega}
-  ( \hat{H}- E^{0}_{M} )
-  \hat{X}_{\Omega'} | \Phi_{M} \rangle}
+{ \langle \Phi_{N}   | \hat{X}^{\dagger}_{\Omega}
+                     ( \hat{H}- E^{0}_{L} )
+                       \hat{X}_{\Omega'} |
+ \Phi_{M} \rangle}
 \end{equation}
-It should be noted that for reasons of clarity, I have omitted the various transformations and orthogonalizations associated
-with XMS-CASPT2 and the use of internally contracted wavefunctions. Such transformations 
-will be performed by default, and do not impact the input. \\
+It should be noted that for reasons of clarity, the various transformations and orthogonalizations associated
+with XMS-CASPT2 and the internally contracted wavefunctions are not included here. Ultimately, XMS-CASPT2
+will be assumed to be the default, and the corresponding transformations will be performed automatically, however
+this will not substantially impact the input. \\
 
 \noindent The  \texttt{equations} section first specifies the \texttt{type} of equation to be solved, in
 this case \texttt{LinearRM} (linear residual minimization). The type dictates what other keywords must appear.
