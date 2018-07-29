@@ -166,7 +166,7 @@ associated with $\lambda$. Note that actual data  corresponding to the tensor re
 (i.e., the large, many index arrays) is not being transformed, only the algebraic objects 
 which represent this data using the task list construction.
 
-\section{ MultiTensOp } 
+\section{MultiTensOp } 
 \noindent Another important matter is combinations of multiple operators, e.g.,
 \begin{equation}
 \langle I | \hat{\lambda}\hat{H}\hat{T} | J \rangle .
@@ -208,7 +208,7 @@ the algebraic task list
 \noindent Here the original blocks,  $b1$ and $b2$, have been replaced with blocks, $\tilde{b1}$ and $\tilde{b2}$,
 from the minimal set, the indexes reshuffled, and a factor $\rho$ associated with the various transformations has appeared. 
 
-\section{ Contraction procedure } 
+\section{Contraction procedure } 
 \noindent In most contexts, the tensor contractions are performed using a recursive sequence of binary contractions. For example,
 \begin{equation}
 A_{kwzm} = 
@@ -238,7 +238,8 @@ The tensor $A_{kwzm}$ would be obtained through the following sequence of operat
 \end{equation}
 \begin{equation}
 \text{Task4 \ : \ \ }
-[\tilde{B}\tilde{C}\tilde{D}]^{(ip,no,jy,lx)}_{kmwq} = \sum_{lx} [\tilde{B}\tilde{C}]^{(ip,no)}_{klmwxq} D_{wxqy}\delta_{lx}.
+[\tilde{B}\tilde{C}\tilde{D}]^{(ip,no,jy,lx)}_{kmwq} = \sum_{lx}
+[\tilde{B}\tilde{C}\tilde{D}]^{(ip,no,jy)}_{klmwxq}\delta_{lx}.
 \label{eqn:ctr_list_t4}
 \end{equation}
 A task list for performing the necessary contractions, transpositions, multiplications, etc.,
@@ -322,22 +323,24 @@ To simplify the notation, I shall now use $\tilde{D}$ to denote $D^{\tilde{b3}}$
 \end{equation*}
 \begin{equation*}
 \text{Task2 \ : \ \ }
-[\tilde{B}\tilde{C}]^{(ip,no)}_{jklm} = \sum_{pi} B_{ijkl}[C]_{mp}^{(no)}\delta_{ip} 
+[\tilde{B}\tilde{C}]^{(ip,no)}_{jklm} = \sum_{pi} \tilde{B}_{ijkl}[\tilde{C}]_{mp}^{(no)}\delta_{ip} 
 \text{ \ \ \ $\delta_{kp} \rightarrow \delta_{ip}$ }.
 \end{equation*}
 \begin{equation*}
 \text{Task3 \ : \ \ }
-[\tilde{B}\tilde{C}\tilde{D}]^{(ip,ly,no)}_{klmwxz} = \sum_{ly} [BC]^{(ip,no)}_{jklm} D_{wxyz}\delta_{ly}. 
+[\tilde{B}\tilde{C}\tilde{D}]^{(ip,ly,no)}_{klmwxz} =
+\sum_{ly} [\tilde{B}\tilde{C}]^{(ip,no)}_{jklm} \tilde{D}_{wxyz}\delta_{ly}. 
 \text{ \ \ \ $\delta_{lx} \rightarrow \delta_{ly}$ }.
 \end{equation*}
 \begin{equation*}
 \text{Task4 \ : \ \ }
-[\tilde{B}\tilde{C}\tilde{D}]^{(ip,ly,mx,no)}_{klwz} = \sum_{mx} [BC]^{(ip,no)}_{klmwxz} D_{wxyz}\delta_{mx}.
+[\tilde{B}\tilde{C}\tilde{D}]^{(ip,ly,mx,no)}_{klwz} =
+\sum_{mx} [\tilde{B}\tilde{C}\tilde{D}]^{(ip,no,ly)}_{jkmwxz}\delta_{mx}.
 \text{ \ \ \ $\delta_{jy} \rightarrow \delta_{mx}$ }.
 \end{equation*}
 \begin{equation*}
 \text{Task5 \ : \ \ }
-[BCD]^{(jy,lx,mo,kp)}_{inzw} = swap(2,3) [\tilde{B}\tilde{C}\tilde{D}]^{(ip,ly,mx,no)}_{klwz}
+[BCD]^{(jy,lx,mo,kp)}_{inzw} = swap(2,3) [\tilde{B}\tilde{C}\tilde{D}]^{(ip,jy,mx,no)}_{klwz}
 \end{equation*}
 where changes to contractions versus those that would be performed on the
 untransformed blocks are noted on the right. By waiting until the last

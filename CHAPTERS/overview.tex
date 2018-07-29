@@ -64,7 +64,7 @@ the program does not contain routines for evaluation of molecular orbital integr
 when such integrals are needed it calls to the pre-existing routines in the 
 Bagel~\cite{BAGEL} code.
 
-\section*{Structural outline}
+\section{Structural outline}
 \noindent The program is split into three main components; an algebraic manipulator, an FCI
 iand linear algebra library (mainly consisting of routines for performing tensor contractions),
 and a task translation module for facilitating communication between .\\
@@ -126,7 +126,7 @@ input reading, and some initialization. However, whilst this component is practi
 important, and not particularly small, it is rather simple, and not of
 interest, so I will not discuss it significantly.
 
-\section*{Specific components}
+\section{Specific components}
 The functioning of the program is best explained by example. In the following,
 use of italicized words indicate that word is a class defined in the program.
 The "highest level" class is the \emph{equation}, which could be something like 

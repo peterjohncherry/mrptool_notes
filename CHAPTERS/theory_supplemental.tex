@@ -1,4 +1,8 @@
-Begin by defining a space $\mathrm{s}$, split into a reference, $\mathrm{p}$, and external, $\mathbf{q}$, space;
+\emph{Note : This section outlines some of theoretical background on which the program is based.
+However, it does not contain any new developments; its primary purpose is as a quick reference,
+and to clarify some of the notation used in the main body of this document.}\\
+
+\noindent Begin by defining a space $\mathrm{s}$, split into a reference, $\mathrm{p}$, and external, $\mathbf{q}$, space;
 \begin{equation}
 \mathrm{s} = \mathrm{p} + \mathrm{s} = \{ |p\rangle \} \cup \{|q\rangle \}
 \end{equation}
@@ -131,7 +135,7 @@ This may be used to rewrite (\ref{eqn:Q_on_both_sides_singlestate}) as
 \end{equation}
 CASPT2 and related theories discussed in the following can be thought of as techniques for finding approximate methods for finding $\Omega_{p}$. 
 
-\section{ CASPT2 }
+\section{CASPT2 }
 \noindent The wave operator can be written as a series expansion;
 \begin{equation}
 \hat{\Omega}^{p} = \hat{\Omega}^{p,0}+\hat{\Omega}^{p,1}+\hat{\Omega}^{p,2}+....
@@ -239,7 +243,7 @@ This can now be used to obtain the T update equation
 \end{equation}
 This expression is iterated over until the threshold is reached. 
 
-\section{ Multistate cases }
+\section{Multistate cases }
 \noindent As mentioned above, the case where $\mathrm{p}$ contains more than one state is less straightforward, and there
 a number of approaches to dealing with it (MS-CASPT2, XMS-CASPT2, GVVPT2 etc., ).  To explain the issues associated with the
 degenerate multistate case, and to illustrate the different in motivation and structure of these approaches,
@@ -290,7 +294,7 @@ Unfortunately, this does not happen here, a fact which will later prove signific
 There is more than one way of handling this issue, but to summarize them properly it is
 worth first discussing the generalized Bloch equation.
 
-\section{ Generalized Bloch Equation } 
+\section{Generalized Bloch Equation } 
 Consider the matrix equation,
 \begin{equation}
 \mathbf{H}\boldsymbol{\Psi} =
@@ -573,7 +577,7 @@ for it to hold it (given the above definitions) requires that $\mathbf{T}$ is su
 which appear in (\ref{eqn:HQP}), and how these approximations impact the accuracy of methods based on
 (\ref{eqn:BGenMSCASPT2}) is an important topic which we return to in due course.
 
-\section{ Multistate CASTP2 and Extended Multistate CASPT2 }
+\section{Multistate CASTP2 and Extended Multistate CASPT2 }
 
 \noindent Multistate methods generally start from the effective Bloch Hamiltonian defined in 
 (\ref{eqn:effective_Bloch}) as 
