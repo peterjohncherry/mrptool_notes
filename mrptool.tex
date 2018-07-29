@@ -9,16 +9,12 @@
 \usepackage{amssymb}
 \usepackage{textcomp}
 \usepackage{array}
-\usepackage{booktabs}
 \usepackage{subfigure}
 \usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
-\usepackage{longtable}
 \usepackage{calc}
 \usepackage{setspace}
 \usepackage{multirow}
-\usepackage{hhline}
 \usepackage{ifthen}
-\usepackage{lscape}
 \usepackage{relsize}
 \usepackage{bbold}
 \usepackage{mathtext}
@@ -34,22 +30,27 @@
  }
 \usepackage{cite}
 \usepackage{listings}
-\renewcommand{\chaptername}{}
+%\usepackage{booktabs}
+%\usepackage{longtable}
+%\usepackage{hhline}
+%\usepackage{lscape}
 \linespread{1.3}
-
 \graphicspath{ {FIGURES/} }
+\usepackage{titlesec}
+\titleformat{\chapter}[hang] {\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter:}{1em}{}
 \begin{document}
 
 \tableofcontents
 
 \chapter*{Overview}
-\addcontentsline{toc}{chapter}{Overview}
+%\addcontentsline{toc}{chapter}{Overview}
 \input{CHAPTERS/overview}
 
 \chapter{Example Input}
+%\addcontentsline{toc}{chapter}{Example Input}
 \input{CHAPTERS/example_input}
 
-\chapter{Tensors decomposition and contraction}
+\chapter{Tensor decomposition and contraction}
 \input{CHAPTERS/tensop}
 
 \chapter{Task list generation}

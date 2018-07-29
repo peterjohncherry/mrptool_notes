@@ -1,8 +1,5 @@
-To better illustrate the capabilities of the program a small example is
-provided to show the input necessary for calculating the T-amplitudes
-in CASPT2. 
-consider the following input, which could be used to 
-obtain the T-amplitudes in MS-CASPT2, 
+To better illustrate the capabilities of the program below is an example input
+for calculating the T-amplitudes in an XMS-CASPT2 :
 \definecolor{light-gray}{gray}{0.75}
 \lstset{ frameround=fttt, language=Java, basicstyle=\tiny, backgroundcolor=\color{lightgray}}
 \begin{lstlisting}[label={lst:input}]
@@ -65,6 +62,11 @@ obtain the T-amplitudes in MS-CASPT2,
    } ]
 }                                                 
 \end{lstlisting}         
+
+\noindent \textbf{Important Note}: As the program is still undergoing development the
+input structure is volatile, and the above is unlikely to be compatible with
+the current version of the program. However, the basic contents, and guiding principals,
+are unlikely to change.\\
 
 \noindent The input makes use of the json format, which is discussed more fully in  \cite{JSON}.
 Admittedly, the interface is currently rather prolix, and will be substantially reduced in complexity
@@ -231,8 +233,3 @@ However, breaking down the expression into smaller, independent parts facilitate
 quantities which may be reused, and eases control of summations over different state indexes. 
 se terms with the exception that it is also necessary to specify the ranges over
 which the summations on the state indexes are performed.
-
-lists a number of \texttt{expressions},
-in this case \
- relevant to the equation to
-be solved. the \texttt{

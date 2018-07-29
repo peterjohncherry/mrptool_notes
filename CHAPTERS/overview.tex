@@ -63,8 +63,10 @@ and tensor contraction library, and a task manager.\\
 
 \begin{figure}[!ht]
 \begin{center}
-\includegraphics[width=0.8\textwidth]{prog_structure.jpg}
-\caption{ Basic program structure. }
+\includegraphics[width=0.8\textwidth]{prog_structure.png}
+\caption{ Outline of program structure. Arrows represent the flow of data, numbers represent the
+initial order in which the components are used (looping may occur in the case of iterations).
+The intention is that each component, with the exception of the driver, functions independently of the others.}
 \end{center}
 \label{fig:prog_structure}
 \end{figure}
