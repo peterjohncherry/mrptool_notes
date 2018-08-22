@@ -1,0 +1,179 @@
+\documentclass[12pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{textcomp}
+\usepackage{array}
+\usepackage{pdfpages}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=15mm,
+ top=15mm,
+ bottom=15mm,
+ right=15mm,
+ }
+
+\usepackage{cite}
+\linespread{1.3}
+
+\begin{document}
+\section{ More Supplementary material }
+\subsection{ Conversion from Bagel/SMITH3 ordering to normal ordering } 
+
+Several of the tensors (notably $\mathbf{v2}$ and $\mathbf{T}$ )  in Bagel and SMITH3 are associated with the operator
+ordering:
+\begin{equation}
+\langle I | \hat{a}_{l} \hat{a}_{j}^{\dagger} \hat{a}_{k} \hat{a}_{i}^{\dagger} | J \rangle X_{ljki},
+\end{equation}
+where $\mathbf{X}$ is some arbitrary tensor representation.  Using the commutation relations this can be
+converted to normal ordering as :
+\begin{equation}
+- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l} 
+- \hat{i}^{\dagger} \hat{k} \delta_{jl}
++ \hat{j}^{\dagger} \hat{k} \delta_{il} 
+- \hat{j}^{\dagger} \hat{l} \delta_{ik}
++ \delta_{ik}\delta_{jl} )
+\end{equation}
+where  $ \hat{i}^{\dagger} =\hat{a}_{i}^{\dagger}$. 
+
+\subsubsection{ Case of $\mathbf{T}$ } 
+For the CASPT2 amplitudes, $\mathbf{T}$, note that $k$ and $l$  range over closed, $c$, and active, $x$, orbitals, whilst 
+$i$ and $j$ range over active, $x$, and virtual, $v$, orbitals. Furthermore, it is subject to the constraint that
+at no point may all the indexes be active.
+
+\noindent This means all the indexes on the  $\delta$ are must always active as 
+this is the only way the creation and annihilation indexes can have the same range. This 
+ensures that regardless of the block, only a single 1-electron density matrix contributes
+at any point, and that the final term involving two deltas always vanishes.\\
+
+The remaining cases are:
+\begin{itemize} 
+\item $r_{i} \text{, \ }r_{j}\text{, \ } r_{k} \text{, \ } r_{l}   \rightarrow \text{ \ \ \ \  non-zero terms }$
+
+\item $xxxc \rightarrow \text{ \ \ \ \ } [- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l} - \hat{j}^{\dagger} \hat{l} \delta_{ik}]$
+
+\item $xxcx 
+\rightarrow \text{ \ \ \ \ } [- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}
+ - \hat{i}^{\dagger} \hat{k} \delta_{jl} + \hat{j}^{\dagger} \hat{k} \delta_{il}]
+$
+
+\item $xxcc 
+\rightarrow \text{ \ \ \ \ } [- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}] $
+
+\item $xvxx 
+\rightarrow \text{ \ \ \ \ } [- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}
++ \hat{j}^{\dagger} \hat{k} \delta_{il} 
+- \hat{j}^{\dagger} \hat{l} \delta_{ik}] $
+
+\item $xvxc 
+\rightarrow \text{ \ \ \ \ } [- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}
+- \hat{j}^{\dagger} \hat{l} \delta_{ik}] $
+
+\item $xvcx 
+\rightarrow \text{ \ \ \ \ } [- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}
++ \hat{j}^{\dagger} \hat{k} \delta_{il} ]$
+
+\item $xvcc 
+\rightarrow \text{ \ \ \ \ } [- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}]$
+
+\item $vxxx 
+\rightarrow \text{ \ \ \ \ } [- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}
+- \hat{i}^{\dagger} \hat{k} \delta_{jl}]$
+
+\item $vxxc 
+\rightarrow \text{ \ \ \ \ } [- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}]$
+
+\item $vxcx 
+\rightarrow \text{ \ \ \ \ } [- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}
+- \hat{i}^{\dagger} \hat{k} \delta_{jl}]$
+
+\item $vxcc 
+\rightarrow \text{ \ \ \ \ } [- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}]$
+
+\item $vvxx 
+\rightarrow \text{ \ \ \ \ } [- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}]$
+
+\item $vvxc
+\rightarrow \text{ \ \ \ \ } [- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}]$
+
+\item $vvcx
+\rightarrow \text{ \ \ \ \ } [- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}]$
+
+\item $vvcc
+\rightarrow \text{ \ \ \ \ } [- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}]$
+\end{itemize}
+If we assume that there is a summation over all indexes, then several terms will cancel:
+\begin{itemize} 
+\item $r_{i} \text{, \ }r_{j}\text{, \ } r_{k} \text{, \ } r_{l}   \rightarrow \text{ \ \ \ \  non-zero terms }$
+
+\item $xxxc \rightarrow \text{ \ \ \ \ } -\hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l} - \hat{j}^{\dagger} \hat{l} \delta_{ik}$
+
+\item $xxcx \rightarrow \text{ \ \ \ \ } -\hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}  $
+
+\item $xvxx \rightarrow \text{ \ \ \ \ } -\hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}$
+
+\item $vxxx \rightarrow \text{ \ \ \ \ } -\hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l} - \hat{i}^{\dagger} \hat{k} \delta_{jl}$
+
+\item $xvxc \rightarrow \text{ \ \ \ \ } -\hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l} - \hat{j}^{\dagger} \hat{l} \delta_{ik}$
+
+\item $xvcx \rightarrow \text{ \ \ \ \ } -\hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l} + \hat{j}^{\dagger} \hat{k} \delta_{il}$
+
+\item $vxxc \rightarrow \text{ \ \ \ \ } -\hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}$
+
+\item $vxcx \rightarrow \text{ \ \ \ \ } -\hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l} - \hat{i}^{\dagger} \hat{k} \delta_{jl}$
+
+\item $xvcc \rightarrow \text{ \ \ \ \ } -\hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}$
+
+\item $vxcc \rightarrow \text{ \ \ \ \ } -\hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}$
+
+\item $vvxc \rightarrow \text{ \ \ \ \ } -\hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}$
+
+\item $vvcx \rightarrow \text{ \ \ \ \ } -\hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}$
+
+\item $vvxx \rightarrow \text{ \ \ \ \ } -\hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}$
+
+\item $xxcc \rightarrow \text{ \ \ \ \ } -\hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l} $
+
+\item $vvcc \rightarrow \text{ \ \ \ \ } -\hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l}$
+\end{itemize}
+
+
+\subsubsection{ Case of $\mathbf{H}$ } 
+The two electron Hamiltonian is not so simple; it has no such handy constraints. However, we should note
+that each one of the creation indexes has to be equal to one of the other creation indexes, or else either all
+the 1-electron density matrices, or all the delta functions, will vanish.
+
+\begin{itemize}
+\item $r_{i} = r_{k} = x \text{ \ and \ } r_{j} = r_{l} = c,v  \rightarrow \text{ \ \ \ \ } 
+[- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l} - \hat{i}^{\dagger} \hat{k} \delta_{jl}]$\\
+
+\item $r_{i} = r_{k} = x \text{ \ and \ } r_{j} = r_{l} = c,v  \rightarrow \text{ \ \ \ \ } 
+[- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l} - \hat{i}^{\dagger} \hat{k} \delta_{jl}]$\\
+
+\item $r_{i} = r_{k} = x \text{ \ and \ } r_{j} = r_{l} = c,v  \rightarrow \text{ \ \ \ \ } 
+[- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l} - \hat{i}^{\dagger} \hat{k} \delta_{jl}]$\\
+
+\item $r_{j} = r_{k} = x \text{ \ and \ } r_{i} = r_{l} = c,v  \rightarrow \text{ \ \ \ \ } 
+[- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l} + \hat{j}^{\dagger} \hat{k} \delta_{il}]$\\
+
+\item $r_{j} = r_{l} = x \text{ \ and \ } r_{i} = r_{k} = c,v  \rightarrow \text{ \ \ \ \ } 
+[- \hat{i}^{\dagger} \hat{j}^{\dagger} \hat{k}\hat{l} + \hat{j}^{\dagger} \hat{k} \delta_{il}]$\\
+\end{itemize}
+
+For the CASPT2 amplitudes, $\mathbf{T}$, note that $k$ and $l$  range over closed, $c$, and active, $x$, orbitals, whilst 
+$i$ and $j$ range over active, $x$, and virtual, $v$, orbitals. Furthermore, it is subject to the constraint that
+at no point may all the indexes be active.\\
+
+\noindent This means all but the first terms vanishes; the indexes on the  $\delta$ are must always active as 
+this is the only way the creation and annihilation indexes can have the same range. However, if these
+two indexes are active, then the uncontracted indexes cannot both be active, due to the constraint
+that not all indexes on $\mathbf{T}$ can be active. Hence, Bra-Ket vanishes, as both $\langle I | $ and
+$| J \rangle $ are active determinants. The final $\delta_{ik}\delta_{jl}$ term vanishes by the same logic.\\
+
+
+
+\end{document}
